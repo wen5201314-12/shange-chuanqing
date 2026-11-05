@@ -1,0 +1,744 @@
+<!DOCTYPE html>
+<!--
+MIT License
+
+Copyright (c) 2026 山歌传情 contributors
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+-->
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#f4f3eb">
+<meta name="description" content="山歌传情：以笛子、二胡、芦笙、马头琴唤醒山河旋律，让云雾随声音流动的 p5.js 音画交互作品。">
+<title>山歌传情 — 听见山河，遇见知音</title>
+<!-- 不再加载在线字体：改用系统字体，避免字体分片渐进加载导致的文字闪跳 -->
+<style>
+@font-face{font-family:'Noto Serif SC';src:local('Noto Serif SC'),local('Source Han Serif SC'),local('Source Han Serif CN'),local('思源宋体'),local('STZhongsong'),local('华文中宋'),local('SimSun'),local('宋体');font-display:swap}
+@font-face{font-family:'Noto Sans SC';src:local('Noto Sans SC'),local('Source Han Sans SC'),local('Source Han Sans CN'),local('思源黑体'),local('PingFang SC'),local('Microsoft YaHei'),local('微软雅黑');font-display:swap}
+</style>
+<style>
+:root{--paper:#f4f3eb;--ink:#293e37;--muted:#7b8378;--line:#d9ddd2;--red:#ac533d;--ease:cubic-bezier(.22,1,.36,1)}
+*{box-sizing:border-box}body{margin:0;background:var(--paper);color:var(--ink);font-family:'Noto Sans SC',sans-serif;font-size:13px}button,input{font:inherit}button,a,input{-webkit-tap-highlight-color:transparent}button{color:inherit;cursor:pointer}button:focus-visible,a:focus-visible,input:focus-visible{outline:2px solid var(--red);outline-offset:6px}button:disabled{cursor:wait}::selection{background:#d5ddca}a{color:inherit;text-decoration:none}#landscape{position:absolute;top:95px;left:0;width:100%;height:700px;pointer-events:none;z-index:-1;overflow:hidden}#landscape canvas{display:block}body:before{content:'';position:fixed;inset:0;pointer-events:none;z-index:5;opacity:.15;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 180 180' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' opacity='.23' filter='url(%23n)'/%3E%3C/svg%3E")}.shell{width:min(1160px,calc(100% - 96px));margin:auto}header{height:98px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--line)}.brand{display:flex;align-items:center;gap:13px;font-family:'Noto Serif SC',serif;font-size:21px;font-weight:600;letter-spacing:3px}.seal{width:33px;height:35px;border:1px solid var(--red);color:var(--red);font-size:11px;line-height:14px;letter-spacing:2px;padding:3px;text-align:center;transform:rotate(-4deg)}nav{display:flex;gap:34px;align-items:center;color:var(--muted);font-size:12px}nav a:first-child{color:var(--ink)}.nav-dot{width:5px;height:5px;display:inline-block;background:var(--ink);border-radius:50%;margin-right:7px}.edition{font:10px Georgia,serif;letter-spacing:2px;border-left:1px solid var(--line);padding-left:28px}.intro{display:flex;justify-content:space-between;align-items:center;padding-top:64px;padding-bottom:37px}.eyebrow{font-size:10px;letter-spacing:3px;display:flex;gap:12px;align-items:center;color:var(--muted)}.eyebrow:before{content:'';width:23px;height:1px;background:var(--red)}h1{font-family:'Noto Serif SC',serif;font-size:clamp(40px,4.8vw,64px);font-weight:500;letter-spacing:6px;line-height:1.4;margin:17px 0 13px}h1 span{color:var(--red)}.intro p{color:var(--muted);line-height:2;letter-spacing:1px;margin:0}.poem{display:flex;gap:22px;margin-right:18px;align-items:center}.poem p{writing-mode:vertical-rl;font:15px/2 'Noto Serif SC',serif;letter-spacing:5px;color:#6f7c70}.poem small{writing-mode:vertical-rl;color:#9a9e91;font-size:9px;letter-spacing:3px}.collection-top{display:flex;align-items:center;justify-content:space-between;padding:21px 0 19px}.section-label{display:flex;align-items:center;gap:12px;font-size:12px;letter-spacing:2px}.section-label small{font-size:9px;letter-spacing:2px;color:var(--muted);font-family:Georgia,serif}.hint{font-size:10px;letter-spacing:1px;color:var(--muted)}.cards{display:grid;grid-template-columns:repeat(4,1fr);gap:19px}.instrument{position:relative;display:block;text-align:left;width:100%;padding:23px 22px 20px;border:1px solid #dfe2d6;border-radius:5px;background:rgba(250,250,243,.86);box-shadow:0 5px 15px #344b3510;transition:transform .75s var(--ease),box-shadow .75s var(--ease),border-color .4s;overflow:hidden}.instrument:hover{transform:translateY(-10px);box-shadow:0 22px 32px #344b351a;border-color:#a9b7a0}.instrument:active{transform:translateY(-3px) scale(.985)}.instrument.selected{border-color:#768f73;background:#f6f8ef;box-shadow:0 12px 30px #344b3513}.card-top{display:flex;align-items:center;justify-content:space-between;font:10px Georgia,serif;letter-spacing:2px;color:#8c9588}.tag{font-family:'Noto Sans SC',sans-serif;font-size:9px;letter-spacing:2px}.art{height:184px;position:relative;display:flex;align-items:center;justify-content:center;margin:3px -12px 0}.art:before{content:'';position:absolute;width:139px;height:139px;background:radial-gradient(ellipse,#d8dfcb80,transparent 69%);border-radius:50%}.art svg{width:100%;height:100%;position:relative;filter:drop-shadow(3px 6px 3px #31432b12);transition:transform 1s var(--ease)}.instrument:hover .art svg{transform:rotate(-3deg) translateY(-3px)}.instrument h2{font:500 25px 'Noto Serif SC',serif;letter-spacing:4px;margin:3px 0 7px}.english{font:9px Georgia,serif;letter-spacing:2px;color:#8e9788;text-transform:uppercase}.card-bottom{display:flex;align-items:center;justify-content:space-between;border-top:1px solid #dfe3d8;margin-top:20px;padding-top:16px}.song{font-size:11px;letter-spacing:1px}.song small{display:block;font-size:9px;color:#939a8d;letter-spacing:1px;margin-top:6px}.play-circle{border:1px solid #d2dacb;width:29px;height:29px;border-radius:50%;display:grid;place-items:center;font-size:9px;transition:background .3s}.selected .play-circle,.instrument:hover .play-circle{background:var(--ink);color:var(--paper);border-color:var(--ink)}.interaction-note{text-align:center;color:#8c9487;font-size:10px;letter-spacing:2px;margin:25px 0 30px}.interaction-note span{padding:0 10px;color:#b2b8a9}.player{display:flex;align-items:center;gap:20px;padding:20px 25px;border:1px solid var(--line);border-radius:5px;background:#fafaf480;min-height:93px}.transport{border:0;background:var(--ink);width:41px;height:41px;border-radius:50%;color:var(--paper);font-size:13px;flex-shrink:0}.track{min-width:170px}.track strong{font-weight:500;font-size:12px;letter-spacing:2px}.track small{display:block;margin-top:7px;color:var(--muted);font-size:9px;letter-spacing:1px}.visualizer{display:flex;height:25px;align-items:center;gap:3px;flex:1;justify-content:center}.visualizer i{width:2px;height:3px;background:#8b9b81;transition:height .2s;border-radius:2px}.volume{display:flex;align-items:center;gap:10px;color:#7d8878}.volume input{width:75px;accent-color:#566d50;height:3px}.ambient{border:0;border-left:1px solid var(--line);background:none;padding:5px 0 5px 20px;font-size:10px;letter-spacing:1px;white-space:nowrap}.ambient[aria-pressed=false]{color:#969b91}.status{min-height:26px;font-size:10px;color:var(--muted);padding-top:8px;line-height:1.8}footer{margin-top:23px;padding:23px 0 26px;border-top:1px solid var(--line);display:flex;align-items:center;justify-content:space-between;color:#899281;font-size:9px;letter-spacing:1px}.footer-brand{font-family:'Noto Serif SC',serif;font-size:12px;color:#65745f;letter-spacing:3px}footer .right{display:flex;gap:25px}.about{border:0;background:none;padding:0;color:inherit;font-size:inherit;letter-spacing:inherit}dialog{max-width:460px;width:calc(100% - 40px);background:var(--paper);color:var(--ink);border:1px solid #bec9b7;border-radius:8px;padding:32px;box-shadow:0 30px 100px #233c3430}dialog::backdrop{background:#293e3750;backdrop-filter:blur(5px)}dialog h2{font:24px 'Noto Serif SC',serif}dialog p{font-size:13px;line-height:2;color:#73806e}dialog button{border:1px solid var(--line);background:none;padding:9px 17px;border-radius:3px}.reveal{animation:arrive 1.2s var(--ease) both}.cards .instrument:nth-child(2){animation-delay:.08s}.cards .instrument:nth-child(3){animation-delay:.16s}.cards .instrument:nth-child(4){animation-delay:.24s}@keyframes arrive{from{opacity:0;translate:0 18px}to{opacity:1;translate:0 0}}
+@media(min-width:1500px){.shell{width:1200px}.intro{padding-top:85px}.art{height:220px}}@media(max-width:800px){.shell{width:calc(100% - 40px)}header{height:78px}nav{gap:18px}.edition{display:none}.intro{padding-top:40px}.intro p{font-size:11px}.poem{margin-right:0;gap:12px}.poem p{font-size:12px}.cards{grid-template-columns:repeat(2,1fr);gap:14px}.art{height:165px}.player{gap:13px;padding:17px}.track{min-width:140px}.visualizer{display:none}.volume{margin-left:auto}.ambient{padding-left:12px}.hint{font-size:9px}footer .right{gap:13px}}@media(max-width:480px){.brand{font-size:18px}nav{font-size:10px;gap:15px}.poem{display:none}h1{font-size:39px;letter-spacing:2px}.intro{padding-bottom:25px}.section-label small{display:none}.instrument{padding:18px 16px}.art{height:147px}.instrument h2{font-size:23px}.tag{font-size:8px}.song{font-size:10px}.player{flex-wrap:wrap}.track{flex:1}.volume input{width:55px}.ambient{border-left:0;padding:7px 0 0 54px;width:100%;text-align:left}footer{align-items:flex-start;gap:15px}.footer-brand{font-size:10px}footer .right{flex-direction:column;gap:9px;text-align:right}.interaction-note{font-size:9px;letter-spacing:1px}}
+@media(prefers-reduced-motion:reduce){*,*:before,*:after{animation:none!important;transition:none!important}.instrument:hover{transform:none}}
+
+/* ④ 开场画卷：原生滚动驱动展开，使用位移与透明度呈现景深。 */
+.overture{height:240vh;height:240svh;position:relative;background:var(--paper)}
+.scroll-scene{height:100vh;height:100svh;position:sticky;top:0;overflow:hidden;isolation:isolate;background:#e8eadd}
+.scene-top{position:absolute;z-index:4;top:32px;left:6%;right:6%;display:flex;justify-content:space-between;align-items:center;font-size:11px;letter-spacing:4px}.scene-top a{padding:12px;border-bottom:1px solid #7b837850;letter-spacing:2px}
+.ink-landscape{position:absolute;inset:0;width:100%;height:100%;transform:scale(var(--scene-scale,1));transform-origin:50% 65%}
+.mist-band{position:absolute;inset:40% -20% 0;background:radial-gradient(ellipse at center,#f4f3ebbb,transparent 65%);transform:translate3d(var(--mist-x,0px),0,0);pointer-events:none}
+.scroll-leaf{position:absolute;inset:0 auto 0 0;width:50.1%;z-index:2;background:var(--paper);transform:translate3d(var(--leaf-left,0%),0,0);box-shadow:8px 0 28px #293e3714}
+.scroll-leaf.right{left:auto;right:0;transform:translate3d(var(--leaf-right,0%),0,0);box-shadow:-8px 0 28px #293e3714}
+.scroll-leaf:after{content:'';position:absolute;top:12%;bottom:12%;right:18px;width:1px;background:#ac533d55}.scroll-leaf.right:after{left:18px;right:auto}
+.scroll-title{position:absolute;z-index:3;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;pointer-events:none;opacity:var(--title-opacity,1);transform:translate3d(0,var(--title-y,0px),0)}
+.scroll-title .chapter{font-size:11px;letter-spacing:7px;color:var(--muted)}.scroll-title h2{font:500 clamp(56px,9vw,120px)/1.5 'Noto Serif SC',serif;letter-spacing:.22em;margin:22px 0 16px;padding-left:.22em}.scroll-title p{font:14px 'Noto Serif SC',serif;letter-spacing:6px;color:var(--muted)}.scroll-title .seal{margin-top:24px}
+.scene-caption{position:absolute;left:10%;bottom:22%;z-index:1;opacity:var(--caption-opacity,0);transform:translate3d(0,var(--caption-y,25px),0)}.scene-caption h2{font:500 clamp(32px,5vw,65px)/1.5 'Noto Serif SC',serif;letter-spacing:8px;margin:0 0 18px}.scene-caption p{font-size:12px;letter-spacing:4px;line-height:2}
+.scroll-bottom{position:absolute;z-index:4;bottom:32px;left:6%;right:6%;display:flex;align-items:center;justify-content:space-between;font-size:10px;letter-spacing:3px}.scroll-bottom a{padding:14px 0}.scroll-meter{width:110px;height:1px;background:#293e3726;display:block}.scroll-meter i{display:block;height:100%;background:var(--red);transform:scaleX(var(--scroll-progress,0));transform-origin:left}
+.shell{position:relative;isolation:isolate}#landscape{z-index:-1}
+@media(max-width:600px){.scene-top{top:18px;font-size:9px;letter-spacing:2px}.scene-top .scene-edition{display:none}.scroll-title h2{font-size:53px}.scroll-title p{font-size:11px;letter-spacing:3px}.scene-caption{left:8%;bottom:25%}.scene-caption h2{letter-spacing:4px}.scroll-bottom{bottom:22px;font-size:9px;letter-spacing:1px}.scroll-meter{width:65px}}
+@media(prefers-reduced-motion:reduce){.overture{height:100vh;height:100svh}.scroll-scene{position:relative}.scroll-leaf{display:none}.scroll-title{opacity:1!important;transform:none!important}.scroll-title:before{content:'';position:absolute;inset:0;background:#f4f3ebbb;z-index:-1}.scene-caption{display:none}.ink-landscape{transform:none!important}.mist-band{transform:none!important}}
+
+/* 夜色山河：背景常暗，鼠标附近透出暖光，文字保持可读。 */
+:root{--paper:#101f1b;--ink:#eee8d5;--muted:#b4bbaa;--line:#c8d1b530;--red:#dd997d}
+body{background:#101f1b;color:var(--ink)}
+body:after{content:'';position:fixed;inset:0;z-index:-1;background:linear-gradient(#071a14c9,#071a14c9),url('assets/fields.png') center/cover no-repeat;pointer-events:none}
+.overture,.scroll-scene{background:#0a231d url('assets/river.png') center/cover}
+.ink-landscape{opacity:.12;mix-blend-mode:screen}.mist-band{opacity:.15}
+.scroll-leaf{background:linear-gradient(#10271ef2,#10271edf),url('assets/river.png') left center/200% 100%}.scroll-leaf.right{background-position:right center}
+.scroll-title p,.scene-top,.scroll-bottom{color:#dddcc8}.scene-caption p{color:#e1e3d0}.scroll-meter{background:#e8e6cd40}.scroll-leaf:after{background:#dd997d60}
+.scene-top a{border-color:#d4d9bd60}.scroll-title .chapter{color:#c5ccb7}.scroll-title:before{background:transparent}
+.instrument{background:#142c22db;border-color:#c3ceaf40;box-shadow:0 10px 28px #06110e70}.instrument:hover{background:#203c2ce8;border-color:#c3ceaf9c;box-shadow:0 20px 35px #050f0ba0}.instrument.selected{background:#29452ce8;border-color:#d9c58f;box-shadow:0 0 0 1px #d9c58f38,0 15px 30px #06110e70}
+.card-top,.english,.song small,.hint,.interaction-note,footer,.footer-brand,.poem p,.poem small{color:#b8c3a9}.card-bottom{border-color:var(--line)}.selected .play-circle,.instrument:hover .play-circle{background:#d9c58f;color:#152b20;border-color:#d9c58f}.play-circle{border-color:#aab89670}.art svg{filter:brightness(1.3) drop-shadow(3px 8px 5px #06110e70)}
+.player{background:#10281fe8}.transport{background:#d9c58f;color:#152b20}.volume{color:#c4ccb7}.volume input{accent-color:#d9c58f}.ambient[aria-pressed=false]{color:#b1baa9}.track small{font-size:10px;line-height:1.7}.track{min-width:200px}
+.selection-actions{display:flex;justify-content:space-between;align-items:center;gap:20px;margin:25px 0 15px;padding:18px 0;border-bottom:1px solid var(--line)}#selection-summary{color:#d4dcc3;font-size:12px;line-height:1.8}.listen-button{background:#d9c58f;color:#172b20;border:1px solid #d9c58f;padding:13px 23px;border-radius:3px;letter-spacing:3px;white-space:nowrap}.listen-button:disabled{opacity:.45;cursor:default}.listen-button:not(:disabled):hover{background:#ead9ad;transform:translateY(-2px)}
+.mouse-light{position:fixed;inset:0;z-index:4;pointer-events:none;background:radial-gradient(circle 280px at var(--light-x,50vw) var(--light-y,40vh),#fff0b51c 0%,#fff0b507 42%,#03100d4d 100%);opacity:1}.shell{padding-bottom:12px}.shell:focus{outline:none}dialog{background:#142b22}dialog p{color:#c0cbb5}
+@media(max-width:600px){.selection-actions{align-items:flex-start;flex-direction:column;gap:12px}.listen-button{width:100%}.track{min-width:150px}.scroll-leaf{background-size:cover}}
+@media(hover:none),(prefers-reduced-motion:reduce){.mouse-light{display:none}}
+@media(prefers-reduced-motion:reduce){.scroll-title:before{background:#10251dd9}}
+
+/* 序章微交互：三段叙事、萤火、触水涟漪，均不阻挡自然滚动。 */
+.overture{height:280vh;height:280svh}
+.ink-landscape{opacity:.2;transform:translate3d(var(--parallax-x,0px),var(--parallax-y,0px),0) scale(var(--scene-scale,1));transition:transform .6s ease-out}
+.ridge-far{transform:translateY(var(--far-y,0px))}.ridge-near{transform:translateY(var(--near-y,0px))}
+.scroll-title h2{animation:ink-arrival 1.8s var(--ease) both}.scroll-title p{animation:ink-arrival 1.8s .25s var(--ease) both}.scroll-title .seal{animation:seal-arrival 1.5s .5s var(--ease) both}
+@keyframes ink-arrival{from{opacity:0;transform:translateY(22px)}to{opacity:1;transform:translateY(0)}}@keyframes seal-arrival{from{opacity:0;transform:rotate(-14deg) scale(1.3)}to{opacity:1;transform:rotate(-4deg) scale(1)}}
+.scene-atmosphere{position:absolute;inset:0;z-index:3;pointer-events:none;overflow:hidden}.firefly{position:absolute;width:3px;height:3px;background:#e3d7a0;border-radius:50%;box-shadow:0 0 12px 3px #d2d29050;animation:firefly-drift var(--flight) var(--delay) ease-in-out infinite alternate;opacity:.6}
+@keyframes firefly-drift{0%{opacity:.1;transform:translate3d(-12px,15px,0)}50%{opacity:.8}100%{opacity:.25;transform:translate3d(22px,-30px,0)}}
+.scene-atmosphere[data-lit=false] .firefly{display:none}.scene-ripple{position:absolute;border:1px solid #e1d3a590;width:50px;height:50px;margin:-25px;border-radius:50%;animation:water-ring 1.8s ease-out forwards}.scene-ripple:after{content:'';position:absolute;inset:8px;border:1px solid #e1d3a54d;border-radius:50%}@keyframes water-ring{from{opacity:.85;transform:scale(.2)}to{opacity:0;transform:scale(4.5)}}
+.chapter-nav{position:absolute;z-index:4;right:6%;top:43%;display:grid;gap:14px}.chapter-nav button{display:flex;align-items:center;justify-content:flex-end;gap:12px;padding:7px 0 7px 12px;border:0;background:none;color:#c4ccb7;letter-spacing:3px;font-size:10px}.chapter-nav i{display:block;width:5px;height:5px;border-radius:50%;border:1px solid #d7d2af80;transition:transform .4s,background .4s}.chapter-nav [aria-current=step]{color:#f1ddb0}.chapter-nav [aria-current=step] i{background:#e4c98d;transform:scale(1.5)}
+.scene-play{position:absolute;z-index:4;left:6%;bottom:105px;display:flex;align-items:center;gap:16px}.scene-play button{border:1px solid #cbd2b845;border-radius:30px;background:#112b2290;color:#e0d4ad;padding:10px 17px;font-size:11px;letter-spacing:2px;transition:background .3s}.scene-play button:hover{background:#35513baa}.scene-play small{font-size:10px;color:#c3cbb5;letter-spacing:2px}.scene-whisper{position:absolute;right:17%;top:28%;writing-mode:vertical-rl;font:14px/2 'Noto Serif SC',serif;letter-spacing:6px;color:#e4ddc0;z-index:1;opacity:var(--whisper-opacity,0);transform:translateY(var(--whisper-y,15px))}
+.scroll-bottom #chapter-label{min-width:70px;text-align:right}
+@media(max-width:600px){.chapter-nav{right:5%;top:38%;gap:10px}.chapter-nav button{font-size:9px;letter-spacing:1px}.scene-play{bottom:88px;gap:10px}.scene-play small{max-width:135px;line-height:1.8;letter-spacing:1px}.scene-whisper{right:22%;top:24%;font-size:11px;letter-spacing:3px}.scene-caption h2{font-size:32px}.scene-caption{bottom:30%}}
+@media(prefers-reduced-motion:reduce){.overture{height:100vh;height:100svh}.chapter-nav,.scene-whisper{display:none}.ink-landscape,.ridge-far,.ridge-near{transform:none!important;transition:none}.scene-atmosphere .firefly{animation:none;opacity:.45}.scene-ripple{display:none}.scene-play small{display:none}}
+
+/* 音乐隧道：四壁沿 Z 轴铺开，滚动推动视点穿过门框。 */
+.overture{height:430vh;height:430svh}.scroll-scene{background:#0b201b}
+.scroll-leaf,.scene-whisper{display:none}.ink-landscape{opacity:.08}.mist-band{display:none}
+.tunnel-viewport{position:absolute;inset:0;perspective:900px;perspective-origin:50% 50%;overflow:hidden;pointer-events:none;opacity:var(--tunnel-opacity,1)}
+.tunnel-world{position:absolute;left:50%;top:50%;transform-style:preserve-3d;transform:translate3d(0,0,var(--camera-z,-800px)) rotateZ(var(--tunnel-roll,-4deg));}
+.tunnel-wall{position:absolute;backface-visibility:visible;display:flex;align-items:center;justify-content:center;overflow:hidden;border:1px solid #b8c6a338;background:linear-gradient(90deg,#18372f,#102a24);color:#d9d7b9;transform-style:preserve-3d}
+.tunnel-wall:nth-child(4n+2){background:linear-gradient(#193a30,#10281f)}
+.tunnel-type{font:400 138px/.85 Georgia,'Noto Serif SC',serif;letter-spacing:-7px;text-transform:uppercase;white-space:nowrap;opacity:.8}
+.tunnel-wall svg{width:160px;height:240px;flex-shrink:0;margin:0 35px;opacity:.75;filter:sepia(.3) brightness(1.4)}
+.tunnel-wall .tunnel-staff{position:absolute;inset:12% 6%;background:repeating-linear-gradient(0deg,transparent 0 17px,#d1c49b18 18px 19px,transparent 20px 31px);pointer-events:none}
+.tunnel-frame{position:absolute;left:-500px;top:-350px;width:1000px;height:700px;border:9px solid #a39163;outline:1px solid #e1d5a580;outline-offset:12px;box-shadow:inset 0 0 35px #d9bf7840;pointer-events:none}
+.tunnel-frame.entrance{border-width:18px;box-shadow:0 0 0 180vmax #0b201bf5,inset 0 0 50px #d4ba6b40;background:linear-gradient(90deg,#b5a27418,transparent 10% 90%,#b5a27418)}
+.door-inscription{position:absolute;top:-60px;left:0;right:0;text-align:center;color:#d9c58f;font:26px 'Noto Serif SC',serif;letter-spacing:18px}
+.tunnel-exit{position:absolute;left:-500px;top:-350px;width:1000px;height:700px;transform:translateZ(-5700px);background:linear-gradient(#10271e66,#0b201b44),url('assets/fields.png') center/cover;border:5px solid #d9c58f;display:grid;place-content:center;text-align:center;color:#f0e5c6;font:42px 'Noto Serif SC',serif;letter-spacing:12px}
+.tunnel-exit small{display:block;font-size:12px;letter-spacing:5px;margin-top:22px}
+.tunnel-shade{position:absolute;inset:0;background:radial-gradient(ellipse at center,transparent 18%,#06130d55 75%,#06130d99);pointer-events:none}
+.scroll-title h2{font-size:clamp(40px,6vw,76px)}.scroll-title .chapter{font-size:10px}.scroll-title p{font-size:12px}.scroll-title .seal{margin-top:12px}.scroll-title h2{margin:12px 0}
+.scene-caption{bottom:27%;opacity:var(--caption-opacity,0);z-index:2}.scene-caption h2{font-size:clamp(30px,4.5vw,60px)}
+.scene-atmosphere{opacity:.6}.scene-top,.scroll-bottom{padding:6px 12px;background:#0b201b80;border-radius:3px}.scene-play{bottom:112px}.chapter-nav{right:5%;background:#0b201b80;padding:8px 12px;border-radius:3px}
+@media(max-width:600px){.tunnel-viewport{perspective:420px}.scroll-title h2{font-size:38px}.scroll-title p{font-size:10px;letter-spacing:2px}.scroll-title .seal{display:none}.scene-play{bottom:95px}.scene-play small{max-width:120px}.scene-caption{bottom:29%;left:7%}.chapter-nav{right:3%;padding:4px 6px}.tunnel-type{font-size:125px}}
+@media(prefers-reduced-motion:reduce){.overture{height:100vh;height:100svh}.tunnel-world{transform:translate3d(0,0,-800px)!important}.tunnel-viewport{opacity:.55!important}.scene-caption{display:none}}
+
+/* 先停留，再启卷，最后穿行；首屏以留白让标题呼吸。 */
+.overture{height:510vh;height:510svh}
+.scroll-leaf{display:block;background:linear-gradient(135deg,#10271f,#132d24 65%,#193329);box-shadow:10px 0 35px #04100b50}
+.scroll-leaf.right{background:linear-gradient(225deg,#10271f,#132d24 65%,#193329)}
+.scroll-leaf:after{top:16%;bottom:16%;background:#c6b47c38}
+.scroll-title h2{font-size:clamp(48px,7vw,90px);margin:24px 0 18px;letter-spacing:.24em}
+.scroll-title p{font-size:12px;letter-spacing:5px;color:#b7c2ad}.scroll-title .chapter{letter-spacing:6px;color:#aaba9f}.scroll-title .seal{display:block;margin-top:28px}
+.scene-play{opacity:var(--explore-opacity,0);visibility:var(--explore-visibility,hidden);transition:opacity .4s}
+.scene-atmosphere{opacity:var(--atmosphere-opacity,.12)}
+.chapter-nav{background:transparent}.chapter-nav button{font-size:9px;color:#a9b69f}.scene-top,.scroll-bottom{background:transparent}
+@media(max-width:600px){.scroll-title h2{font-size:43px;letter-spacing:.16em}.scroll-title p{font-size:10px;letter-spacing:3px}.scroll-title .seal{margin-top:20px}.chapter-nav{top:auto;bottom:155px;right:6%;gap:3px}.chapter-nav button{font-size:9px}.scroll-title .chapter{font-size:9px;letter-spacing:3px}}
+@media(prefers-reduced-motion:reduce){.overture{height:100vh;height:100svh}.tunnel-viewport{display:none}.scroll-leaf{display:block;transform:none!important}.scene-play{display:none}.scene-atmosphere{opacity:.12}}
+
+/* 镜头与照片分层跟随：只合成位移，不移动文字与操作控件。 */
+body{position:relative;isolation:isolate;background:#101f1b}body:after{display:none}
+.scenic-background{position:fixed;inset:-5%;z-index:-2;pointer-events:none;background:linear-gradient(#071a14b8,#071a14d9),url('assets/fields.png') center/cover;transform:translate3d(var(--background-x,0px),var(--background-y,0px),0) scale(1.04);will-change:transform}
+.overture{height:620vh;height:620svh}.scroll-scene{background:#0b201b}
+.scene-photo{content:'';position:absolute;inset:-5%;background:linear-gradient(#0b201b70,#0b201b9c),url('assets/river.png') center/cover;transform:translate3d(var(--photo-x,0px),var(--photo-y,0px),0) scale(1.04);pointer-events:none}
+.tunnel-viewport{z-index:1}.tunnel-rig{position:absolute;inset:0;transform-style:preserve-3d;transform:rotateX(var(--camera-pitch,0deg)) rotateY(var(--camera-yaw,0deg));will-change:transform}
+.tunnel-wall,.tunnel-frame,.tunnel-exit{backface-visibility:hidden;-webkit-backface-visibility:hidden;contain:layout style}
+.tunnel-world{will-change:transform}.ink-landscape{transition:none}.tunnel-wall svg{filter:none}.tunnel-frame{box-shadow:none}.tunnel-frame.entrance{box-shadow:inset 0 0 45px #d4ba6b25}
+.scene-atmosphere{pointer-events:none}
+@media(hover:none),(prefers-reduced-motion:reduce){.scenic-background,.scene-photo,.tunnel-rig{transform:none!important;will-change:auto}}
+@media(prefers-reduced-motion:reduce){.overture{height:100vh;height:100svh}.tunnel-world{will-change:auto}}
+
+/* 首屏硬门槛：尚未启卷时不合成三维图册，不依赖透明度遮挡。 */
+.tunnel-viewport{visibility:hidden;opacity:0}
+.scroll-scene[data-tunnel-active="true"] .tunnel-viewport{visibility:visible;opacity:var(--tunnel-opacity,0)}
+.song-preview{min-height:100svh;padding:0 0 50px;scroll-margin-top:20px}.preview-heading{padding:54px 0 30px;display:flex;justify-content:space-between;align-items:flex-end;gap:25px}.preview-heading h1{font-size:clamp(32px,4.5vw,52px);margin:14px 0}.preview-heading p{font-size:12px;line-height:2;color:var(--muted)}.flow-link{font-size:11px;letter-spacing:2px;border-bottom:1px solid #d9c58f60;padding:12px 0;white-space:nowrap}
+.preview-layout{display:grid;grid-template-columns:minmax(0,1.05fr) minmax(0,1fr);gap:40px;align-items:start}.song-library{border-top:1px solid var(--line)}.library-caption{display:flex;justify-content:space-between;color:var(--muted);font-size:10px;letter-spacing:2px;padding:17px 12px}
+.song-row{width:100%;border:0;border-top:1px solid var(--line);background:#10281f90;color:var(--ink);display:grid;grid-template-columns:26px 1fr auto 24px;gap:14px;text-align:left;align-items:center;padding:23px 14px;transition:background .3s;min-height:88px}.song-row:hover{background:#244133bd}.song-row[aria-pressed=true]{background:#314a34ba;box-shadow:inset 2px 0 #d9c58f}.song-number{font:12px Georgia,serif;color:#bbc4a9}.song-row strong{font:500 19px 'Noto Serif SC',serif;letter-spacing:3px}.song-row small{display:block;color:#b7c3ab;font-size:10px;margin-top:8px;letter-spacing:1px}.song-kind{font-size:10px;color:#c4ccb7}.song-action{color:#ddc88f;font-size:12px}.library-note{font-size:10px;color:var(--muted);line-height:1.9;margin:20px 0}
+.song-story{padding:27px 30px;border:1px solid var(--line);background:#10281fca;min-height:430px;position:relative;overflow:hidden}.story-top{display:flex;align-items:center;gap:22px;margin-bottom:25px}.preview-record{width:80px;height:80px;flex-shrink:0;border-radius:50%;background:repeating-radial-gradient(circle,#263b2d 0 2px,#162b20 3px 5px);border:1px solid #b2bc9240;display:grid;place-items:center;transform:scale(calc(1 + var(--music-energy,0)*.3));transition:transform .2s;box-shadow:0 0 0 8px #b2bc9206}.preview-record:before{content:'声';display:grid;place-items:center;width:28px;height:28px;border-radius:50%;background:#b57956;color:#1a2e20;font:14px 'Noto Serif SC',serif}.song-story h2{font:500 26px 'Noto Serif SC',serif;letter-spacing:4px;margin:9px 0}.story-kicker{font-size:9px;color:#c1c9af;letter-spacing:3px}.song-story h3{font-size:10px;color:#ddc88f;letter-spacing:3px;font-weight:400;margin:23px 0 8px}.song-story p{font-size:12px;line-height:2.05;color:#c4ccba;margin:0}.song-story[data-empty=true] .preview-record{opacity:.5}
+.preview-player{display:grid;grid-template-columns:auto minmax(160px,1fr) minmax(130px,1fr) auto;align-items:center;gap:24px;padding:23px 25px;background:#10281feb;border:1px solid var(--line);margin-top:30px;border-radius:4px}.preview-controls{display:flex;align-items:center;gap:12px}.preview-controls button{width:32px;height:32px;border:0;background:none;color:#d9c58f}.preview-controls .transport{width:42px;height:42px;background:#d9c58f;color:#162b20}.preview-player strong{font-size:12px;letter-spacing:2px;font-weight:500}.preview-player small{display:block;color:var(--muted);font-size:10px;margin-top:7px;line-height:1.8}.preview-timeline{display:flex;align-items:center;gap:9px;font:10px Georgia,serif;color:#c4ccb7}.preview-timeline input{width:100%;accent-color:#d9c58f}.preview-timeline input:disabled{opacity:.35}.preview-player button:disabled{opacity:.45}.preview-next{display:flex;justify-content:space-between;align-items:center;border-top:1px solid var(--line);padding:28px 0;margin-top:28px;gap:20px}.preview-next p{font-size:11px;color:var(--muted);line-height:1.9}.preview-next .listen-button{display:inline-block;font-size:11px}.song-preview:focus{outline:none}#listening{scroll-margin-top:20px}.flow-step{font-size:10px;letter-spacing:3px;color:#c6b88f}.preview-status{min-height:38px}
+@media(max-width:800px){.preview-layout{gap:22px}.song-story{padding:23px;min-height:460px}.preview-player{grid-template-columns:auto 1fr auto;gap:15px}.preview-timeline{grid-column:1/-1;grid-row:2}.song-kind{display:none}.song-row{grid-template-columns:22px 1fr 20px}.preview-heading{padding-top:35px}}
+@media(max-width:600px){.preview-layout{grid-template-columns:1fr;gap:22px}.preview-heading{align-items:flex-start;flex-direction:column;gap:0}.song-story{min-height:390px}.song-row{padding:19px 12px}.preview-player{padding:18px 12px;gap:10px}.preview-controls{gap:3px}.preview-player .volume input{width:48px}.preview-next{align-items:flex-start;flex-direction:column}.preview-next .listen-button{width:100%;text-align:center}.preview-heading h1{font-size:34px}.story-top{margin-bottom:20px}}
+@media(prefers-reduced-motion:reduce){.scroll-scene[data-tunnel-active="true"] .tunnel-viewport{visibility:hidden;opacity:0}.preview-record{transform:none}}
+
+/* 唱片浮层只由曲目交互开启，不参与序章的初始绘制。 */
+.record-dialog{width:min(1320px,94vw);max-width:1320px;max-height:92svh;padding:0;overflow:auto;border:1px solid #cdbb8638;border-radius:8px;background:#13271f;color:var(--ink);box-shadow:0 35px 130px #020d09b0}
+.record-dialog::backdrop{background:#05120ee6;backdrop-filter:blur(14px)}
+.record-dialog[open]{animation:record-open .55s var(--ease) both}
+.record-top{position:sticky;top:0;z-index:2;background:#13271ff5;display:flex;align-items:center;justify-content:space-between;padding:22px 30px;border-bottom:1px solid var(--line);font-size:11px;letter-spacing:3px;color:#c4bf9e}.record-top button{border:0;font-size:14px;letter-spacing:1px}
+.record-layout{display:grid;grid-template-columns:1.12fr 1fr;align-items:center;gap:42px;padding:40px 48px}
+.record-stage{min-width:0;text-align:center;touch-action:pan-y}.record-sleeve{position:relative;margin:0 auto 25px;max-width:560px;aspect-ratio:1;isolation:isolate}.record-sleeve:after{content:'';position:absolute;inset:0;border-radius:50%;box-shadow:inset 0 0 0 1px #e9e2bb35,0 22px 40px #020e0b70;pointer-events:none}
+.record-disc{position:absolute;inset:0;border-radius:50%;overflow:hidden;background:repeating-radial-gradient(circle,#15221b 0 2px,#304037 3px,#15221b 4px);animation:vinyl-turn 36s linear infinite;animation-play-state:paused}.record-dialog[data-playing=true] .record-disc{animation-play-state:running}
+.record-art{position:absolute;inset:8%;width:84%;height:84%;object-fit:cover;border-radius:50%;filter:saturate(.7) brightness(.85)}
+.record-disc:after{content:'';position:absolute;inset:8%;border-radius:50%;background:repeating-radial-gradient(circle,transparent 0 6px,#17261e20 7px,transparent 8px),conic-gradient(transparent,#fff4cc18,transparent 35%,#fff4cc12,transparent 75%);box-shadow:inset 0 0 25px #07160b70}
+.record-spindle{position:absolute;inset:43%;z-index:1;border-radius:50%;background:#d1be91;box-shadow:0 0 0 8px #18291e99,0 0 0 9px #d7cb9a50;display:grid;place-items:center;color:#263b2d;font:11px 'Noto Serif SC',serif;letter-spacing:2px}.record-spindle:after{content:'';width:12px;height:12px;background:#102219;border:2px solid #b6aa80;border-radius:50%}
+.record-stage small{font-size:10px;letter-spacing:2px;color:#a8b59d}.record-story{min-width:0;max-height:55svh;overflow:auto;overscroll-behavior:contain;padding-right:12px;scrollbar-width:thin;scrollbar-color:#63745b transparent}.record-story h2{font:500 clamp(30px,4vw,52px) 'Noto Serif SC',serif;letter-spacing:6px;margin:15px 0}.record-story h3{font-size:11px;font-weight:400;letter-spacing:3px;color:#dcc596;margin:22px 0 8px}.record-story p{font-size:12px;line-height:2;color:#c0cbb5;margin:0}.record-kicker{font-size:10px;letter-spacing:3px;color:#c6b789}.record-story .record-region{color:#a5b59b;font-size:11px;margin-bottom:24px}
+.record-bottom{padding:0 38px 24px}.record-transport{display:flex;align-items:center;justify-content:center;gap:25px}.record-transport button{border:0;min-width:44px;min-height:44px;color:#e5d6b3}.record-transport .transport{background:#d6c18e;color:#172c22;border:1px solid #c8ba8b60;border-radius:50%;width:54px;height:54px}.record-count{font:12px Georgia,serif;letter-spacing:3px;color:#b4bbaa}.record-status{text-align:center;font-size:11px;line-height:1.8;color:#bac6af;margin:16px 0 0;min-height:2em}.record-timeline{display:flex;align-items:center;gap:14px;max-width:500px;margin:20px auto 0;font:11px Georgia,serif;color:#afbaa4}.record-timeline input{min-width:0;flex:1;accent-color:#cbb987}.record-dialog button:hover{background:#cdbb8610}.record-dialog button:disabled{opacity:.5}
+@keyframes vinyl-turn{to{transform:rotate(360deg)}}@keyframes record-open{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:translateY(0)}}
+@media(max-width:700px){.record-layout{grid-template-columns:1fr;gap:26px;padding:24px}.record-sleeve{width:min(70vw,340px)}.record-story{max-height:none;overflow:visible;padding:0}.record-top{padding:14px 18px}.record-top span{font-size:9px;letter-spacing:1px}.record-bottom{padding:0 24px 22px}.record-story h2{font-size:30px}.record-dialog{max-height:94svh}.record-stage small{letter-spacing:1px}}
+@media(prefers-reduced-motion:reduce){.record-disc,.record-dialog[open]{animation:none}}
+
+/* 隧道后的双入口：隐藏分支不占布局，也不会提前播放或获得焦点。 */
+[hidden]{display:none!important}
+.crossroads{min-height:100svh;overflow:hidden;position:relative;padding:64px max(6vw,24px) 42px;background:radial-gradient(ellipse at 50% 25%,#405b4340,transparent 65%),#10221c;scroll-margin-top:0}
+.crossroads:before{content:'';position:absolute;inset:0;background:url('assets/fields.png') center/cover;opacity:.07;pointer-events:none}
+.crossroads-head,.crossroads-foot{position:relative;display:flex;align-items:center;justify-content:space-between;gap:24px;max-width:1200px;margin:auto}.crossroads-head h2{font:500 clamp(30px,4vw,48px) 'Noto Serif SC',serif;letter-spacing:7px;margin:12px 0}.crossroads-head p{color:#b9c4ad;line-height:2;font-size:12px;margin:0}.crossroads-head .eyebrow{color:#c5b78e}.crossroads-back{font-size:11px;letter-spacing:2px;color:#c2c9b4;border-bottom:1px solid #c8ba8b50;padding:12px 0;white-space:nowrap}
+.portal-pair{position:relative;isolation:isolate;display:grid;grid-template-columns:1fr 1fr;max-width:1130px;margin:66px auto 55px;padding:0 20px;perspective:1400px;gap:0}
+.portal{position:relative;display:block;aspect-ratio:1.22;min-width:0;outline-offset:12px;transform:translateY(18px) rotateY(5deg);transition:transform .8s var(--ease),filter .8s var(--ease);filter:brightness(.95);z-index:1;--portal-x:0deg;--portal-y:0deg}
+.portal:nth-child(2){transform:translate(-22px,-18px) rotateY(-6deg);z-index:2}.portal:hover,.portal:focus-visible{z-index:3;filter:brightness(1);transform:translateY(-10px) rotateX(var(--portal-y)) rotateY(var(--portal-x))}.portal:nth-child(2):hover,.portal:nth-child(2):focus-visible{transform:translate(-22px,-30px) rotateX(var(--portal-y)) rotateY(var(--portal-x))}
+.portal-frame{position:absolute;inset:0;border:1px solid #d4ca9a99;background:linear-gradient(140deg,#243f31,#14291f);box-shadow:0 28px 55px #040f0b70;overflow:hidden}.portal-frame:after{content:'';position:absolute;inset:12px;border:1px solid #d4ca9a50;pointer-events:none}.portal-depth{position:absolute;inset:-14px -14px 14px 14px;border:1px solid #d4ca9a80;pointer-events:none}.portal-depth:before,.portal-depth:after{content:'';position:absolute;width:20px;height:1px;background:#d4ca9a80;transform:rotate(135deg);transform-origin:left;left:0;top:0}.portal-depth:after{top:auto;bottom:0}
+.portal-land{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:.35;filter:saturate(.5);transition:transform 1.2s var(--ease)}.portal:hover .portal-land{transform:scale(1.05)}.portal-frame:before{content:'';position:absolute;inset:0;z-index:1;background:linear-gradient(0deg,#071c17f5,transparent 85%)}
+.portal-vinyl{position:absolute;width:65%;aspect-ratio:1;left:9%;top:7%;border-radius:50%;background:repeating-radial-gradient(circle,#10231c 0 3px,#617059 4px,#172c21 5px);box-shadow:10px 18px 30px #07130c80;transform:rotate(-20deg);transition:transform 1.3s var(--ease)}.portal-vinyl:before{content:'';position:absolute;inset:12%;background:url('assets/record-4.jpg') center/cover;border-radius:50%;filter:saturate(.6) brightness(.85)}.portal-vinyl:after{content:'';position:absolute;inset:45%;border-radius:50%;background:#c9bb8a;box-shadow:0 0 0 9px #183021a0}.portal:hover .portal-vinyl{transform:rotate(8deg)}
+.portal-instruments{position:absolute;inset:0 5% 8%;display:flex;align-items:center;justify-content:center;transform:rotate(-8deg);opacity:.85}.portal-instruments svg{width:58%;height:90%;filter:drop-shadow(10px 16px 10px #07130c80)}.portal-instruments svg+svg{margin-left:-24%;transform:translate(20px,8px) rotate(16deg)}
+.portal-label{position:absolute;z-index:2;left:8%;right:8%;bottom:9%;display:grid;grid-template-columns:1fr auto;align-items:end;gap:12px}.portal-label small{font:10px Georgia,serif;letter-spacing:3px;color:#c7be9e}.portal-label strong{display:block;font:500 clamp(26px,3.5vw,46px) 'Noto Serif SC',serif;letter-spacing:5px;margin:12px 0}.portal-label p{font-size:11px;color:#c5cbb8;line-height:1.9;margin:0}.portal-arrow{font-size:24px;color:#d8c58d;padding-bottom:5px;transition:transform .5s}.portal:hover .portal-arrow{transform:translate(4px,-4px)}.portal-number{position:absolute;z-index:2;right:8%;top:8%;font:12px Georgia,serif;letter-spacing:2px;color:#d6cbab}
+.crossroads-foot{font-size:10px;letter-spacing:2px;color:#a9b49e;border-top:1px solid var(--line);padding-top:22px}.branch-enter{animation:branch-arrive .7s var(--ease) both}@keyframes branch-arrive{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
+@media(max-width:650px){.crossroads{padding:38px 24px}.crossroads-head{align-items:flex-start}.crossroads-head h2{font-size:29px;letter-spacing:4px}.crossroads-head p{font-size:11px}.crossroads-back{font-size:10px;letter-spacing:1px}.portal-pair{grid-template-columns:1fr;margin:36px auto;padding:0 12px;gap:32px;max-width:430px}.portal,.portal:nth-child(2){aspect-ratio:1.35;transform:none}.portal:hover,.portal:focus-visible,.portal:nth-child(2):hover,.portal:nth-child(2):focus-visible{transform:translateY(-5px)}.portal-label strong{font-size:30px}.crossroads-foot{line-height:2;align-items:flex-start;gap:14px}.crossroads-foot span:last-child{max-width:130px;text-align:right}}
+@media(prefers-reduced-motion:reduce){.portal,.portal:nth-child(2),.portal:hover,.portal:nth-child(2):hover,.portal:focus-visible,.portal:nth-child(2):focus-visible,.portal-vinyl,.portal:hover .portal-vinyl,.portal:hover .portal-land{transform:none;transition:none}.branch-enter{animation:none}}
+
+/* 开篇合成约束：初始不挂载隧道，光源仅合成一块小尺寸渐变。 */
+.scroll-title h2,.scroll-title p,.scroll-title .seal{animation:none}
+.tunnel-rig,.tunnel-world{will-change:auto}
+.scroll-scene[data-tunnel-active="true"] .tunnel-world{will-change:transform}
+.scene-photo{will-change:transform}.scroll-leaf{backface-visibility:hidden}
+.tunnel-viewport{contain:layout paint}.tunnel-wall{transform-style:flat}
+.tunnel-frame.entrance{box-shadow:none}
+.mouse-light{background:#03100d30;contain:strict}
+.cursor-glow{position:absolute;left:0;top:0;width:560px;height:560px;border-radius:50%;background:radial-gradient(circle,#fff0b51c, #fff0b507 42%,transparent 72%);transform:translate3d(calc(50vw - 280px),calc(40vh - 280px),0);will-change:transform}
+@media(hover:none),(prefers-reduced-motion:reduce){.scene-photo{transform:none!important;will-change:auto}}
+</style>
+</head>
+<body>
+<div class="scenic-background" aria-hidden="true"></div>
+<div class="mouse-light" aria-hidden="true"><div class="cursor-glow"></div></div>
+
+<section class="overture" id="overture" aria-label="山歌传情音乐隧道">
+ <div class="scroll-scene" data-tunnel-active="false"><div class="scene-photo" aria-hidden="true"></div>
+  <div class="tunnel-viewport" hidden aria-hidden="true"><div class="tunnel-rig"><div class="tunnel-world" id="tunnel-world"></div></div><div class="tunnel-shade"></div></div>
+  <div class="scene-top"><span>山歌传情 · 山河声廊</span><span class="scene-edition">一山一水 · 一器一曲</span><a href="#crossroads" data-flow>跳过序章 ↘</a></div>
+  <svg class="ink-landscape" viewBox="0 0 1440 900" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+   <defs><linearGradient id="sky-wash" x2="0" y2="1"><stop stop-color="#e3e8db"/><stop offset="1" stop-color="#f4f3eb"/></linearGradient><linearGradient id="mountain-wash" x2="0" y2="1"><stop stop-color="#526e61"/><stop offset="1" stop-color="#cbd4c4"/></linearGradient></defs>
+   <path fill="url(#sky-wash)" d="M0 0h1440v900H0z"/><circle cx="1035" cy="255" r="48" fill="#ac533d" opacity=".65"/>
+   <g class="ridge-far" fill="#a8b9a5" opacity=".7"><path d="M0 570 140 385 220 440 360 220 420 310 520 180 675 440 790 300 950 465 1100 280 1240 430 1370 300 1440 400V900H0Z"/></g>
+   <g class="ridge-near" fill="url(#mountain-wash)"><path d="M0 680 130 490 210 540 330 400 440 580 570 460 650 575 740 520 860 655 1040 440 1150 535 1300 395 1440 550V900H0Z"/></g>
+   <path d="M0 790Q230 650 490 785T960 750T1440 710V900H0Z" fill="#e7ebdf"/><path d="M0 855Q240 765 430 850T950 820T1440 810V900H0Z" fill="#f4f3eb"/>
+   <path d="m1080 700 30-2 19-3-8 9h-30z" fill="#526558"/><path d="m1105 697-2-24 16 22" fill="none" stroke="#526558" stroke-width="2"/>
+  </svg>
+  <div class="mist-band" aria-hidden="true"></div><div class="scroll-leaf" aria-hidden="true"></div><div class="scroll-leaf right" aria-hidden="true"></div>
+  <div class="scroll-title"><span class="chapter">序 · 山水有声</span><h2>山歌传情</h2><p>先静听片刻，再走进山河</p><span class="seal" aria-hidden="true">山河<br>有声</span></div>
+  <div class="scene-caption"><h2>穿过回声，<br>遇见乡音。</h2><p>风过山野，曲入人心。<br>出口已近，选择听歌，或用乐器寄一份心意。</p></div>
+  <p class="scene-whisper" aria-hidden="true">一盏萤火<br>照见归途</p>
+  <div class="scene-atmosphere" data-lit="true" aria-hidden="true"></div>
+  <nav class="chapter-nav" aria-label="序章章节"><button type="button" data-chapter="0" aria-current="step">序 · 静候<i aria-hidden="true"></i></button><button type="button" data-chapter="0.28">壹 · 启门<i aria-hidden="true"></i></button><button type="button" data-chapter="0.62">贰 · 穿行<i aria-hidden="true"></i></button><button type="button" data-chapter="0.95">叁 · 抵达<i aria-hidden="true"></i></button></nav>
+  <div class="scene-play"><button type="button" id="firefly-toggle" aria-pressed="true">收起萤火</button><small>轻点声廊，唤起回声涟漪</small></div>
+  <div class="scroll-bottom"><a href="#crossroads" data-flow>向下滑动 · 缓缓启卷 ↓</a><span class="scroll-meter" aria-hidden="true"><i></i></span><span id="chapter-label">静候 / 序</span></div>
+ </div>
+</section>
+
+<section class="crossroads" id="crossroads" aria-labelledby="crossroads-title" tabindex="-1">
+ <div class="crossroads-head"><div><div class="eyebrow">山河声廊 · 出口</div><h2 id="crossroads-title">一声相逢，两种心意。</h2><p>穿过山河的回声，选一扇门，继续你的音乐旅程。</p></div><a href="#overture" data-flow class="crossroads-back">重游隧道 ↑</a></div>
+ <div class="portal-pair">
+  <a href="#songs" data-flow class="portal" aria-label="进入音乐预览，聆听歌曲与阅读文化故事"><span class="portal-depth" aria-hidden="true"></span><span class="portal-frame"><img class="portal-land" src="assets/record-4.jpg" alt="" loading="lazy"><span class="portal-vinyl" aria-hidden="true"></span><span class="portal-number" aria-hidden="true">01 /</span><span class="portal-label"><span><small>LISTEN & DISCOVER</small><strong>音乐预览</strong><p>听一曲山歌，读一方故事。<br>展开唱片，走近旋律的来处。</p></span><span class="portal-arrow" aria-hidden="true">↗</span></span></span></a>
+  <a href="#listening" data-flow class="portal" aria-label="进入音乐组合，选择乐器组合并揭晓旋律"><span class="portal-depth" aria-hidden="true"></span><span class="portal-frame"><img class="portal-land" src="assets/fields.png" alt="" loading="lazy"><span class="portal-instruments" aria-hidden="true"><svg viewBox="0 0 240 190" fill="none" aria-hidden="true"><defs><linearGradient id="portal-bamboo"><stop stop-color="#a9aa70"/><stop offset=".45" stop-color="#ddd5a0"/><stop offset="1" stop-color="#8d965d"/></linearGradient></defs><g transform="rotate(38 120 95)"><rect x="113" y="7" width="13" height="177" rx="5" fill="url(#portal-bamboo)" stroke="#85905e"/><path d="M113 24h13m-13 41h13m-13 76h13m-13 30h13" stroke="#757e4a" stroke-width="3"/><g fill="#4f613d"><ellipse cx="119" cy="42" rx="2.6" ry="4"/><ellipse cx="119" cy="80" rx="2" ry="3"/><ellipse cx="119" cy="92" rx="2" ry="3"/><ellipse cx="119" cy="104" rx="2" ry="3"/><ellipse cx="119" cy="116" rx="2" ry="3"/><ellipse cx="119" cy="128" rx="2" ry="3"/></g><path d="M125 145q20 6 17 26" stroke="#a6513d"/><path d="M142 166l-3 17m4-17 3 17m-4-17v19" stroke="#a6513d" stroke-width="2"/></g><path d="M30 157q20-16 42-12m108-102 24-8" stroke="#b9c2a9" opacity=".6"/></svg><svg viewBox="0 0 240 190" fill="none" aria-hidden="true"><g transform="rotate(12 120 95)"><path d="M120 35v106" stroke="#80714d" stroke-width="8"/><path d="M117 37l-2-19 9-9 14 5 1 10-12-4-3 18z" fill="#8a7854" stroke="#6c6044"/><circle cx="128" cy="15" r="1.3" fill="#354b3b"/><path d="M114 43h-11m23 9h12" stroke="#655b3f" stroke-width="4"/><path d="M100 132h40l13 44H87z" fill="#9c8354" stroke="#746640" stroke-width="2"/><path d="M105 138h30l10 32H96z" fill="#c6b183"/><path d="M118 38v134m5-134v134" stroke="#eee0b6"/><path d="M109 155h25" stroke="#71613f" stroke-width="3"/><path d="M65 161q48-42 121-63" stroke="#7c6945" stroke-width="3"/><path d="M65 163l121-63" stroke="#baa47b"/></g></svg></span><span class="portal-number" aria-hidden="true">02 /</span><span class="portal-label"><span><small>CHOOSE & ENCOUNTER</small><strong>音乐组合</strong><p>选几件乐器，组合一份心意。<br>让下一段旋律，与你相逢。</p></span><span class="portal-arrow" aria-hidden="true">↗</span></span></span></a>
+ </div>
+ <div class="crossroads-foot"><span>轻点画面 · 由此入境</span><span>山河有回响，知音在远方。</span></div>
+</section>
+
+<section hidden class="song-preview shell" id="songs" aria-labelledby="preview-title" tabindex="-1">
+ <header><a class="brand" href="#overture" data-flow><span class="seal" aria-hidden="true">山歌<br>传情</span>山歌传情</a><nav aria-label="歌曲预览导航"><a class="flow-link" href="#crossroads" data-flow>返回双入口 ↖</a><a class="flow-link" href="#listening" data-flow>进入乐器组合 ↗</a></nav></header>
+ <div class="preview-heading"><div><div class="eyebrow">先听一曲，再识一方水土</div><h1 id="preview-title">山河之间，<span>有歌相传。</span></h1><p>从一首歌走近一段故事。点选曲目，聆听旋律，读懂它的来处。</p></div><a class="flow-link" href="#overture" data-flow>重游山河声廊 ↑</a></div>
+ <div class="preview-layout">
+  <div class="song-library"><div class="library-caption"><span>山河曲库 / 四首</span><span>点击曲目 · 试听与读故事</span></div>
+<button class="song-row" data-song="0" aria-pressed="false" aria-label="试听《康定情歌》并查看故事"><span class="song-number">01</span><span><strong>康定情歌</strong><small>四川 · 康定</small></span><span class="song-kind">民间情歌</span><span class="song-action" aria-hidden="true">▶</span></button>
+<button class="song-row" data-song="1" aria-pressed="false" aria-label="试听《太阳出来喜洋洋》并查看故事"><span class="song-number">02</span><span><strong>太阳出来喜洋洋</strong><small>四川 · 川东</small></span><span class="song-kind">山歌 · 啰儿调</span><span class="song-action" aria-hidden="true">▶</span></button>
+<button class="song-row" data-song="2" aria-pressed="false" aria-label="试听《槐花几时开》并查看故事"><span class="song-number">03</span><span><strong>槐花几时开</strong><small>四川 · 川南</small></span><span class="song-kind">高腔山歌</span><span class="song-action" aria-hidden="true">▶</span></button>
+<button class="song-row" data-song="3" aria-pressed="false" aria-label="试听《采花》并查看故事"><span class="song-number">04</span><span><strong>采花</strong><small>四川 · 川西北</small></span><span class="song-kind">南坪民歌</span><span class="song-action" aria-hidden="true">▶</span></button>
+   <p class="library-note">曲库为四川山歌主题的器乐旋律演绎（笛、弦、簧管音色合成），非人声原曲录音。</p>
+  </div>
+  <article class="song-story" id="song-story" aria-labelledby="story-title" data-empty="true">
+   <div class="story-top"><div class="preview-record" aria-hidden="true"></div><div><span class="story-kicker" id="story-kind">一曲一方水土</span><h2 id="story-title">静候一曲相逢</h2><p id="story-region">选择左侧曲目，展开它的故事。</p></div></div>
+   <h3>曲目介绍</h3><p id="story-intro">这里收录了四首广为传唱的歌曲。每一首旋律，都连着不同的地方与生活经验。</p>
+   <h3>历史背景</h3><p id="story-history">点选曲目后，这里展示其流传背景，并区分民间传承与近现代创作。</p>
+   <h3>文化故事</h3><p id="story-culture">从川西情歌到川东啰儿调，听见四川山歌背后的人情与风物。</p>
+  </article>
+ </div>
+ <section class="preview-player" aria-label="歌曲预览播放器" aria-busy="false">
+  <div class="preview-controls"><button id="preview-previous" aria-label="播放上一首">│◀</button><button id="preview-toggle" class="transport" aria-label="播放预览曲目">▶</button><button id="preview-next" aria-label="播放下一首">▶│</button></div>
+  <div><strong id="preview-track">选择一首山歌</strong><small id="preview-subtitle">点击曲目即可试听与阅读故事</small></div>
+  <div class="preview-timeline"><span id="preview-current">0:00</span><input id="preview-seek" type="range" min="0" max="1" step="0.1" value="0" aria-label="歌曲播放进度" disabled><span id="preview-duration">—:—</span></div>
+  <label class="volume"><span aria-hidden="true">◖))</span><input id="preview-volume" aria-label="预览音量" type="range" min="0" max="1" step="0.01" value="0.55"></label>
+ </section>
+ <div id="preview-status" class="status preview-status" role="status" aria-live="polite">选择歌曲后，旋律与故事一同展开。</div>
+ <div class="preview-next"><p>还想试试另一种心意？<br>读过故事，也可用几件乐器组合你的心意。</p><a href="#listening" data-flow class="listen-button">体验音乐组合 ↗</a></div>
+</section>
+
+<div hidden class="shell" id="listening" tabindex="-1">
+<div id="landscape" aria-hidden="true"></div>
+<header><a class="brand" href="#" aria-label="山歌传情首页"><span class="seal" aria-hidden="true">山歌<br>传情</span>山歌传情</a><nav aria-label="主导航"><a href="#crossroads" data-flow>返回双入口 ↖</a><a href="#songs" data-flow><span class="nav-dot"></span>返回歌曲预览</a><a href="#" class="about-link">关于作品 ↗</a><span class="edition">SOUNDS OF THE LAND</span></nav></header>
+<main>
+<section class="intro reveal"><div><div class="eyebrow">山水有声 · 万物有情</div><h1>以山歌，<span>寄深情。</span></h1><p>一器一曲，一山一水。<br>选几件乐器，组合一份心意。<br>再按下聆听，遇见属于此刻的旋律。</p></div><div class="poem" aria-hidden="true"><small>听 · 风从山那边来</small><p>山川为谱<br>草木成诗</p><p>一曲悠扬<br>万水千山</p></div></section>
+<section id="instruments" aria-label="选择乐器"><div class="collection-top"><div class="section-label">寻一缕乡音 <small>CHOOSE YOUR SOUND</small></div><span class="hint">可多选 · 组合后揭晓曲目</span></div>
+<div class="cards">
+<button class="instrument reveal" data-id="0" aria-pressed="false"><div class="card-top"><span>01 /</span><span class="tag">竹韵 · 川西</span></div><div class="art"><svg viewBox="0 0 240 190" fill="none" aria-hidden="true"><defs><linearGradient id="bamboo"><stop stop-color="#a9aa70"/><stop offset=".45" stop-color="#ddd5a0"/><stop offset="1" stop-color="#8d965d"/></linearGradient></defs><g transform="rotate(38 120 95)"><rect x="113" y="7" width="13" height="177" rx="5" fill="url(#bamboo)" stroke="#85905e"/><path d="M113 24h13m-13 41h13m-13 76h13m-13 30h13" stroke="#757e4a" stroke-width="3"/><g fill="#4f613d"><ellipse cx="119" cy="42" rx="2.6" ry="4"/><ellipse cx="119" cy="80" rx="2" ry="3"/><ellipse cx="119" cy="92" rx="2" ry="3"/><ellipse cx="119" cy="104" rx="2" ry="3"/><ellipse cx="119" cy="116" rx="2" ry="3"/><ellipse cx="119" cy="128" rx="2" ry="3"/></g><path d="M125 145q20 6 17 26" stroke="#a6513d"/><path d="M142 166l-3 17m4-17 3 17m-4-17v19" stroke="#a6513d" stroke-width="2"/></g><path d="M30 157q20-16 42-12m108-102 24-8" stroke="#b9c2a9" opacity=".6"/></svg></div><h2>笛子</h2><span class="english">Bamboo flute</span><div class="card-bottom"><div class="song">加入你的组合<small>风过竹林，情起跑马山</small></div><span class="play-circle" aria-hidden="true">＋</span></div></button>
+<button class="instrument reveal" data-id="1" aria-pressed="false"><div class="card-top"><span>02 /</span><span class="tag">弦语 · 江南</span></div><div class="art"><svg viewBox="0 0 240 190" fill="none" aria-hidden="true"><g transform="rotate(13 120 95)"><path d="M116 16v132" stroke="#645c3e" stroke-width="7"/><path d="M113 19q-9-10 4-12h10" stroke="#645c3e" stroke-width="5"/><path d="M112 37H96m16 12H98" stroke="#7d7350" stroke-width="5" stroke-linecap="round"/><path d="M116 28v129m4-129v129" stroke="#d3bb83"/><path d="M97 145l22-10 28 14v24l-24 12-26-15z" fill="#8c7952" stroke="#655b40"/><path d="M97 145l26 15v25m0-25 24-11" stroke="#bcab7e"/><path d="M102 148l17 11v18l-17-10z" fill="#b2a27b"/><path d="M102 153l17 9m-17-3 17 9m-17-3 17 9" stroke="#8c7952"/><path d="M60 143Q133 112 193 89" stroke="#7d6a49" stroke-width="3"/><path d="M61 146L194 91" stroke="#bda883"/></g></svg></div><h2>二胡</h2><span class="english">Chinese fiddle</span><div class="card-bottom"><div class="song">加入你的组合<small>两弦轻诉，一抹江南香</small></div><span class="play-circle" aria-hidden="true">＋</span></div></button>
+<button class="instrument reveal" data-id="2" aria-pressed="false"><div class="card-top"><span>03 /</span><span class="tag">笙声 · 山野</span></div><div class="art"><svg viewBox="0 0 240 190" fill="none" aria-hidden="true"><g transform="rotate(9 120 95)"><path d="M95 144V54m11 94V28m12 120V12m12 137V38m12 112V65m11 85V85" stroke="#76815a" stroke-width="8" stroke-linecap="round"/><path d="M93 141V56m11 90V30m12 116V14m12 132V40m12 108V67m11 81V87" stroke="#c2c397" stroke-width="3"/><path d="M91 151q-7-15 8-19l49 5q16 3 9 20l-20 12h-34z" fill="#a58b59" stroke="#85744d"/><path d="M99 151l-40 2-11 8" stroke="#8e8259" stroke-width="7" stroke-linecap="round"/><path d="M98 151l-40 2" stroke="#c2b287" stroke-width="2"/><path d="M103 140l43 5m-42 13 31 6" stroke="#ccb886"/><path d="M92 70h7m4-20h7m5-14h7m4 25h7m5 24h7m4 17h7" stroke="#5a6947" stroke-width="2"/></g></svg></div><h2>芦笙</h2><span class="english">Reed pipes</span><div class="card-bottom"><div class="song">加入你的组合<small>笙声回荡，山路寄相思</small></div><span class="play-circle" aria-hidden="true">＋</span></div></button>
+<button class="instrument reveal" data-id="3" aria-pressed="false"><div class="card-top"><span>04 /</span><span class="tag">长调 · 草原</span></div><div class="art"><svg viewBox="0 0 240 190" fill="none" aria-hidden="true"><g transform="rotate(12 120 95)"><path d="M120 35v106" stroke="#80714d" stroke-width="8"/><path d="M117 37l-2-19 9-9 14 5 1 10-12-4-3 18z" fill="#8a7854" stroke="#6c6044"/><circle cx="128" cy="15" r="1.3" fill="#354b3b"/><path d="M114 43h-11m23 9h12" stroke="#655b3f" stroke-width="4"/><path d="M100 132h40l13 44H87z" fill="#9c8354" stroke="#746640" stroke-width="2"/><path d="M105 138h30l10 32H96z" fill="#c6b183"/><path d="M118 38v134m5-134v134" stroke="#eee0b6"/><path d="M109 155h25" stroke="#71613f" stroke-width="3"/><path d="M65 161q48-42 121-63" stroke="#7c6945" stroke-width="3"/><path d="M65 163l121-63" stroke="#baa47b"/></g></svg></div><h2>马头琴</h2><span class="english">Morin khuur</span><div class="card-bottom"><div class="song">加入你的组合<small>长风入弦，月下等你来</small></div><span class="play-circle" aria-hidden="true">＋</span></div></button>
+</div><div class="selection-actions"><div id="selection-summary" role="status" aria-live="polite">选择至少两件乐器，等待一曲相逢。</div><button id="listen" class="listen-button" disabled>聆听这份组合 ↗</button></div><p class="interaction-note">选取乐器，再揭晓旋律 <span>·</span> 移动鼠标，照见山河</p></section>
+<section class="player" aria-label="音乐播放器"><button class="transport" id="toggle" aria-label="播放所选乐器">▶</button><div class="track"><strong id="track-name">静候一曲山歌</strong><small id="track-subtitle">先选至少两件乐器，再点击聆听</small></div><div class="visualizer" aria-hidden="true" id="bars"></div><label class="volume"><span aria-hidden="true">◖))</span><input id="volume" aria-label="音量" type="range" min="0" max="1" step="0.01" value="0.55"></label><button id="motion" class="ambient" aria-pressed="true">◌ 云雾随音 · 已开启</button></section>
+<div class="status" id="status" role="status" aria-live="polite">戴上耳机，让山河近一些。音频未配置时，可体验合成音色演示。</div>
+</main><footer><span class="footer-brand">山河有回响，知音在远方。</span><div class="right"><span>p5.js × 声音可视化</span><button class="about about-link">关于作品 ↗</button><span>课程创作 / MIT LICENSE</span></div></footer>
+</div>
+<dialog id="record-player" class="record-dialog" aria-labelledby="record-title" data-playing="false">
+ <div class="record-top"><span>山河留声 / SOUNDS ON VINYL</span><button id="record-close" aria-label="收起唱片，返回曲目列表">收起唱片 ×</button></div>
+ <div class="record-layout">
+  <div class="record-stage" id="record-stage" aria-label="唱片封面区域，滚轮或左右方向键切歌">
+   <div class="record-sleeve"><div class="record-disc"><img id="record-art" class="record-art" alt=""><span class="record-spindle" aria-hidden="true">山河留声</span></div></div>
+   <small>滚动切歌 · 左右方向键切换 · 触屏左右轻扫</small>
+  </div>
+  <article class="record-story" tabindex="0" aria-label="歌曲介绍与历史文化背景"><span class="record-kicker" id="record-kind"></span><h2 id="record-title"></h2><p class="record-region" id="record-region"></p><h3>曲目介绍</h3><p id="record-intro"></p><h3>历史背景</h3><p id="record-history"></p><h3>文化故事</h3><p id="record-culture"></p><p style="font-size:10px;margin-top:20px;color:#8e9d87">唱片封面采用所提供的摄影图片，作为视觉意象。</p></article>
+ </div>
+ <div class="record-bottom"><div class="record-transport"><span id="record-count" class="record-count"></span><button id="record-previous" aria-label="上一首">│◀</button><button id="record-toggle" class="transport" aria-label="暂停歌曲">Ⅱ</button><button id="record-next" aria-label="下一首">▶│</button></div><div class="record-timeline"><span id="record-current">0:00</span><input id="record-seek" type="range" min="0" max="1" step="0.1" value="0" aria-label="唱片播放进度" disabled><span id="record-duration">—:—</span></div><p id="record-status" class="record-status" role="status" aria-live="polite"></p></div>
+</dialog>
+<dialog id="about"><h2>让山歌，在指尖回响。</h2><p>「山歌传情」是一件以中国传统乐器与山歌为线索的音画交互课程作品。选择多件乐器，再点击聆听以揭晓组合匹配的曲目。组合匹配是作品的互动规则，并不代表录音的真实配器。声音化为云雾，鼠标成为照见山河的光。</p><p>由 p5.js 与 p5.sound 驱动，FFT 频谱与音量共同影响粒子。曲库附带以合成器演绎的四首四川山歌旋律（笛、弦、簧管音色），并非人声原曲录音，仅用于呈现旋律与交互体验。</p><p>代码使用 MIT 许可。如需替换为人声录音，请使用获得授权的音频并保持同名路径。</p><button id="close-about">回到山间</button></dialog>
+<!-- 固定 CDN 版本：无需框架、打包或构建。p5.sound 必须在 p5.js 之后加载。 -->
+<script defer src="https://cdn.jsdelivr.net/npm/p5@1.11.3/lib/p5.min.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/p5@1.11.3/lib/addons/p5.sound.min.js"></script>
+<script>
+'use strict';
+const $ = s => document.querySelector(s);
+
+// 隧道四壁：每段长 650px，依次铺设文字与乐器线描。
+const tunnelWorld=$('#tunnel-world');
+const tunnelWords=['MELODY','BAMBOO','ECHO','STRINGS','RHYTHM','HARMONY','FOLK SONG','RESONANCE'];
+const instrumentArt=[...document.querySelectorAll('.instrument .art svg')];
+let tunnelBuilt=false,tunnelPrepared=false,tunnelActive=false;
+const tunnelViewport=$('.tunnel-viewport'),tunnelRig=$('.tunnel-rig');
+let tunnelSurfaces=[];
+function prepareTunnel(){
+ if(tunnelBuilt||reducedScroll.matches)return;tunnelBuilt=true;
+ for(let segment=0;segment<9;segment++){
+  const depth=segment*650;
+  for(let side=0;side<4;side++){
+   const wall=document.createElement('div');wall.className='tunnel-wall';wall.dataset.depth=depth;
+   const horizontal=side>=2;wall.style.width=horizontal?'1000px':'650px';wall.style.height=horizontal?'650px':'700px';
+   const transforms=[`translate3d(-825px,-350px,${-depth-325}px) rotateY(90deg)`,`translate3d(175px,-350px,${-depth-325}px) rotateY(-90deg)`,`translate3d(-500px,-675px,${-depth-325}px) rotateX(-90deg)`,`translate3d(-500px,25px,${-depth-325}px) rotateX(90deg)`];
+   wall.style.transform=transforms[side];
+   const staff=document.createElement('div');staff.className='tunnel-staff';wall.appendChild(staff);
+   const word=document.createElement('span');word.className='tunnel-type';word.textContent=tunnelWords[(segment+side*2)%tunnelWords.length];wall.appendChild(word);
+   if((segment+side)%4===0){const art=instrumentArt[(segment+side)%4].cloneNode(true);art.querySelectorAll('[id]').forEach(node=>node.removeAttribute('id'));art.querySelectorAll('[fill]').forEach(node=>{if(node.getAttribute('fill').startsWith('url('))node.setAttribute('fill','#b6b184');});wall.appendChild(art);}
+   tunnelWorld.appendChild(wall);
+  }
+  const frame=document.createElement('div');frame.dataset.depth=depth;frame.className='tunnel-frame'+(segment===0?' entrance':'');frame.style.transform=`translateZ(${-depth}px)`;
+  if(segment===0){const plaque=document.createElement('span');plaque.className='door-inscription';plaque.textContent='山 河 有 声';frame.appendChild(plaque);}
+  tunnelWorld.appendChild(frame);
+ }
+ const tunnelExit=document.createElement('div');tunnelExit.className='tunnel-exit';tunnelExit.dataset.depth=5700;tunnelExit.appendChild(document.createTextNode('听见山河'));const exitNote=document.createElement('small');exitNote.textContent='听歌识山河 · 选器寄深情';tunnelExit.appendChild(exitNote);tunnelWorld.appendChild(tunnelExit);
+
+
+ tunnelSurfaces=[...tunnelWorld.children];
+ // 先在不可见状态建立图层，后续帧再允许淡入；不等待外部字体或音频。
+ tunnelViewport.hidden=false;
+ requestAnimationFrame(()=>requestAnimationFrame(()=>{tunnelPrepared=true;queueScroll();}));
+}
+function setTunnelActive(active){
+ if(active===tunnelActive)return;tunnelActive=active;scene.dataset.tunnelActive=String(active);
+}
+
+// 开场使用自然滚动，不拦截滚轮或触摸；时间相关阻尼使不同刷新率的手感一致。
+const opening=$('#overture'),scene=opening.querySelector('.scroll-scene');
+const openingParts={photo:$('.scene-photo'),left:$('.scroll-leaf:not(.right)'),right:$('.scroll-leaf.right'),title:$('.scroll-title'),caption:$('.scene-caption'),play:$('.scene-play'),mist:$('.mist-band'),landscape:$('.ink-landscape'),far:$('.ridge-far'),near:$('.ridge-near'),whisper:$('.scene-whisper'),atmosphere:$('.scene-atmosphere'),meter:$('.scroll-meter i')};
+// 将变量写到实际使用它的图层，避免每帧让所有隧道后代重新计算继承样式。
+function layerVar(layer,name,value){if(layer.style.getPropertyValue(name)!==String(value))layer.style.setProperty(name,value);}
+const reducedScroll=matchMedia('(prefers-reduced-motion: reduce)');
+let scrollFrame=0,scrollCurrent=0,scrollLast=0;
+let openingStart=0,openingDistance=1;
+function measureOpening(){openingStart=window.scrollY+opening.getBoundingClientRect().top;openingDistance=Math.max(1,opening.offsetHeight-scene.offsetHeight);}
+measureOpening();
+
+window.addEventListener('pageshow',()=>{measureOpening();queueScroll();});
+if(document.fonts)document.fonts.ready.then(()=>{measureOpening();queueScroll();});
+const clamp01=value=>Math.max(0,Math.min(1,value));
+function smoothStep(value){return value*value*(3-2*value);}
+function openingPhases(progress){
+ const linear=clamp01((progress-.06)/.27),travel=clamp01((progress-.36)/.64);
+ return {unfold:smoothStep(linear),title:1-smoothStep(clamp01((progress-.12)/.19)),travel:smoothStep(travel)};
+}
+function paintScroll(now){
+ scrollFrame=0;
+ const target=reducedScroll.matches?0:clamp01((window.scrollY-openingStart)/openingDistance);
+ if(target>.055&&!tunnelBuilt)prepareTunnel();
+ const delta=Math.min(64,now-(scrollLast||now-16));scrollLast=now;
+ scrollCurrent+= (target-scrollCurrent)*(1-Math.exp(-delta/155));
+ if(Math.abs(target-scrollCurrent)<.00002)scrollCurrent=target;
+ // 约四分之一屏的停留、近一屏的启卷，随后才推动隧道视点。
+ const phases=openingPhases(scrollCurrent),travel=phases.travel;
+ // 初次开启和回退使用不同阈值，边界微滚动不会反复拆装三维图层。
+ const active=tunnelPrepared&&!reducedScroll.matches&&(tunnelActive?scrollCurrent>.055&&scrollCurrent<.9999:scrollCurrent>.11&&scrollCurrent<.995);
+ setTunnelActive(active);
+ if(tunnelPrepared&&!active&&(scrollCurrent<=.055||scrollCurrent>=.9999))tunnelViewport.hidden=true;
+ else if(active)tunnelViewport.hidden=false;
+ const arrival=smoothStep(clamp01((travel-.76)/.24));
+ layerVar(openingParts.left,'--leaf-left',(-phases.unfold*101)+'%');layerVar(openingParts.right,'--leaf-right',(phases.unfold*101)+'%');
+ if(active){
+  const cameraZ=-800+travel*7100;
+  layerVar(tunnelWorld,'--camera-z',cameraZ.toFixed(2)+'px');layerVar(tunnelWorld,'--tunnel-roll',(-4+travel*8).toFixed(3)+'deg');
+  layerVar(tunnelViewport,'--tunnel-opacity',(smoothStep(clamp01((scrollCurrent-.11)/.13))*(1-smoothStep(clamp01((travel-.74)/.26)))).toFixed(4));
+  // 近处离开镜头即隐藏；远处先按距离雾化淡出再隐藏，控制同帧可见面片数量且不产生弹入跳变。
+  for(const surface of tunnelSurfaces){
+   const depth=Number(surface.dataset.depth);const dist=depth-cameraZ;
+   const gone=cameraZ-depth>650||dist>3400;
+   const fade=gone?0:dist<=2600?1:clamp01((3400-dist)/800).toFixed(3);
+   if(surface.hidden!==gone)surface.hidden=gone;
+   if(surface.dataset.fade!==fade){surface.dataset.fade=fade;surface.style.opacity=fade;}
+  }
+ }
+ layerVar(openingParts.title,'--title-opacity',phases.title.toFixed(4));layerVar(openingParts.title,'--title-y',(-phases.unfold*30).toFixed(2)+'px');
+ layerVar(openingParts.play,'--explore-opacity',clamp01((scrollCurrent-.28)/.1).toFixed(4));layerVar(openingParts.play,'--explore-visibility',scrollCurrent>.28?'visible':'hidden');
+ layerVar(openingParts.atmosphere,'--atmosphere-opacity',(.12+clamp01((scrollCurrent-.22)/.15)*.48).toFixed(4));
+ layerVar(openingParts.landscape,'--scene-scale',(1+scrollCurrent*.16).toFixed(4));layerVar(openingParts.caption,'--caption-opacity',arrival.toFixed(4));layerVar(openingParts.caption,'--caption-y',((1-arrival)*25).toFixed(2)+'px');
+ layerVar(openingParts.far,'--far-y',(-scrollCurrent*24).toFixed(2)+'px');layerVar(openingParts.near,'--near-y',(-scrollCurrent*65).toFixed(2)+'px');
+ layerVar(openingParts.whisper,'--whisper-opacity',Math.max(0,1-Math.abs(scrollCurrent-.48)/.27).toFixed(4));layerVar(openingParts.whisper,'--whisper-y',((.48-scrollCurrent)*32).toFixed(2)+'px');
+ updateChapter(scrollCurrent);
+ layerVar(openingParts.mist,'--mist-x',(-scrollCurrent*90).toFixed(2)+'px');layerVar(openingParts.meter,'--scroll-progress',scrollCurrent.toFixed(5));
+ if(scrollCurrent!==target)scrollFrame=requestAnimationFrame(paintScroll);
+}
+function queueScroll(){if(!scrollFrame)scrollFrame=requestAnimationFrame(paintScroll);}
+window.addEventListener('scroll',queueScroll,{passive:true});window.addEventListener('resize',()=>{measureOpening();queueScroll();});reducedScroll.addEventListener('change',queueScroll);queueScroll();
+// 双入口只展示当前分支；切换沿用音源取消与释放逻辑。
+function showBranch(id){
+ const branch=id==='#songs'?'songs':id==='#listening'?'listening':null;
+ for(const name of ['crossroads','songs','listening']){
+  const panel=document.getElementById(name),visible=name===(branch||'crossroads');
+  panel.hidden=!visible;panel.classList.remove('branch-enter');
+  if(visible&&id!=='#overture')requestAnimationFrame(()=>panel.classList.add('branch-enter'));
+ }
+}
+showBranch(location.hash);
+document.querySelectorAll('[data-flow]').forEach(link=>link.addEventListener('click',event=>{
+ const id=link.getAttribute('href'),destination=document.querySelector(id);if(!destination)return;
+ event.preventDefault();leavePlayback();showBranch(id);
+ destination.setAttribute('tabindex','-1');destination.focus({preventScroll:true});destination.scrollIntoView({behavior:reducedScroll.matches?'instant':'smooth',block:'start'});
+ measureOpening();queueScroll();history.replaceState(null,'',id);
+}));
+window.addEventListener('hashchange',()=>{leavePlayback();showBranch(location.hash);document.querySelector(['#songs','#listening','#crossroads','#overture'].includes(location.hash)?location.hash:'#overture')?.scrollIntoView({behavior:'instant'});});
+// 入口轻微倾斜，触屏与减少动态效果时保持稳定。
+document.querySelectorAll('.portal').forEach(portal=>{
+ portal.addEventListener('pointermove',event=>{if(reducedScroll.matches||event.pointerType!=='mouse')return;const r=portal.getBoundingClientRect();portal.style.setProperty('--portal-x',((event.clientX-r.left)/r.width-.5)*7+'deg');portal.style.setProperty('--portal-y',(.5-(event.clientY-r.top)/r.height)*5+'deg');});
+ portal.addEventListener('pointerleave',()=>{portal.style.setProperty('--portal-x','0deg');portal.style.setProperty('--portal-y','0deg');});
+});
+
+// 章节按钮让键盘与触屏也能探索滚动叙事。
+const chapterButtons=[...document.querySelectorAll('[data-chapter]')];
+let currentChapter=-1;
+function updateChapter(progress){
+ const chapter=progress<.12?0:progress<.43?1:progress<.84?2:3;
+ if(chapter===currentChapter)return;currentChapter=chapter;
+ chapterButtons.forEach((button,i)=>{if(i===chapter)button.setAttribute('aria-current','step');else button.removeAttribute('aria-current');});
+ $('#chapter-label').textContent=['静候 / 序','启门 / 壹','穿行 / 贰','抵达 / 叁'][chapter];
+}
+chapterButtons.forEach(button=>button.addEventListener('click',()=>{
+ const start=window.scrollY+opening.getBoundingClientRect().top;
+ window.scrollTo({top:start+Number(button.dataset.chapter)*(opening.offsetHeight-scene.offsetHeight),behavior:reducedScroll.matches?'instant':'smooth'});
+}));
+const atmosphere=$('.scene-atmosphere'),fireflyToggle=$('#firefly-toggle');
+for(let i=0;i<22;i++){
+ const fly=document.createElement('i');fly.className='firefly';
+ fly.style.left=(6+(i*37%89))+'%';fly.style.top=(15+(i*23%70))+'%';
+ fly.style.setProperty('--flight',(5+i%7)+'s');fly.style.setProperty('--delay',(-i*.7)+'s');atmosphere.appendChild(fly);
+}
+function waterRipple(x,y){
+ if(reducedScroll.matches)return;
+ // 有界临时元素，防止密集点击积累动画节点。
+ const old=atmosphere.querySelectorAll('.scene-ripple');if(old.length>=8)old[0].remove();
+ const ring=document.createElement('span');ring.className='scene-ripple';ring.style.left=x+'px';ring.style.top=y+'px';
+ ring.addEventListener('animationend',()=>ring.remove(),{once:true});atmosphere.appendChild(ring);
+}
+fireflyToggle.addEventListener('click',()=>{
+ const lit=fireflyToggle.getAttribute('aria-pressed')!=='true';fireflyToggle.setAttribute('aria-pressed',String(lit));atmosphere.dataset.lit=String(lit);fireflyToggle.textContent=lit?'收起萤火':'点亮萤火';
+ if(lit)waterRipple(scene.clientWidth*.5,scene.clientHeight*.62);
+});
+scene.addEventListener('click',event=>{
+ if(event.target.closest('a,button'))return;
+ const rect=scene.getBoundingClientRect();waterRipple(event.clientX-rect.left,event.clientY-rect.top);
+});
+// 同一个按需动画帧驱动镜头、照片、山水与光源；停止输入后阻尼收敛。
+const lightLayer=$('.cursor-glow'),scenicBackground=$('.scenic-background');
+const cameraPointer=matchMedia('(hover: hover) and (pointer: fine)');
+let cameraFrame=0,cameraLast=0,cameraX=0,cameraY=0,cameraTargetX=0,cameraTargetY=0;
+let pointerLightX=innerWidth/2,pointerLightY=innerHeight*.4;
+function dampValue(current,target,elapsed){return current+(target-current)*(1-Math.exp(-elapsed/190));}
+function paintCamera(now){
+ cameraFrame=0;
+ const delta=Math.min(64,now-(cameraLast||now-16));cameraLast=now;
+ cameraX=dampValue(cameraX,cameraTargetX,delta);cameraY=dampValue(cameraY,cameraTargetY,delta);
+ if(Math.abs(cameraX-cameraTargetX)<.0002)cameraX=cameraTargetX;if(Math.abs(cameraY-cameraTargetY)<.0002)cameraY=cameraTargetY;
+ tunnelRig.style.setProperty('--camera-yaw',(cameraX*2.8)+'deg');tunnelRig.style.setProperty('--camera-pitch',(-cameraY*2)+'deg');
+ openingParts.photo.style.setProperty('--photo-x',(-cameraX*24)+'px');openingParts.photo.style.setProperty('--photo-y',(-cameraY*18)+'px');
+ openingParts.landscape.style.setProperty('--parallax-x',(-cameraX*38)+'px');openingParts.landscape.style.setProperty('--parallax-y',(-cameraY*26)+'px');
+ scenicBackground.style.setProperty('--background-x',(-cameraX*22)+'px');scenicBackground.style.setProperty('--background-y',(-cameraY*16)+'px');
+ lightLayer.style.transform='translate3d('+(pointerLightX-280)+'px,'+(pointerLightY-280)+'px,0)';
+ if(cameraX!==cameraTargetX||cameraY!==cameraTargetY)cameraFrame=requestAnimationFrame(paintCamera);
+}
+function queueCamera(){if(!cameraFrame){cameraLast=0;cameraFrame=requestAnimationFrame(paintCamera);}}
+window.addEventListener('pointermove',event=>{
+ if(reducedScroll.matches||!cameraPointer.matches||event.pointerType!=='mouse')return;
+ cameraTargetX=Math.max(-1,Math.min(1,event.clientX/innerWidth*2-1));cameraTargetY=Math.max(-1,Math.min(1,event.clientY/innerHeight*2-1));
+ pointerLightX=event.clientX;pointerLightY=event.clientY;queueCamera();
+},{passive:true});
+function resetCamera(immediate=false){
+ cameraTargetX=0;cameraTargetY=0;pointerLightX=innerWidth/2;pointerLightY=innerHeight*.4;
+ if(immediate){if(cameraFrame)cancelAnimationFrame(cameraFrame);cameraFrame=0;cameraX=0;cameraY=0;cameraLast=0;paintCamera(performance.now());}else queueCamera();
+}
+window.addEventListener('pointerout',event=>{if(!event.relatedTarget)resetCamera();});window.addEventListener('blur',()=>resetCamera());
+reducedScroll.addEventListener('change',()=>{resetCamera(true);atmosphere.querySelectorAll('.scene-ripple').forEach(ring=>ring.remove());});
+cameraPointer.addEventListener('change',()=>resetCamera(true));
+// 离开序章时暂停萤火；不可见页面停止绘制，恢复时重新测量。
+if('IntersectionObserver' in window){const observer=new IntersectionObserver(entries=>{const visible=entries[0].isIntersecting;atmosphere.querySelectorAll('.firefly').forEach(fly=>fly.style.animationPlayState=visible?'running':'paused');});observer.observe(opening);}
+document.addEventListener('visibilitychange',()=>{
+ if(document.hidden){if(cameraFrame)cancelAnimationFrame(cameraFrame);cameraFrame=0;if(scrollFrame)cancelAnimationFrame(scrollFrame);scrollFrame=0;}
+ else{measureOpening();scrollLast=0;queueScroll();resetCamera(true);}
+});
+
+// ① 音频配置：将下列占位路径替换为自己的已授权录音。单页可直接部署。
+const tracks = [
+ {instrument:'笛子',title:'康定情歌',region:'川西',src:'audio/kangding-love-song.mp3',wave:'sine'},
+ {instrument:'二胡',title:'太阳出来喜洋洋',region:'川东',src:'audio/taiyang-chulai-xiyangyang.mp3',wave:'triangle'},
+ {instrument:'芦笙',title:'槐花几时开',region:'川南',src:'audio/huaihua-jishikai.mp3',wave:'sine'},
+ {instrument:'马头琴',title:'采花',region:'川西北',src:'audio/caihua-nanping.mp3',wave:'triangle'}
+];
+
+const songStories=[
+ {kind:'四川民间情歌',region:'四川 · 康定',intro:'又名《跑马溜溜的山上》，以明快流畅的旋律唱出青年男女的爱慕，是人们熟悉的康定文化名片。',history:'这首歌曲在二十世纪经采集、整理与演唱而广泛传播。其具体起源有不同说法，作品不将流传中的某一种说法作为唯一结论。',culture:'跑马山与康定城构成了歌中的地方意象。汉藏文化交往的背景，让这首情歌也成为许多人想象川西山城的声音入口。'},
+ {kind:'四川山歌 · 啰儿调',region:'四川 · 川东',intro:'以“啰儿”衬词穿针引线，唱出太阳初升时挑担上山的欢快心境，是川东山地最有代表性的劳动山歌之一。',history:'歌曲由《成都商报》前身编辑之一金鼓于二十世纪四十年代在川东石柱一带采集整理作词、蓝河记谱整理而成，根植于当地土家族“啰儿调”的歌唱传统。',culture:'一声“啰儿”把山间劳动变成了歌唱。扁担、开山斧这些日常工具进入歌中，让艰苦的劳作透出爽朗与乐观，也成为外界认识川东山乡的声音名片。'},
+ {kind:'四川高腔山歌',region:'四川 · 川南（宜宾）',intro:'只有短短四句：“高高山上一树槐，手把栏杆望郎来”，以一问一答唱出山中少女的期盼，余韵悠长。',history:'这首山歌长期在川南宜宾一带的山野间口头传唱，二十世纪五十年代经采集整理后登上舞台而广为人知，是四川高腔山歌的代表曲目之一。',culture:'一个“望”字，把高山、槐树与等待都连在了一起。自由悠长的音调如同山谷间的呼唤，体现了山歌“野性而含蓄”的表达方式。'},
+ {kind:'南坪民歌',region:'四川 · 川西北（九寨沟 · 南坪）',intro:'从正月唱到五月，按月历数花开花落，曲调活泼流转，是一幅用歌声铺开的四季花历。',history:'《采花》流传于川西北南坪（今九寨沟县）一带，当地地处汉藏交融地带，歌曲在传唱中吸收了多民族的音调养分，经整理后成为四川民歌的经典曲目。',culture:'按月采花的唱法，把农时、节气与人们对花的期待编进旋律。它也因被改编为多种演奏版本而流传更广，成为许多人认识川西北民歌的入口。'}
+];
+const cards=[...document.querySelectorAll('.instrument')],songRows=[...document.querySelectorAll('.song-row')];
+const chosenInstruments=new Set();
+const combinationTracks={3:0,5:2,6:1,7:2,9:3,10:1,11:0,12:3,13:2,14:3,15:1};
+let selected=-1,previewSelected=-1,playbackMode='preview',playing=false,loading=false,demo=false;
+let sound=null,osc=null,envelope=null,timer=null,meterTimer=null,audioAbort=null,requestId=0,fft=null,amplitude=null;
+let pendingSeek=null;
+let playbackError='',motionEnabled=!matchMedia('(prefers-reduced-motion: reduce)').matches;
+let energy=0,lowEnergy=0;
+for(let i=0;i<38;i++)$('#bars').appendChild(document.createElement('i'));
+const bars=[...$('#bars').children];
+function matchCombination(){return combinationTracks[[...chosenInstruments].reduce((mask,i)=>mask|(1<<i),0)];}
+function combinationName(){return [...chosenInstruments].sort().map(i=>tracks[i].instrument).join(' · ');}
+function message(text){$(playbackMode==='preview'?'#preview-status':'#status').textContent=text;}
+function showStory(index){
+ openRecord(index);
+ const story=songStories[index];$('#song-story').dataset.empty='false';
+ $('#story-title').textContent=tracks[index].title;$('#story-kind').textContent=story.kind;$('#story-region').textContent=story.region;
+ $('#story-intro').textContent=story.intro;$('#story-history').textContent=story.history;$('#story-culture').textContent=story.culture;
+}
+function updateUI(){
+ cards.forEach((card,i)=>{const active=chosenInstruments.has(i);card.classList.toggle('selected',active);card.setAttribute('aria-pressed',String(active));card.querySelector('.play-circle').textContent=active?'✓':'＋';});
+ songRows.forEach((row,i)=>{
+  const active=i===previewSelected;row.setAttribute('aria-pressed',String(active));row.setAttribute('aria-busy',String(active&&loading&&playbackMode==='preview'));
+  row.querySelector('.song-action').textContent=active&&playbackMode==='preview'?(loading?'…':playing?'Ⅱ':'▶'):'▶';
+  row.setAttribute('aria-label',(active&&playbackMode==='preview'&&playing?'查看唱片':'试听')+'《'+tracks[i].title+'》并查看故事');
+ });
+ const inPreview=playbackMode==='preview',inCombination=!inPreview;
+ $('#listen').disabled=chosenInstruments.size<2||(loading&&inCombination);$('#listen').textContent=loading&&inCombination?'正在寻觅旋律…':'聆听这份组合 ↗';
+ $('#selection-summary').textContent=chosenInstruments.size?'已选 '+chosenInstruments.size+' 件 · '+combinationName()+(chosenInstruments.size<2?'，再选一件即可聆听。':''):'选择至少两件乐器，等待一曲相逢。';
+ $('#toggle').textContent=inCombination&&loading?'…':inCombination&&playing?'Ⅱ':'▶';$('#toggle').disabled=chosenInstruments.size<2||(inCombination&&loading);
+ $('#toggle').setAttribute('aria-label',inCombination&&playing?'暂停组合音乐':'播放组合匹配的音乐');
+ $('#track-name').textContent=inCombination&&selected>=0?'与你相逢 · '+tracks[selected].title:'静候一曲山歌';
+ $('#track-subtitle').textContent=inCombination&&selected>=0?playbackDescription():'选至少两件乐器，再点击聆听';
+ $('#preview-toggle').textContent=inPreview&&loading?'…':inPreview&&playing?'Ⅱ':'▶';$('#preview-toggle').disabled=inPreview&&loading;
+ $('#preview-toggle').setAttribute('aria-label',inPreview&&playing?'暂停预览歌曲':'播放预览歌曲');
+ $('.preview-player').setAttribute('aria-busy',String(inPreview&&loading));
+ $('#preview-track').textContent=previewSelected>=0?tracks[previewSelected].title:'选择一首山歌';
+ $('#preview-subtitle').textContent=inPreview&&selected>=0?playbackDescription():previewSelected>=0?'已保留曲目 · 点击播放重新试听':'点击曲目即可试听与阅读故事';
+ if(!playing||!inPreview)$('.preview-record').style.setProperty('--music-energy','0');
+ syncRecord();updatePreviewMeter();
+}
+function playbackDescription(){return loading?'正在加载声音，请稍候…':playbackError||((demo?'合成演示 · 非原曲录音':'歌曲录音')+' · '+(playing?'正在播放':'已暂停'));}
+const releasedTrackSounds=new WeakSet();
+function releaseTrackSound(voice){if(!voice||releasedTrackSounds.has(voice))return;releasedTrackSounds.add(voice);try{voice.stop();if(typeof voice.dispose==='function')voice.dispose();else voice.disconnect();}catch{}}
+function stopCurrent(){
+ clearInterval(timer);clearInterval(meterTimer);timer=null;meterTimer=null;
+ if(audioAbort){audioAbort.abort();audioAbort=null;}
+ pendingSeek=null;const old=sound;sound=null;playing=false;releaseTrackSound(old);
+ if(osc){try{osc.stop();osc.disconnect();osc.dispose?.();}catch{}osc=null;}
+ if(envelope){try{envelope.dispose?.();}catch{}envelope=null;}
+ $('.preview-record').style.setProperty('--music-energy','0');
+}
+function leavePlayback(){
+ requestId++;stopCurrent();loading=false;selected=-1;demo=false;playbackError='';updateUI();
+ $('#preview-status').textContent='试听已停止，曲目与故事已保留。';$('#status').textContent='选择乐器组合，开启下一段旋律。';
+}
+function selectInstrument(index){
+ requestId++;stopCurrent();loading=false;selected=-1;demo=false;playbackError='';playbackMode='combination';
+ if(chosenInstruments.has(index))chosenInstruments.delete(index);else chosenInstruments.add(index);
+ message(chosenInstruments.size>=2?'组合已备好，点击「聆听这份组合」揭晓旋律。':'请至少选择两件乐器。');updateUI();
+}
+function startDemo(){
+ demo=true;playbackError='';osc=new p5.Oscillator(tracks[selected].wave);osc.amp(0);osc.start();envelope=new p5.Envelope();envelope.setADSR(.08,.18,.25,.7);envelope.setRange(.16,0);
+ const notes=[60,64,67,69,67,64,62,60,55,62,64,67,64,62,60,55];let step=0;
+ const voice=osc;playing=true;
+ const note=()=>{if(!playing||osc!==voice)return;voice.freq(midiToFreq(notes[(step++ + selected*3)%notes.length]-(selected===3?12:0)));envelope.play(voice);};
+ note();timer=setInterval(note,720);
+ message('《'+tracks[selected].title+'》录音尚未配置或未能载入。当前播放五声音阶合成演示，非原曲、非真实乐器录音。');startMeter();updateUI();
+}
+function withDeadline(promise,ms){return new Promise((resolve,reject)=>{const id=setTimeout(()=>reject(new Error('timeout')),ms);promise.then(resolve,reject).finally(()=>clearTimeout(id));});}
+function decodeRecording(url,ticket,signal){
+ return new Promise((resolve,reject)=>{
+  let finished=false,candidate;
+  const cleanup=()=>{clearTimeout(timeout);signal.removeEventListener('abort',abort);};
+  const fail=error=>{if(finished)return;finished=true;cleanup();releaseTrackSound(candidate);reject(error);};
+  const abort=()=>fail(new Error('cancelled'));
+  const timeout=setTimeout(()=>fail(new Error('decode timeout')),12000);
+  signal.addEventListener('abort',abort,{once:true});
+  try{candidate=loadSound(url,loaded=>{
+   if(finished){releaseTrackSound(loaded);return;}finished=true;cleanup();
+   if(ticket!==requestId||signal.aborted){releaseTrackSound(loaded);reject(new Error('cancelled'));}else resolve(loaded);
+  },fail);}catch(error){fail(error);}
+ });
+}
+async function choose(index,mode='combination'){
+ if(!tracks[index])return;
+ const ticket=++requestId;stopCurrent();selected=index;playbackMode=mode;loading=true;demo=false;playbackError='';
+ if(mode==='preview'){previewSelected=index;showStory(index);}
+ message('正在加载《'+tracks[index].title+'》的声音…');updateUI();
+ try{
+  if(typeof p5==='undefined'||typeof userStartAudio!=='function'||typeof p5.Oscillator!=='function')throw new Error('component');
+  await withDeadline(userStartAudio(),8000);if(ticket!==requestId)return;
+  outputVolume(Number($('#volume').value));
+ }catch(error){
+  if(ticket!==requestId)return;loading=false;playbackError=error.message==='component'?'声音组件未加载':'浏览器未开启声音';
+  message(error.message==='component'?'声音组件加载失败，请检查网络后刷新；仍可阅读歌曲故事。':'声音未能开启，请再次点击播放。');updateUI();return;
+ }
+ const controller=new AbortController();audioAbort=controller;
+ const fetchTimeout=setTimeout(()=>controller.abort(),8000);let url=null;
+ try{
+  const response=await fetch(tracks[index].src,{signal:controller.signal});
+  if(!response.ok||response.headers.get('content-type')?.includes('text/html'))throw new Error('missing recording');
+  const blob=await response.blob();clearTimeout(fetchTimeout);if(ticket!==requestId)return;
+  url=URL.createObjectURL(blob);const loaded=await decodeRecording(url,ticket,controller.signal);
+  if(ticket!==requestId){releaseTrackSound(loaded);return;}
+  sound=loaded;loading=false;demo=false;
+  loaded.onended(()=>queueMicrotask(()=>{if(sound===loaded&&!loaded.isPlaying()&&!loaded.isPaused()){playing=false;clearInterval(meterTimer);meterTimer=null;updateUI();message('一曲终了，故事还在。点击播放，再听一次。');}}));
+  loaded.play();playing=true;message('正在播放《'+tracks[index].title+'》录音。');startMeter();updateUI();
+ }catch(error){
+  if(ticket!==requestId)return;
+  const old=sound;sound=null;releaseTrackSound(old);loading=false;
+  try{startDemo();}catch{stopCurrent();playbackError='声音未能启动';message('声音未能启动，请再次点击播放；仍可阅读歌曲故事。');updateUI();}
+ }finally{
+  clearTimeout(fetchTimeout);if(url)URL.revokeObjectURL(url);if(audioAbort===controller)audioAbort=null;
+ }
+}
+async function togglePlayback(mode){
+ if(loading&&playbackMode===mode)return;
+ if(mode==='combination'&&chosenInstruments.size<2)return;
+ if(playbackMode!==mode||selected<0){choose(mode==='preview'?(previewSelected>=0?previewSelected:0):matchCombination(),mode);return;}
+ if(playing){
+  playing=false;clearInterval(timer);clearInterval(meterTimer);timer=null;meterTimer=null;
+  if(demo){if(osc){osc.stop();osc.disconnect();osc.dispose?.();osc=null;}envelope?.dispose?.();envelope=null;}else if(sound)sound.pause();
+  message('旋律已暂停。');updateUI();return;
+ }
+ if(!demo&&!sound){choose(selected,mode);return;}
+ const ticket=++requestId;loading=true;playbackError='';updateUI();
+ try{
+  await withDeadline(userStartAudio(),8000);if(ticket!==requestId)return;loading=false;
+  if(demo)startDemo();else if(sound){if(pendingSeek!==null){sound.stop();sound.play(0,1,1,pendingSeek);pendingSeek=null;}else sound.play();playing=true;startMeter();updateUI();}
+ }catch{if(ticket!==requestId)return;loading=false;playbackError='声音未能启动';message('声音未能启动，请再次点击播放。');updateUI();}
+}
+function formatTime(seconds){seconds=Number.isFinite(seconds)?Math.max(0,seconds):0;return Math.floor(seconds/60)+':'+String(Math.floor(seconds%60)).padStart(2,'0');}
+function updatePreviewMeter(){
+ const actual=playbackMode==='preview'&&!demo&&sound&&!loading;
+ const duration=actual?sound.duration():0,current=actual?(pendingSeek!==null?pendingSeek:sound.currentTime()):0;
+ $('#preview-seek').disabled=!actual||!duration;$('#preview-seek').max=duration||1;$('#preview-seek').value=current||0;
+ $('#record-seek').disabled=!actual||!duration;$('#record-seek').max=duration||1;$('#record-seek').value=current||0;$('#record-current').textContent=actual?formatTime(current):'0:00';$('#record-duration').textContent=actual?formatTime(duration):playbackMode==='preview'&&demo?'演示':'—:—';
+ $('#preview-current').textContent=actual?formatTime(current):'0:00';$('#preview-duration').textContent=actual?formatTime(duration):playbackMode==='preview'&&demo?'演示':'—:—';
+}
+function startMeter(){
+ clearInterval(meterTimer);
+ meterTimer=setInterval(()=>{
+  if(!playing)return;updatePreviewMeter();
+  if(playbackMode==='preview'&&amplitude){$('.preview-record').style.setProperty('--music-energy',Math.min(1,amplitude.getLevel()*6));}
+ },200);
+}
+$('#preview-seek').addEventListener('input',event=>{
+ if(playbackMode!=='preview'||demo||!sound||loading)return;
+ const time=Math.min(Math.max(0,sound.duration()-.01),Math.max(0,Number(event.target.value)));
+ if(playing)sound.jump(time);else pendingSeek=time;
+ $('#preview-current').textContent=formatTime(time);
+});
+function changePreview(offset){const index=previewSelected<0?(offset>0?0:tracks.length-1):(previewSelected+offset+tracks.length)%tracks.length;choose(index,'preview');}
+// 唱片与原播放器共享同一音频状态；关闭浮层后仍可继续聆听。
+let artworkTicket=0,recordWheel=0,recordWheelAt=0,recordSwitchAt=0,recordTouch=null;
+const recordImages=tracks.map((_,i)=>{const img=new Image();img.src='assets/record-'+(i+1)+'.jpg';return img;});
+function openRecord(index){
+ const dialog=$('#record-player'),story=songStories[index],ticket=++artworkTicket;
+ $('#record-title').textContent=tracks[index].title;$('#record-kind').textContent=story.kind;$('#record-region').textContent=story.region;
+ for(const key of ['intro','history','culture'])$('#record-'+key).textContent=story[key];
+ $('#record-count').textContent=String(index+1).padStart(2,'0')+' / 04';$('.record-story').scrollTop=0;
+ const art=$('#record-art'),source=recordImages[index];
+ const reveal=()=>{if(ticket!==artworkTicket)return;art.src=source.src;art.alt=['稻田收获','红色香束','渔网劳作','水上花船'][index]+' · 唱片摄影封面';if(!matchMedia('(prefers-reduced-motion: reduce)').matches)art.animate([{opacity:.25,transform:'scale(.94)'},{opacity:1,transform:'scale(1)'}],{duration:550,easing:'cubic-bezier(.22,1,.36,1)'});};
+ if(source.complete&&source.naturalWidth)reveal();
+ else{
+  const done=()=>{if(ticket===artworkTicket&&source.naturalWidth)reveal();};
+  source.addEventListener('load',done,{once:true});
+  source.decode().then(done).catch(()=>{if(source.naturalWidth)done();});
+ }
+ if(!dialog.open){dialog.showModal();document.documentElement.style.overflow='hidden';}
+ syncRecord();
+}
+function syncRecord(){
+ const active=playbackMode==='preview';$('#record-player').dataset.playing=String(active&&playing);
+ $('#record-player').setAttribute('aria-busy',String(active&&loading));
+ $('#record-toggle').disabled=active&&loading;$('#record-toggle').textContent=active&&loading?'…':active&&playing?'Ⅱ':'▶';
+ $('#record-toggle').setAttribute('aria-label',active&&playing?'暂停歌曲':'播放歌曲');
+ $('#record-status').textContent=active?playbackDescription()+(demo?' · 非真实乐器录音':''):'点击播放重新试听';
+}
+$('#record-close').addEventListener('click',()=>$('#record-player').close());
+$('#record-player').addEventListener('close',()=>{document.documentElement.style.overflow='';});
+$('#record-toggle').addEventListener('click',()=>togglePlayback('preview'));
+$('#record-previous').addEventListener('click',()=>changePreview(-1));$('#record-next').addEventListener('click',()=>changePreview(1));
+$('#record-seek').addEventListener('input',event=>{$('#preview-seek').value=event.target.value;$('#preview-seek').dispatchEvent(new Event('input'));updatePreviewMeter();});
+$('#record-player').addEventListener('keydown',event=>{if(event.target.matches('input')||event.ctrlKey||event.metaKey||event.altKey)return;if(event.key==='ArrowRight'||event.key==='ArrowLeft'){event.preventDefault();changePreview(event.key==='ArrowRight'?1:-1);}});
+$('#record-player').addEventListener('wheel',event=>{
+ if(event.ctrlKey||event.target.closest('.record-story,input'))return;
+ event.preventDefault();const now=performance.now(),delta=(Math.abs(event.deltaX)>Math.abs(event.deltaY)?event.deltaX:event.deltaY)*(event.deltaMode===1?16:event.deltaMode===2?300:1);
+ if(now-recordWheelAt>180)recordWheel=0;recordWheelAt=now;
+ if(now-recordSwitchAt<850){recordWheel=0;return;}recordWheel+=delta;
+ if(Math.abs(recordWheel)>65){recordSwitchAt=now;changePreview(recordWheel>0?1:-1);recordWheel=0;}
+},{passive:false});
+$('#record-stage').addEventListener('pointerdown',event=>{if(event.pointerType!=='mouse')recordTouch={x:event.clientX,y:event.clientY};});
+$('#record-stage').addEventListener('pointerup',event=>{if(!recordTouch)return;const dx=event.clientX-recordTouch.x,dy=event.clientY-recordTouch.y;recordTouch=null;if(Math.abs(dx)>55&&Math.abs(dx)>Math.abs(dy)*1.4)changePreview(dx<0?1:-1);});
+$('#record-stage').addEventListener('pointercancel',()=>{recordTouch=null;});
+songRows.forEach((row,i)=>row.addEventListener('click',()=>{if(playbackMode==='preview'&&selected===i&&!playbackError)openRecord(i);else choose(i,'preview');}));
+cards.forEach((card,i)=>card.addEventListener('click',()=>selectInstrument(i)));
+$('#listen').addEventListener('click',()=>{if(chosenInstruments.size>=2)choose(matchCombination(),'combination');});
+$('#preview-toggle').addEventListener('click',()=>togglePlayback('preview'));
+$('#preview-previous').addEventListener('click',()=>changePreview(-1));$('#preview-next').addEventListener('click',()=>changePreview(1));
+$('#toggle').addEventListener('click',()=>togglePlayback('combination'));
+for(const id of ['#volume','#preview-volume'])$(id).addEventListener('input',event=>{const value=Number(event.target.value);$('#volume').value=value;$('#preview-volume').value=value;if(typeof outputVolume==='function')outputVolume(value);});
+updateUI();
+function updateMotion(){$('#motion').setAttribute('aria-pressed',String(motionEnabled));$('#motion').textContent='◌ 云雾随音 · '+(motionEnabled?'已开启':'已暂停');}
+$('#motion').addEventListener('click',()=>{motionEnabled=!motionEnabled;updateMotion();});updateMotion();
+document.querySelectorAll('.about-link').forEach(link=>link.addEventListener('click',event=>{event.preventDefault();$('#about').showModal();}));
+$('#close-about').addEventListener('click',()=>$('#about').close());
+$('#about').addEventListener('click',event=>{if(event.target===$('#about')){const r=$('#about').getBoundingClientRect();if(event.clientX<r.left||event.clientX>r.right||event.clientY<r.top||event.clientY>r.bottom)$('#about').close();}});
+// ③ p5 画布：分层山脊与流场云雾。FFT 低频控制漂移，RMS 音量控制粒子扩散。
+let particles=[],flowTime=0;let pointer={x:-1000,y:-1000};
+window.addEventListener('pointermove',event=>{if($('#listening').hidden)return;const rect=$('#landscape').getBoundingClientRect();pointer={x:event.clientX-rect.left,y:event.clientY-rect.top};},{passive:true});
+window.addEventListener('pointerout',event=>{if(!event.relatedTarget)pointer={x:-1000,y:-1000};});
+window.setup=function(){
+ const canvas=createCanvas(windowWidth,700);canvas.parent('landscape');pixelDensity(Math.min(window.devicePixelRatio||1,2));frameRate(30);
+ // 隧道阶段播放器画布在屏幕外，暂停绘制以留出合成预算。
+ if('IntersectionObserver' in window){const canvasObserver=new IntersectionObserver(entries=>{if(entries[0].isIntersecting)loop();else noLoop();},{rootMargin:'120px'});canvasObserver.observe($('#landscape'));}
+ fft=new p5.FFT(.85,64);amplitude=new p5.Amplitude(.85);
+ for(let i=0;i<100;i++)particles.push({x:random(width),y:random(120,590),r:random(12,55),seed:random(1000)});
+};
+window.draw=function(){
+ clear();if(motionEnabled)flowTime+=.002;
+ const spectrum=fft?fft.analyze():[];energy=lerp(energy,playing&&amplitude?amplitude.getLevel():0,.12);lowEnergy=fft&&playing?fft.getEnergy('bass')/255:0;
+ // 远山使用确定性噪声构建轮廓，保持低对比度，给文字留出呼吸。
+ noStroke();for(let layer=0;layer<4;layer++){
+  fill(123-layer*6,146-layer*5,119-layer*4,10+layer*3);beginShape();vertex(0,700);
+  for(let x=0;x<=width+12;x+=12){let ridge=noise(x*.0018+layer*7,layer*4);vertex(x,310+layer*58-ridge*(120-layer*12)+Math.sin(x*.006+layer)*18);}vertex(width,700);endShape(CLOSE);
+ }
+ for(const cloud of particles){
+  if(motionEnabled){const angle=noise(cloud.x*.0017,cloud.y*.002,flowTime+cloud.seed)*TWO_PI*2;cloud.x+=cos(angle)*(.2+energy*12+lowEnergy*.3);cloud.y+=sin(angle)*(.1+energy*5);
+   let dx=cloud.x-pointer.x,dy=cloud.y-pointer.y,d=Math.hypot(dx,dy);if(d<130&&d>0){cloud.x+=dx/d*(1-d/130)*3;cloud.y+=dy/d*(1-d/130)*3;}
+   if(cloud.x>width+60)cloud.x=-60;if(cloud.x< -60)cloud.x=width+60;if(cloud.y>650)cloud.y=160;if(cloud.y<130)cloud.y=640;
+  }
+  fill(126,151,127,3+energy*22);ellipse(cloud.x,cloud.y,cloud.r*(2+energy*9),cloud.r*.65);
+ }
+ bars.forEach((bar,i)=>{const value=playing?(spectrum[Math.floor(i/38*spectrum.length)]||0):0;bar.style.height=(3+value/255*24)+'px';});
+};
+window.windowResized=function(){resizeCanvas(windowWidth,700);particles.forEach(p=>{p.x=Math.min(p.x,width);});};
+window.addEventListener('pagehide',leavePlayback);
+</script>
+<script async src="/.netlify/scripts/ar" data-netlify-deploy-id="6aeb2a3911a3899574143c83" data-netlify-site-id="fc1dd249-3227-49ed-8a86-39c6719907e5" data-agent-runner-id="6aead504f1ff2736741536e0"></script>
+</body>
+</html>
