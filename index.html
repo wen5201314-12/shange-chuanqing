@@ -142,11 +142,11 @@ body{position:relative;isolation:isolate;background:#101f1b}body:after{display:n
 .song-preview{min-height:100svh;padding:0 0 50px;scroll-margin-top:20px}.preview-heading{padding:54px 0 30px;display:flex;justify-content:space-between;align-items:flex-end;gap:25px}.preview-heading h1{font-size:clamp(32px,4.5vw,52px);margin:14px 0}.preview-heading p{font-size:12px;line-height:2;color:var(--muted)}.flow-link{font-size:11px;letter-spacing:2px;border-bottom:1px solid #d9c58f60;padding:12px 0;white-space:nowrap}
 .preview-layout{display:grid;grid-template-columns:minmax(0,1.05fr) minmax(0,1fr);gap:40px;align-items:start}.song-library{border-top:1px solid var(--line)}.library-caption{display:flex;justify-content:space-between;color:var(--muted);font-size:10px;letter-spacing:2px;padding:17px 12px}
 .song-row{width:100%;border:0;border-top:1px solid var(--line);background:#10281f90;color:var(--ink);display:grid;grid-template-columns:26px 1fr auto 24px;gap:14px;text-align:left;align-items:center;padding:23px 14px;transition:background .3s;min-height:88px}.song-row:hover{background:#244133bd}.song-row[aria-pressed=true]{background:#314a34ba;box-shadow:inset 2px 0 #d9c58f}.song-number{font:12px Georgia,serif;color:#bbc4a9}.song-row strong{font:500 19px 'Noto Serif SC',serif;letter-spacing:3px}.song-row small{display:block;color:#b7c3ab;font-size:10px;margin-top:8px;letter-spacing:1px}.song-kind{font-size:10px;color:#c4ccb7}.song-action{color:#ddc88f;font-size:12px}.library-note{font-size:10px;color:var(--muted);line-height:1.9;margin:20px 0}
-.song-story{padding:27px 30px;border:1px solid var(--line);background:#10281fca;min-height:430px;position:relative;overflow:hidden}.story-mist{position:absolute;inset:0;z-index:0;pointer-events:none}.story-mist i{position:absolute;width:52%;aspect-ratio:1.5;border-radius:50%;background:radial-gradient(ellipse,#cfe0bd,transparent 66%);opacity:calc(.08 + var(--music-energy,0)*.6);transform:scale(calc(1 + var(--music-energy,0)*.5));transition:opacity .12s linear,transform .12s linear}.story-mist i:nth-child(1){left:-12%;top:6%;animation:mist-drift-a 21s ease-in-out infinite alternate}.story-mist i:nth-child(2){right:-14%;top:38%;width:58%;animation:mist-drift-b 27s ease-in-out infinite alternate}.story-mist i:nth-child(3){left:18%;bottom:-22%;width:64%;animation:mist-drift-c 24s ease-in-out infinite alternate}@keyframes mist-drift-a{from{translate:-6% 4%}to{translate:9% -5%}}@keyframes mist-drift-b{from{translate:5% 6%}to{translate:-7% -4%}}@keyframes mist-drift-c{from{translate:-8% -3%}to{translate:6% 5%}}.song-story>:not(.story-mist){position:relative;z-index:1}.story-top{display:flex;align-items:center;gap:22px;margin-bottom:25px}.preview-record{width:80px;height:80px;flex-shrink:0;border-radius:50%;background:repeating-radial-gradient(circle,#263b2d 0 2px,#162b20 3px 5px);border:1px solid #b2bc9240;display:grid;place-items:center;transform:scale(calc(1 + var(--music-energy,0)*.3));transition:transform .2s;box-shadow:0 0 0 8px #b2bc9206}.preview-record:before{content:'声';display:grid;place-items:center;width:28px;height:28px;border-radius:50%;background:#b57956;color:#1a2e20;font:14px 'Noto Serif SC',serif}.song-story h2{font:500 26px 'Noto Serif SC',serif;letter-spacing:4px;margin:9px 0}.story-kicker{font-size:9px;color:#c1c9af;letter-spacing:3px}.song-story h3{font-size:10px;color:#ddc88f;letter-spacing:3px;font-weight:400;margin:23px 0 8px}.song-story p{font-size:12px;line-height:2.05;color:#c4ccba;margin:0}.song-story[data-empty=true] .preview-record{opacity:.5}
+.song-story{padding:27px 30px;border:1px solid var(--line);background:#10281fca;min-height:430px;position:relative;overflow:hidden}.story-top{display:flex;align-items:center;gap:22px;margin-bottom:25px}.preview-record{width:80px;height:80px;flex-shrink:0;border-radius:50%;background:repeating-radial-gradient(circle,#263b2d 0 2px,#162b20 3px 5px);border:1px solid #b2bc9240;display:grid;place-items:center;transform:scale(calc(1 + var(--music-energy,0)*.3));transition:transform .2s;box-shadow:0 0 0 8px #b2bc9206}.preview-record:before{content:'声';display:grid;place-items:center;width:28px;height:28px;border-radius:50%;background:#b57956;color:#1a2e20;font:14px 'Noto Serif SC',serif}.song-story h2{font:500 26px 'Noto Serif SC',serif;letter-spacing:4px;margin:9px 0}.story-kicker{font-size:9px;color:#c1c9af;letter-spacing:3px}.song-story h3{font-size:10px;color:#ddc88f;letter-spacing:3px;font-weight:400;margin:23px 0 8px}.song-story p{font-size:12px;line-height:2.05;color:#c4ccba;margin:0}.song-story[data-empty=true] .preview-record{opacity:.5}
 .preview-player{display:grid;grid-template-columns:auto minmax(160px,1fr) minmax(130px,1fr) auto;align-items:center;gap:24px;padding:23px 25px;background:#10281feb;border:1px solid var(--line);margin-top:30px;border-radius:4px}.preview-controls{display:flex;align-items:center;gap:12px}.preview-controls button{width:32px;height:32px;border:0;background:none;color:#d9c58f}.preview-controls .transport{width:42px;height:42px;background:#d9c58f;color:#162b20}.preview-player strong{font-size:12px;letter-spacing:2px;font-weight:500}.preview-player small{display:block;color:var(--muted);font-size:10px;margin-top:7px;line-height:1.8}.preview-timeline{display:flex;align-items:center;gap:9px;font:10px Georgia,serif;color:#c4ccb7}.preview-timeline input{width:100%;accent-color:#d9c58f}.preview-timeline input:disabled{opacity:.35}.preview-player button:disabled{opacity:.45}.preview-next{display:flex;justify-content:space-between;align-items:center;border-top:1px solid var(--line);padding:28px 0;margin-top:28px;gap:20px}.preview-next p{font-size:11px;color:var(--muted);line-height:1.9}.preview-next .listen-button{display:inline-block;font-size:11px}.song-preview:focus{outline:none}#listening{scroll-margin-top:20px}.flow-step{font-size:10px;letter-spacing:3px;color:#c6b88f}.preview-status{min-height:38px}
 @media(max-width:800px){.preview-layout{gap:22px}.song-story{padding:23px;min-height:460px}.preview-player{grid-template-columns:auto 1fr auto;gap:15px}.preview-timeline{grid-column:1/-1;grid-row:2}.song-kind{display:none}.song-row{grid-template-columns:22px 1fr 20px}.preview-heading{padding-top:35px}}
 @media(max-width:600px){.preview-layout{grid-template-columns:1fr;gap:22px}.preview-heading{align-items:flex-start;flex-direction:column;gap:0}.song-story{min-height:390px}.song-row{padding:19px 12px}.preview-player{padding:18px 12px;gap:10px}.preview-controls{gap:3px}.preview-player .volume input{width:48px}.preview-next{align-items:flex-start;flex-direction:column}.preview-next .listen-button{width:100%;text-align:center}.preview-heading h1{font-size:34px}.story-top{margin-bottom:20px}}
-@media(prefers-reduced-motion:reduce){.scroll-scene[data-tunnel-active="true"] .tunnel-viewport{visibility:hidden;opacity:0}.preview-record{transform:none}.story-mist i{animation:none;transform:none}}
+@media(prefers-reduced-motion:reduce){.scroll-scene[data-tunnel-active="true"] .tunnel-viewport{visibility:hidden;opacity:0}.preview-record{transform:none}}
 
 /* 唱片浮层只由曲目交互开启，不参与序章的初始绘制。 */
 .record-dialog{width:min(1320px,94vw);max-width:1320px;max-height:92svh;padding:0;overflow:auto;border:1px solid #cdbb8638;border-radius:8px;background:#13271f;color:var(--ink);box-shadow:0 35px 130px #020d09b0}
@@ -239,10 +239,9 @@ body{position:relative;isolation:isolate;background:#101f1b}body:after{display:n
 <button class="song-row" data-song="1" aria-pressed="false" aria-label="试听《太阳出来喜洋洋》并查看故事"><span class="song-number">02</span><span><strong>太阳出来喜洋洋</strong><small>四川 · 川东</small></span><span class="song-kind">山歌 · 啰儿调</span><span class="song-action" aria-hidden="true">▶</span></button>
 <button class="song-row" data-song="2" aria-pressed="false" aria-label="试听《槐花几时开》并查看故事"><span class="song-number">03</span><span><strong>槐花几时开</strong><small>四川 · 川南</small></span><span class="song-kind">高腔山歌</span><span class="song-action" aria-hidden="true">▶</span></button>
 <button class="song-row" data-song="3" aria-pressed="false" aria-label="试听《采花》并查看故事"><span class="song-number">04</span><span><strong>采花</strong><small>四川 · 川西北</small></span><span class="song-kind">南坪民歌</span><span class="song-action" aria-hidden="true">▶</span></button>
-   <p class="library-note">曲库为四川山歌历史人声演唱录音选段（来源与版权说明见 README / 关于页），云雾会随歌声流动。</p>
+   <p class="library-note">曲库为四川山歌主题的器乐旋律演绎（笛、弦、簧管音色合成），非人声原曲录音。</p>
   </div>
   <article class="song-story" id="song-story" aria-labelledby="story-title" data-empty="true">
-   <div class="story-mist" aria-hidden="true"><i></i><i></i><i></i></div>
    <div class="story-top"><div class="preview-record" aria-hidden="true"></div><div><span class="story-kicker" id="story-kind">一曲一方水土</span><h2 id="story-title">静候一曲相逢</h2><p id="story-region">选择左侧曲目，展开它的故事。</p></div></div>
    <h3>曲目介绍</h3><p id="story-intro">这里收录了四首广为传唱的歌曲。每一首旋律，都连着不同的地方与生活经验。</p>
    <h3>历史背景</h3><p id="story-history">点选曲目后，这里展示其流传背景，并区分民间传承与近现代创作。</p>
@@ -538,6 +537,7 @@ function updateUI(){
  $('.preview-player').setAttribute('aria-busy',String(inPreview&&loading));
  $('#preview-track').textContent=previewSelected>=0?tracks[previewSelected].title:'选择一首山歌';
  $('#preview-subtitle').textContent=inPreview&&selected>=0?playbackDescription():previewSelected>=0?'已保留曲目 · 点击播放重新试听':'点击曲目即可试听与阅读故事';
+ if(!playing||!inPreview)$('.preview-record').style.setProperty('--music-energy','0');
  syncRecord();updatePreviewMeter();
 }
 function playbackDescription(){return loading?'正在加载声音，请稍候…':playbackError||((demo?'合成演示 · 非原曲录音':'歌曲录音')+' · '+(playing?'正在播放':'已暂停'));}
@@ -549,7 +549,7 @@ function stopCurrent(){
  pendingSeek=null;const old=sound;sound=null;playing=false;releaseTrackSound(old);
  if(osc){try{osc.stop();osc.disconnect();osc.dispose?.();}catch{}osc=null;}
  if(envelope){try{envelope.dispose?.();}catch{}envelope=null;}
- document.documentElement.style.setProperty('--music-energy','0');document.documentElement.style.setProperty('--music-bass','0');
+ $('.preview-record').style.setProperty('--music-energy','0');
 }
 function leavePlayback(){
  requestId++;stopCurrent();loading=false;selected=-1;demo=false;playbackError='';updateUI();
@@ -639,33 +639,12 @@ function updatePreviewMeter(){
  $('#record-seek').disabled=!actual||!duration;$('#record-seek').max=duration||1;$('#record-seek').value=current||0;$('#record-current').textContent=actual?formatTime(current):'0:00';$('#record-duration').textContent=actual?formatTime(duration):playbackMode==='preview'&&demo?'演示':'—:—';
  $('#preview-current').textContent=actual?formatTime(current):'0:00';$('#preview-duration').textContent=actual?formatTime(duration):playbackMode==='preview'&&demo?'演示':'—:—';
 }
-// 云雾随音：播放期间用 rAF 把音量与低频写入根节点 CSS 变量，驱动曲目页云雾、唱片脉动；暂停或关闭即归零。
-let energyPump=0,bassLevel=0,bassPeak=40;
-function startEnergyPump(){
- if(energyPump)return;
- const tick=()=>{
-  if(!playing){energyPump=0;bassLevel=0;bassPeak=40;document.documentElement.style.setProperty('--music-energy','0');document.documentElement.style.setProperty('--music-bass','0');return;}
-  const react=motionEnabled?1:0;
-  // 画布只在聆听页循环绘制；其余页面由泵自行驱动 FFT 分析，保证低频数据可用。
-  if(fft&&react)fft.analyze();
-  const level=amplitude&&react?Math.min(1,amplitude.getLevel()*4.5):0;
-  // 低频按近期峰值自动增益：老录音底噪大，直接除固定值会恒饱和，归一后才能出现脉冲式呼吸。
-  const raw=fft&&react?fft.getEnergy('bass'):0;
-  bassPeak=Math.max(raw,bassPeak*.97,40);
-  const bassTarget=raw>bassPeak*.4?Math.min(1,(raw-bassPeak*.4)/(bassPeak*.6)):0;
-  bassLevel+=(bassTarget-bassLevel)*.25;
-  document.documentElement.style.setProperty('--music-energy',level.toFixed(3));
-  document.documentElement.style.setProperty('--music-bass',bassLevel.toFixed(3));
-  energyPump=requestAnimationFrame(tick);
- };
- energyPump=requestAnimationFrame(tick);
-}
 function startMeter(){
  clearInterval(meterTimer);
  meterTimer=setInterval(()=>{
   if(!playing)return;updatePreviewMeter();
+  if(playbackMode==='preview'&&amplitude){$('.preview-record').style.setProperty('--music-energy',Math.min(1,amplitude.getLevel()*6));}
  },200);
- startEnergyPump();
 }
 $('#preview-seek').addEventListener('input',event=>{
  if(playbackMode!=='preview'||demo||!sound||loading)return;
@@ -742,18 +721,18 @@ window.setup=function(){
 };
 window.draw=function(){
  clear();if(motionEnabled)flowTime+=.002;
- const spectrum=fft?fft.analyze():[];energy=lerp(energy,playing&&amplitude?Math.min(1,amplitude.getLevel()*4):0,.12);lowEnergy=fft&&playing?Math.min(1,fft.getEnergy('bass')/150):0;
+ const spectrum=fft?fft.analyze():[];energy=lerp(energy,playing&&amplitude?amplitude.getLevel():0,.12);lowEnergy=fft&&playing?fft.getEnergy('bass')/255:0;
  // 远山使用确定性噪声构建轮廓，保持低对比度，给文字留出呼吸。
  noStroke();for(let layer=0;layer<4;layer++){
   fill(123-layer*6,146-layer*5,119-layer*4,10+layer*3);beginShape();vertex(0,700);
   for(let x=0;x<=width+12;x+=12){let ridge=noise(x*.0018+layer*7,layer*4);vertex(x,310+layer*58-ridge*(120-layer*12)+Math.sin(x*.006+layer)*18);}vertex(width,700);endShape(CLOSE);
  }
  for(const cloud of particles){
-  if(motionEnabled){const angle=noise(cloud.x*.0017,cloud.y*.002,flowTime+cloud.seed)*TWO_PI*2;cloud.x+=cos(angle)*(.2+energy*20+lowEnergy*7);cloud.y+=sin(angle)*(.1+energy*10+lowEnergy*2);
+  if(motionEnabled){const angle=noise(cloud.x*.0017,cloud.y*.002,flowTime+cloud.seed)*TWO_PI*2;cloud.x+=cos(angle)*(.2+energy*12+lowEnergy*.3);cloud.y+=sin(angle)*(.1+energy*5);
    let dx=cloud.x-pointer.x,dy=cloud.y-pointer.y,d=Math.hypot(dx,dy);if(d<130&&d>0){cloud.x+=dx/d*(1-d/130)*3;cloud.y+=dy/d*(1-d/130)*3;}
    if(cloud.x>width+60)cloud.x=-60;if(cloud.x< -60)cloud.x=width+60;if(cloud.y>650)cloud.y=160;if(cloud.y<130)cloud.y=640;
   }
-  fill(126+lowEnergy*80,151+lowEnergy*26,127-lowEnergy*44,4+energy*64);ellipse(cloud.x,cloud.y,cloud.r*(2+energy*14+lowEnergy*3),cloud.r*.65);
+  fill(126,151,127,3+energy*22);ellipse(cloud.x,cloud.y,cloud.r*(2+energy*9),cloud.r*.65);
  }
  bars.forEach((bar,i)=>{const value=playing?(spectrum[Math.floor(i/38*spectrum.length)]||0):0;bar.style.transform='scaleY('+((3+value/255*24)/25).toFixed(3)+')';});
 };
