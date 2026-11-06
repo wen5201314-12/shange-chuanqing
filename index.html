@@ -41,7 +41,7 @@ SOFTWARE.
 
 /* ④ 开场画卷：原生滚动驱动展开，使用位移与透明度呈现景深。 */
 .overture{height:240vh;height:240svh;position:relative;background:var(--paper)}
-.scroll-scene{height:100vh;height:100svh;position:sticky;top:0;overflow:hidden;isolation:isolate;background:#e8eadd}
+.scroll-scene{height:100vh;height:100svh;position:sticky;top:0;overflow:hidden;isolation:isolate;background:#e8eadd;perspective:1100px}
 .scene-top{position:absolute;z-index:4;top:32px;left:6%;right:6%;display:flex;justify-content:space-between;align-items:center;font-size:11px;letter-spacing:4px}.scene-top a{padding:12px;border-bottom:1px solid #7b837850;letter-spacing:2px}
 .ink-landscape{position:absolute;inset:0;width:100%;height:100%;transform:scale(var(--scene-scale,1));transform-origin:50% 65%}
 .mist-band{position:absolute;inset:40% -20% 0;background:radial-gradient(ellipse at center,#f4f3ebbb,transparent 65%);transform:translate3d(var(--mist-x,0px),0,0);pointer-events:none}
@@ -128,7 +128,7 @@ body:after{content:'';position:fixed;inset:0;z-index:-1;background:linear-gradie
 body{position:relative;isolation:isolate;background:#101f1b}body:after{display:none}
 .scenic-background{position:fixed;inset:-5%;z-index:-2;pointer-events:none;background:linear-gradient(#071a14b8,#071a14d9),url('assets/fields.jpg') center/cover;transform:translate3d(var(--background-x,0px),var(--background-y,0px),0) scale(1.04);will-change:transform}
 .overture{height:620vh;height:620svh}.scroll-scene{background:#0b201b}
-.scene-photo{content:'';position:absolute;inset:-5%;background:linear-gradient(#0b201b70,#0b201b9c),url('assets/river.jpg') center/cover;transform:translate3d(var(--photo-x,0px),var(--photo-y,0px),0) scale(1.04);pointer-events:none}
+.scene-photo{content:'';position:absolute;inset:-5%;background:linear-gradient(#0b201b70,#0b201b9c),url('assets/river.jpg') center/cover;transform:translate3d(var(--photo-x,0px),var(--photo-y,0px),0) rotateZ(var(--photo-rot,0deg)) rotateX(var(--photo-tilt,0deg)) scale(var(--photo-scale,1.04));pointer-events:none}
 .tunnel-viewport{z-index:1}.tunnel-rig{position:absolute;inset:0;transform-style:preserve-3d;transform:rotateX(var(--camera-pitch,0deg)) rotateY(var(--camera-yaw,0deg));will-change:transform}
 .tunnel-wall,.tunnel-frame,.tunnel-exit{backface-visibility:hidden;-webkit-backface-visibility:hidden;contain:layout style}
 .tunnel-world{will-change:transform}.ink-landscape{transition:none}.tunnel-wall svg{filter:none}.tunnel-frame{box-shadow:none}.tunnel-frame.entrance{box-shadow:inset 0 0 45px #d4ba6b25}
@@ -364,6 +364,9 @@ function paintScroll(now){
  if(tunnelPrepared&&!active&&(scrollCurrent<=.055||scrollCurrent>=.9999))tunnelViewport.hidden=true;
  else if(active)tunnelViewport.hidden=false;
  const arrival=smoothStep(clamp01((travel-.76)/.24));
+ // 画卷交接：随隧道淡入同步滚转与前倾缩小，卷入隧道口（隧道入场滚转恰为 -4°，姿态无缝衔接）。
+ const handover=smoothStep(clamp01((scrollCurrent-.07)/.18));
+ layerVar(openingParts.photo,'--photo-rot',(-4*handover).toFixed(3)+'deg');layerVar(openingParts.photo,'--photo-tilt',(7*handover).toFixed(3)+'deg');layerVar(openingParts.photo,'--photo-scale',(1.04-handover*.07).toFixed(4));
  layerVar(openingParts.left,'--leaf-left',(-phases.unfold*101)+'%');layerVar(openingParts.right,'--leaf-right',(phases.unfold*101)+'%');
  if(active){
   const cameraZ=-800+travel*7100;
