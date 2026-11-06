@@ -59,7 +59,7 @@ SOFTWARE.
 /* 夜色山河：背景常暗，鼠标附近透出暖光，文字保持可读。 */
 :root{--paper:#101f1b;--ink:#eee8d5;--muted:#b4bbaa;--line:#c8d1b530;--red:#dd997d}
 body{background:#101f1b;color:var(--ink)}
-body:after{content:'';position:fixed;inset:0;z-index:-1;background:linear-gradient(#071a14c9,#071a14c9),url('assets/fields.jpg') center/cover no-repeat;pointer-events:none}
+body:after{content:'';position:fixed;inset:0;z-index:-1;background:linear-gradient(180deg,#081e17,#071a14);pointer-events:none}
 .overture,.scroll-scene{background:#0a231d url('assets/river.jpg') center/cover}
 .ink-landscape{opacity:.12;mix-blend-mode:screen}.mist-band{opacity:.15}
 .scroll-leaf{background:linear-gradient(#10271ef2,#10271edf),url('assets/river.jpg') left center/200% 100%}.scroll-leaf.right{background-position:right center}
@@ -126,7 +126,7 @@ body:after{content:'';position:fixed;inset:0;z-index:-1;background:linear-gradie
 
 /* 镜头与照片分层跟随：只合成位移，不移动文字与操作控件。 */
 body{position:relative;isolation:isolate;background:#101f1b}body:after{display:none}
-.scenic-background{position:fixed;inset:-5%;z-index:-2;pointer-events:none;background:linear-gradient(#071a14b8,#071a14d9),url('assets/fields.jpg') center/cover;transform:translate3d(var(--background-x,0px),var(--background-y,0px),0) scale(1.04);will-change:transform}
+.scenic-background{position:fixed;inset:-5%;z-index:-2;pointer-events:none;background:radial-gradient(90% 70% at 72% 16%,#0e2a2040,transparent 62%),radial-gradient(70% 60% at 12% 85%,#0c241c33,transparent 60%),linear-gradient(#071a14b8,#071a14d9);transform:translate3d(var(--background-x,0px),var(--background-y,0px),0) scale(1.04);will-change:transform}
 .overture{height:620vh;height:620svh}.scroll-scene{background:#0b201b}
 .scene-photo{content:'';position:absolute;inset:-5%;background:linear-gradient(#0b201b70,#0b201b9c),url('assets/river.jpg') center/cover;transform:translate3d(var(--photo-x,0px),var(--photo-y,0px),0) rotateZ(var(--photo-rot,0deg)) rotateX(var(--photo-tilt,0deg)) scale(var(--photo-scale,1.04));pointer-events:none}
 .tunnel-viewport{z-index:1}.tunnel-rig{position:absolute;inset:0;transform-style:preserve-3d;transform:rotateX(var(--camera-pitch,0deg)) rotateY(var(--camera-yaw,0deg));will-change:transform}
