@@ -249,16 +249,18 @@ main>section{margin-block-start:calc(var(--gap-section)*.6)}
  <header><a class="brand" href="#overture" data-flow><span class="seal" aria-hidden="true">山歌<br>传情</span>山歌传情</a><nav aria-label="歌曲预览导航"><a class="flow-link" href="#crossroads" data-flow>返回双入口 ↖</a><a class="flow-link" href="#listening" data-flow>进入乐器组合 ↗</a></nav></header>
  <div class="preview-heading"><div><div class="eyebrow">先听一曲，再识一方水土</div><h1 id="preview-title">山河之间，<span>有歌相传。</span></h1><p>从一首歌走近一段故事。点选曲目，聆听旋律，读懂它的来处。</p></div><a class="flow-link" href="#overture" data-flow>重游山河声廊 ↑</a></div>
  <div class="preview-layout">
-  <div class="song-library"><div class="library-caption"><span>山河曲库 / 四首</span><span>点击曲目 · 试听与读故事</span></div>
+  <div class="song-library"><div class="library-caption"><span>山河曲库 / 六首</span><span>点击曲目 · 试听与读故事</span></div>
 <button class="song-row" data-song="0" aria-pressed="false" aria-label="试听《康定情歌》并查看故事"><span class="song-number">01</span><span><strong>康定情歌</strong><small>四川 · 康定</small></span><span class="song-kind">民间情歌</span><span class="song-action" aria-hidden="true">▶</span></button>
 <button class="song-row" data-song="1" aria-pressed="false" aria-label="试听《太阳出来喜洋洋》并查看故事"><span class="song-number">02</span><span><strong>太阳出来喜洋洋</strong><small>四川 · 川东</small></span><span class="song-kind">山歌 · 啰儿调</span><span class="song-action" aria-hidden="true">▶</span></button>
 <button class="song-row" data-song="2" aria-pressed="false" aria-label="试听《槐花几时开》并查看故事"><span class="song-number">03</span><span><strong>槐花几时开</strong><small>四川 · 川南</small></span><span class="song-kind">高腔山歌</span><span class="song-action" aria-hidden="true">▶</span></button>
 <button class="song-row" data-song="3" aria-pressed="false" aria-label="试听《采花》并查看故事"><span class="song-number">04</span><span><strong>采花</strong><small>四川 · 川西北</small></span><span class="song-kind">南坪民歌</span><span class="song-action" aria-hidden="true">▶</span></button>
-   <p class="library-note">曲库为四川山歌主题的器乐旋律演绎（笛、弦、簧管音色合成），非人声原曲录音。</p>
+<button class="song-row" data-song="4" aria-pressed="false" aria-label="试听《黄杨扁担》并查看故事"><span class="song-number">05</span><span><strong>黄杨扁担</strong><small>四川 · 川东（秀山）</small></span><span class="song-kind">花灯调</span><span class="song-action" aria-hidden="true">▶</span></button>
+<button class="song-row" data-song="5" aria-pressed="false" aria-label="试听《绣荷包》并查看故事"><span class="song-number">06</span><span><strong>绣荷包</strong><small>四川 · 川南（宜宾）</small></span><span class="song-kind">民间时调</span><span class="song-action" aria-hidden="true">▶</span></button>
+   <p class="library-note">曲库为四川山歌主题的历史人声演唱录音选段，录音来源与版权说明见 README.txt。</p>
   </div>
   <article class="song-story" id="song-story" aria-labelledby="story-title" data-empty="true">
    <div class="story-top"><div class="preview-record" aria-hidden="true"></div><div><span class="story-kicker" id="story-kind">一曲一方水土</span><h2 id="story-title">静候一曲相逢</h2><p id="story-region">选择左侧曲目，展开它的故事。</p></div></div>
-   <h3>曲目介绍</h3><p id="story-intro">这里收录了四首广为传唱的歌曲。每一首旋律，都连着不同的地方与生活经验。</p>
+   <h3>曲目介绍</h3><p id="story-intro">这里收录了六首广为传唱的歌曲。每一首旋律，都连着不同的地方与生活经验。</p>
    <h3>历史背景</h3><p id="story-history">点选曲目后，这里展示其流传背景，并区分民间传承与近现代创作。</p>
    <h3>文化故事</h3><p id="story-culture">从川西情歌到川东啰儿调，听见四川山歌背后的人情与风物。</p>
   </article>
@@ -300,7 +302,7 @@ main>section{margin-block-start:calc(var(--gap-section)*.6)}
  </div>
  <div class="record-bottom"><div class="record-transport"><span id="record-count" class="record-count"></span><button id="record-previous" aria-label="上一首">│◀</button><button id="record-toggle" class="transport" aria-label="暂停歌曲">Ⅱ</button><button id="record-next" aria-label="下一首">▶│</button></div><div class="record-timeline"><span id="record-current">0:00</span><input id="record-seek" type="range" min="0" max="1" step="0.1" value="0" aria-label="唱片播放进度" disabled><span id="record-duration">—:—</span></div><p id="record-status" class="record-status" role="status" aria-live="polite"></p></div>
 </dialog>
-<dialog id="about"><h2>让山歌，在指尖回响。</h2><p>「山歌传情」是一件以中国传统乐器与山歌为线索的音画交互课程作品。选择多件乐器，再点击聆听以揭晓组合匹配的曲目。组合匹配是作品的互动规则，并不代表录音的真实配器。声音化为云雾，鼠标成为照见山河的光。</p><p>由 p5.js 与 p5.sound 驱动，FFT 频谱与音量共同影响粒子。曲库附带以合成器演绎的四首四川山歌旋律（笛、弦、簧管音色），并非人声原曲录音，仅用于呈现旋律与交互体验。</p><p>代码使用 MIT 许可。如需替换为人声录音，请使用获得授权的音频并保持同名路径。</p><button id="close-about">回到山间</button></dialog>
+<dialog id="about"><h2>让山歌，在指尖回响。</h2><p>「山歌传情」是一件以中国传统乐器与山歌为线索的音画交互课程作品。选择多件乐器，再点击聆听以揭晓组合匹配的曲目。组合匹配是作品的互动规则，并不代表录音的真实配器。声音化为云雾，鼠标成为照见山河的光。</p><p>由 p5.js 与 p5.sound 驱动，FFT 频谱与音量共同影响粒子。曲库收录六首四川山歌与民歌的历史人声演唱录音选段（旋律为传统民歌公版），录音来源与致谢见 README.txt，仅用于非商业教学展示。</p><p>代码使用 MIT 许可。</p><button id="close-about">回到山间</button></dialog>
 <!-- 固定 CDN 版本：无需框架、打包或构建。p5.sound 必须在 p5.js 之后加载。 -->
 <script defer src="https://cdn.jsdelivr.net/npm/p5@1.11.3/lib/p5.min.js"></script>
 <script defer src="https://cdn.jsdelivr.net/npm/p5@1.11.3/lib/addons/p5.sound.min.js"></script>
@@ -526,19 +528,23 @@ document.addEventListener('visibilitychange',()=>{
  else{measureOpening();scrollLast=0;queueScroll();resetCamera(true);}
 });
 
-// ① 音频配置：四首均为历史人声演唱录音选段（旋律为传统民歌公版，来源与版权说明见 README.txt），仅用于非商业教学展示。
+// ① 音频配置：六首均为历史人声演唱录音选段（旋律为传统民歌公版，来源与版权说明见 README.txt），仅用于非商业教学展示。
 const tracks = [
  {instrument:'笛子',title:'康定情歌',region:'川西',src:'audio/kangding-love-song.mp3?v=2',wave:'sine'},
  {instrument:'二胡',title:'太阳出来喜洋洋',region:'川东',src:'audio/taiyang-chulai-xiyangyang.mp3?v=2',wave:'triangle'},
  {instrument:'芦笙',title:'槐花几时开',region:'川南',src:'audio/huaihua-jishikai.mp3?v=2',wave:'sine'},
- {instrument:'马头琴',title:'采花',region:'川西北',src:'audio/caihua-nanping.mp3?v=2',wave:'triangle'}
+ {instrument:'马头琴',title:'采花',region:'川西北',src:'audio/caihua-nanping.mp3?v=2',wave:'triangle'},
+ {instrument:'木叶',title:'黄杨扁担',region:'川东（秀山）',src:'audio/huangyang-biandan.mp3?v=2',wave:'sine'},
+ {instrument:'琵琶',title:'绣荷包',region:'川南（宜宾）',src:'audio/xiuehebao-yibin.mp3?v=2',wave:'triangle'}
 ];
 
 const songStories=[
  {kind:'四川民间情歌',region:'四川 · 康定',intro:'又名《跑马溜溜的山上》，以明快流畅的旋律唱出青年男女的爱慕，是人们熟悉的康定文化名片。',history:'这首歌曲在二十世纪经采集、整理与演唱而广泛传播。其具体起源有不同说法，作品不将流传中的某一种说法作为唯一结论。',culture:'跑马山与康定城构成了歌中的地方意象。汉藏文化交往的背景，让这首情歌也成为许多人想象川西山城的声音入口。'},
  {kind:'四川山歌 · 啰儿调',region:'四川 · 川东',intro:'以“啰儿”衬词穿针引线，唱出太阳初升时挑担上山的欢快心境，是川东山地最有代表性的劳动山歌之一。',history:'歌曲由《成都商报》前身编辑之一金鼓于二十世纪四十年代在川东石柱一带采集整理作词、蓝河记谱整理而成，根植于当地土家族“啰儿调”的歌唱传统。',culture:'一声“啰儿”把山间劳动变成了歌唱。扁担、开山斧这些日常工具进入歌中，让艰苦的劳作透出爽朗与乐观，也成为外界认识川东山乡的声音名片。'},
  {kind:'四川高腔山歌',region:'四川 · 川南（宜宾）',intro:'只有短短四句：“高高山上一树槐，手把栏杆望郎来”，以一问一答唱出山中少女的期盼，余韵悠长。',history:'这首山歌长期在川南宜宾一带的山野间口头传唱，二十世纪五十年代经采集整理后登上舞台而广为人知，是四川高腔山歌的代表曲目之一。',culture:'一个“望”字，把高山、槐树与等待都连在了一起。自由悠长的音调如同山谷间的呼唤，体现了山歌“野性而含蓄”的表达方式。'},
- {kind:'南坪民歌',region:'四川 · 川西北（九寨沟 · 南坪）',intro:'从正月唱到五月，按月历数花开花落，曲调活泼流转，是一幅用歌声铺开的四季花历。',history:'《采花》流传于川西北南坪（今九寨沟县）一带，当地地处汉藏交融地带，歌曲在传唱中吸收了多民族的音调养分，经整理后成为四川民歌的经典曲目。',culture:'按月采花的唱法，把农时、节气与人们对花的期待编进旋律。它也因被改编为多种演奏版本而流传更广，成为许多人认识川西北民歌的入口。'}
+ {kind:'南坪民歌',region:'四川 · 川西北（九寨沟 · 南坪）',intro:'从正月唱到五月，按月历数花开花落，曲调活泼流转，是一幅用歌声铺开的四季花历。',history:'《采花》流传于川西北南坪（今九寨沟县）一带，当地地处汉藏交融地带，歌曲在传唱中吸收了多民族的音调养分，经整理后成为四川民歌的经典曲目。',culture:'按月采花的唱法，把农时、节气与人们对花的期待编进旋律。它也因被改编为多种演奏版本而流传更广，成为许多人认识川西北民歌的入口。'},
+ {kind:'秀山民歌 · 花灯调',region:'四川 · 川东（秀山）',intro:'“黄杨扁担软溜溜”以一根扁担起兴，唱出挑担下酉州的轻快脚步，是流传极广的花灯调。',history:'歌曲起源于重庆市秀山县白粉墙村一带，以秀山民歌为代表的歌唱传统已列入国家级非物质文化遗产名录，并经几代歌唱家的演绎传遍全国。',culture:'扁担本是山乡挑运的重负，歌里却把它唱得柔软有弹性。劳动工具变成节拍，脚步变成旋律，正是山地生活里举重若轻的乐观。'},
+ {kind:'四川民歌 · 时调',region:'四川 · 川南（宜宾）',intro:'“荷包绣给郎佩戴”，一针一线绣进少女心事，以赠物传情、欲说还休，是各地都有传唱的经典时调。',history:'四川宜宾一带传唱的《绣荷包》于二十世纪五十年代由詹亚琴演唱录音留存，代表了川南民间时调的婉转韵味。',culture:'绣荷包是旧时女儿家的私房情感：花样选得用心，针脚藏得住话。以物寄情的含蓄表达，正是民间情歌最动人的分寸。'}
 ];
 const cards=[...document.querySelectorAll('.instrument')],songRows=[...document.querySelectorAll('.song-row')];
 const chosenInstruments=new Set();
@@ -701,9 +707,9 @@ function openRecord(index){
  const dialog=$('#record-player'),story=songStories[index],ticket=++artworkTicket;
  $('#record-title').textContent=tracks[index].title;$('#record-kind').textContent=story.kind;$('#record-region').textContent=story.region;
  for(const key of ['intro','history','culture'])$('#record-'+key).textContent=story[key];
- $('#record-count').textContent=String(index+1).padStart(2,'0')+' / 04';$('.record-story').scrollTop=0;
+ $('#record-count').textContent=String(index+1).padStart(2,'0')+' / '+String(tracks.length).padStart(2,'0');$('.record-story').scrollTop=0;
  const art=$('#record-art'),source=recordImages[index];
- const reveal=()=>{if(ticket!==artworkTicket)return;art.src=source.src;art.alt=['稻田收获','红色香束','渔网劳作','水上花船'][index]+' · 唱片摄影封面';if(!matchMedia('(prefers-reduced-motion: reduce)').matches)art.animate([{opacity:.25,transform:'scale(.94)'},{opacity:1,transform:'scale(1)'}],{duration:550,easing:'cubic-bezier(.22,1,.36,1)'});};
+ const reveal=()=>{if(ticket!==artworkTicket)return;art.src=source.src;art.alt=['稻田收获','红色香束','渔网劳作','水上花船','梯田挑担','绣荷丝线'][index]+' · 唱片摄影封面';if(!matchMedia('(prefers-reduced-motion: reduce)').matches)art.animate([{opacity:.25,transform:'scale(.94)'},{opacity:1,transform:'scale(1)'}],{duration:550,easing:'cubic-bezier(.22,1,.36,1)'});};
  if(source.complete&&source.naturalWidth)reveal();
  else{
   const done=()=>{if(ticket===artworkTicket&&source.naturalWidth)reveal();};
