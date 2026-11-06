@@ -426,6 +426,29 @@ chapterButtons.forEach(button=>button.addEventListener('click',()=>{
  const start=window.scrollY+opening.getBoundingClientRect().top;
  window.scrollTo({top:start+Number(button.dataset.chapter)*(opening.offsetHeight-scene.offsetHeight),behavior:reducedScroll.matches?'instant':'smooth'});
 }));
+
+// 惯性滑行（借鉴 damp 曲线变速）：序章内接管滚轮，一拨即沿衰减曲线滑行渐停，无需反复滚动。
+// 键盘、滚动条与触屏惯性仍走原生；减少动态效果时不接管。
+let glideVel=0,glideRaf=0,glideLast=0;
+const GLIDE_TAU=300,GLIDE_GAIN=11,GLIDE_CAP=5200;
+function glideStep(now){
+ glideRaf=0;
+ const delta=Math.min(64,now-(glideLast||now-16));glideLast=now;
+ if(Math.abs(glideVel)<8){glideVel=0;return;}
+ const before=window.scrollY;
+ window.scrollBy(0,glideVel*delta/1000);
+ if(window.scrollY===before)glideVel=0; // 已到顶/底，即刻收势
+ else{glideVel*=Math.exp(-delta/GLIDE_TAU);glideRaf=requestAnimationFrame(glideStep);}
+}
+opening.addEventListener('wheel',event=>{
+ if(reducedScroll.matches)return;
+ event.preventDefault();
+ const raw=event.deltaY,delta=event.deltaMode===1?raw*33:event.deltaMode===2?raw*scene.offsetHeight:raw;
+ glideVel=Math.max(-GLIDE_CAP,Math.min(GLIDE_CAP,glideVel+delta*GLIDE_GAIN));
+ glideLast=0;if(!glideRaf)glideRaf=requestAnimationFrame(glideStep);
+ queueScroll();
+},{passive:false});
+['touchstart','keydown'].forEach(type=>window.addEventListener(type,()=>{glideVel=0;glideRaf=0;},{passive:true}));
 const atmosphere=$('.scene-atmosphere'),fireflyToggle=$('#firefly-toggle');
 for(let i=0;i<22;i++){
  const fly=document.createElement('i');fly.className='firefly';
