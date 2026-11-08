@@ -208,6 +208,55 @@ main>section{margin-block-start:calc(var(--gap-section)*.6)}
 .preview-layout{grid-template-columns:1fr;gap:2rem}
 }
 </style>
+<style>
+/* ⑤ 民歌故事馆：六幕滚动长卷，深绿金夜色，与序章声廊同一体系 */
+.story-hall{background:#0b201b;color:#f0e5c6;min-height:100svh}
+.hall-head{position:sticky;top:0;z-index:12;display:flex;align-items:center;justify-content:space-between;gap:16px;padding:20px clamp(1.25rem,4vw,2.75rem);background:#0b201bf2;border-bottom:1px solid #d9c58f24}
+.hall-head .brand{color:#f0e5c6;font-size:18px}.hall-head .brand .seal{border-color:#d9c58f99;color:#d9c58f}
+.hall-head nav{display:flex;gap:22px;align-items:center;color:#b8c3a9;font-size:11px;flex-wrap:wrap;justify-content:flex-end}
+.hall-head nav a{border-bottom:1px solid #d9c58f3d;padding:5px 0;letter-spacing:1px;transition:color .3s,border-color .3s}
+.hall-head nav a:hover{color:#d9c58f;border-color:#d9c58f99}
+.hall-prologue{min-height:100svh;min-height:100dvh;display:grid;place-content:center;text-align:center;padding:70px clamp(1.5rem,6vw,4rem);position:relative}
+.hall-prologue .eyebrow{justify-content:center;color:#b8c3a9}.hall-prologue .eyebrow:before{background:#d9c58f99}
+.pro-inner{max-width:60ch;margin-inline:auto}
+.hall-prologue h1{font:500 clamp(36px,5vw,62px) 'Noto Serif SC',serif;letter-spacing:7px;line-height:1.4;margin:20px 0 24px;color:#f0e5c6}
+.hall-prologue h1 span{color:#d9c58f}
+.hall-prologue>.pro-inner>p,.hall-prologue p{font-size:14.5px;line-height:2.15;color:#b8c3a9;margin:0}
+.pro-scroll{display:block;margin-top:52px;font-size:10px;letter-spacing:3px;color:#d9c58fb0}
+.pro-scroll i{display:block;width:1px;height:52px;margin:16px auto 0;background:linear-gradient(#d9c58f99,#d9c58f00)}
+.hall-act{position:relative;overflow:hidden;display:flex;align-items:center;min-height:100svh;min-height:100dvh}
+.act-backdrop{position:absolute;inset:-7%;background-size:cover;background-position:center;filter:saturate(.5) brightness(.46)}
+.act-veil{position:absolute;inset:0;background:linear-gradient(90deg,#0b201b 6%,#0b201bd9 44%,#0b201b59 82%),linear-gradient(#0b201b45,#0b201bd6)}
+.act-inner{position:relative;z-index:2;width:min(1160px,100% - clamp(2.5rem,9vw,7rem));margin-inline:auto;display:grid;grid-template-columns:minmax(0,1.08fr) minmax(0,1fr);gap:clamp(2.5rem,6vw,5.5rem);align-items:center;padding:120px 0 96px}
+.act-lead{min-width:0}
+.act-number{font:12px Georgia,serif;letter-spacing:5px;color:#d9c58f9e}
+.act-number b{font-weight:400;font-family:'Noto Serif SC',serif;font-size:15px;color:#d9c58f;margin-right:10px}
+.act-kicker{display:block;font-size:11px;letter-spacing:3px;color:#b8c3a9;margin-top:14px}
+.act-title{font:500 clamp(34px,4.2vw,56px) 'Noto Serif SC',serif;letter-spacing:5px;line-height:1.35;margin:14px 0 20px;color:#f0e5c6}
+.act-epigraph{font:14px/2.1 'Noto Serif SC',serif;color:#d6c18e;letter-spacing:2px;margin:0;max-width:34ch}
+.act-body{min-width:0;border-left:1px solid #d9c58f2e;padding-left:clamp(1.5rem,3vw,2.5rem)}
+.act-body h3{font-size:12.5px;font-weight:400;letter-spacing:3.5px;color:#d9c58f;margin:1.5rem 0 .8rem}
+.act-body h3:first-child{margin-top:0}
+.act-body p{font-size:14.5px;line-height:2.05;color:#c9d2bd;margin:0;max-width:52ch}
+.hall-epilogue{min-height:82svh;display:grid;place-content:center;text-align:center;padding:70px clamp(1.5rem,6vw,4rem);border-top:1px solid #d9c58f1c}
+.hall-epilogue h2{font:500 clamp(26px,3.4vw,42px) 'Noto Serif SC',serif;letter-spacing:5px;margin:18px 0 20px;color:#f0e5c6}
+.hall-epilogue p{font-size:14px;line-height:2.1;color:#b8c3a9;max-width:52ch;margin:0 auto}
+.epilogue-links{display:flex;gap:16px;justify-content:center;flex-wrap:wrap;margin-top:38px}
+.epilogue-links a,.preview-next-links a,.hall-jump{font-size:12px;letter-spacing:2px;color:#d9c58f;border:1px solid #d9c58f4d;border-radius:3px;padding:13px 22px;transition:background .3s,border-color .3s,color .3s;background:none}
+.epilogue-links a:hover,.preview-next-links a:hover,.hall-jump:hover{background:#d9c58f14;border-color:#d9c58f99}
+.preview-next-links{display:flex;gap:16px;flex-wrap:wrap}
+.hall-jump{display:inline-block;margin-top:22px;cursor:pointer;font-family:inherit}
+@media(max-width:800px){
+.hall-head{padding:16px 18px}.hall-head .brand{font-size:16px}.hall-head nav{gap:14px;font-size:10px}
+.act-inner{grid-template-columns:1fr;gap:26px;padding:88px 0 70px}
+.act-veil{background:linear-gradient(#0b201bd9,#0b201bf2 78%),linear-gradient(#0b201b59,#0b201b59)}
+.act-body{border-left:0;border-top:1px solid #d9c58f2e;padding-left:0;padding-top:22px}
+.act-body p{font-size:14px}
+.hall-prologue h1{letter-spacing:4px}
+}
+@media(prefers-reduced-motion:reduce){.hall-head{position:static}}
+@media(max-height:820px) and (min-width:801px){.act-inner{padding:92px 0 66px}.act-body p{font-size:13.5px;line-height:1.9}.act-title{margin-bottom:14px}}
+</style>
 </head>
 <body>
 <div class="scenic-background" aria-hidden="true"></div>
@@ -263,6 +312,7 @@ main>section{margin-block-start:calc(var(--gap-section)*.6)}
    <h3>曲目介绍</h3><p id="story-intro">这里收录了六首广为传唱的歌曲。每一首旋律，都连着不同的地方与生活经验。</p>
    <h3>历史背景</h3><p id="story-history">点选曲目后，这里展示其流传背景，并区分民间传承与近现代创作。</p>
    <h3>文化故事</h3><p id="story-culture">从川西情歌到川东啰儿调，听见四川山歌背后的人情与风物。</p>
+   <a class="flow-link" href="#stories" data-flow style="display:inline-block;margin-top:22px">在故事馆展开完整一幕 ↗</a>
   </article>
  </div>
  <section class="preview-player" aria-label="歌曲预览播放器" aria-busy="false">
@@ -272,7 +322,7 @@ main>section{margin-block-start:calc(var(--gap-section)*.6)}
   <label class="volume"><span aria-hidden="true">◖))</span><input id="preview-volume" aria-label="预览音量" type="range" min="0" max="1" step="0.01" value="0.55"></label>
  </section>
  <div id="preview-status" class="status preview-status" role="status" aria-live="polite">选择歌曲后，旋律与故事一同展开。</div>
- <div class="preview-next"><p>还想试试另一种心意？<br>读过故事，也可用几件乐器组合你的心意。</p><a href="#listening" data-flow class="listen-button">体验音乐组合 ↗</a></div>
+ <div class="preview-next"><p>还想试试另一种心意？<br>读过故事，也可用几件乐器组合你的心意。</p><div class="preview-next-links"><a href="#stories" data-flow class="listen-button">走进民歌故事馆 ↗</a><a href="#listening" data-flow class="listen-button">体验音乐组合 ↗</a></div></div>
 </section>
 
 <div hidden class="shell" id="listening" tabindex="-1">
@@ -291,6 +341,26 @@ main>section{margin-block-start:calc(var(--gap-section)*.6)}
 <div class="status" id="status" role="status" aria-live="polite">戴上耳机，让山河近一些。音频未配置时，可体验合成音色演示。</div>
 </main><footer><span class="footer-brand">山河有回响，知音在远方。</span><div class="right"><span>p5.js × 声音可视化</span><button class="about about-link">关于作品 ↗</button><span>课程创作 / MIT LICENSE</span></div></footer>
 </div>
+<section hidden id="stories" class="story-hall" aria-labelledby="hall-title" tabindex="-1">
+ <header class="hall-head"><a class="brand" href="#overture" data-flow><span class="seal" aria-hidden="true">山歌<br>传情</span>山歌传情</a><nav aria-label="故事馆导航"><a href="#crossroads" data-flow>返回双入口 ↖</a><a href="#songs" data-flow>返回曲库 ↖</a><a href="#listening" data-flow>进入乐器组合 ↗</a></nav></header>
+ <div class="hall-prologue">
+  <div class="pro-inner">
+   <div class="eyebrow">山河留声 · 民歌故事馆</div>
+   <h1 id="hall-title">六首山歌，<span>六方水土。</span></h1>
+   <p>每一首民歌，都从一片具体的山水里长出来：跑马山的云、川东的日头、宜宾山间的槐树。沿着六幕长卷缓缓向下走，看歌从哪里来，又怎样被一代代人记住。</p>
+   <span class="pro-scroll">共六幕 · 缓缓向下<i aria-hidden="true"></i></span>
+  </div>
+ </div>
+ <div class="hall-stage" id="hall-stage"></div>
+ <div class="hall-epilogue">
+  <div class="pro-inner">
+   <div class="eyebrow">故事馆 · 卷尾</div>
+   <h2>歌未唱完，山河不止六幕。</h2>
+   <p>读过了它们的来处，再回到旋律里去——或者亲手挑几件乐器，编一份属于你的心意。</p>
+   <div class="epilogue-links"><a href="#songs" data-flow>返回曲库 ↖</a><a href="#listening" data-flow>体验乐器组合 ↗</a></div>
+  </div>
+ </div>
+</section>
 <dialog id="record-player" class="record-dialog" aria-labelledby="record-title" data-playing="false">
  <div class="record-top"><span>山河留声 / SOUNDS ON VINYL</span><button id="record-close" aria-label="收起唱片，返回曲目列表">收起唱片 ×</button></div>
  <div class="record-layout">
@@ -298,7 +368,7 @@ main>section{margin-block-start:calc(var(--gap-section)*.6)}
    <div class="record-sleeve"><div class="record-disc"><img id="record-art" class="record-art" alt=""><span class="record-spindle" aria-hidden="true">山河留声</span></div></div>
    <small>滚动切歌 · 左右方向键切换 · 触屏左右轻扫</small>
   </div>
-  <article class="record-story" tabindex="0" aria-label="歌曲介绍与历史文化背景"><span class="record-kicker" id="record-kind"></span><h2 id="record-title"></h2><p class="record-region" id="record-region"></p><h3>曲目介绍</h3><p id="record-intro"></p><h3>历史背景</h3><p id="record-history"></p><h3>文化故事</h3><p id="record-culture"></p><p style="font-size:10px;margin-top:20px;color:#8e9d87">唱片封面采用所提供的摄影图片，作为视觉意象。</p></article>
+  <article class="record-story" tabindex="0" aria-label="歌曲介绍与历史文化背景"><span class="record-kicker" id="record-kind"></span><h2 id="record-title"></h2><p class="record-region" id="record-region"></p><h3>曲目介绍</h3><p id="record-intro"></p><h3>历史背景</h3><p id="record-history"></p><h3>文化故事</h3><p id="record-culture"></p><button type="button" class="hall-jump" id="hall-jump">在故事馆细读这一幕 ↗</button><p style="font-size:10px;margin-top:20px;color:#8e9d87">唱片封面采用所提供的摄影图片，作为视觉意象。</p></article>
  </div>
  <div class="record-bottom"><div class="record-transport"><span id="record-count" class="record-count"></span><button id="record-previous" aria-label="上一首">│◀</button><button id="record-toggle" class="transport" aria-label="暂停歌曲">Ⅱ</button><button id="record-next" aria-label="下一首">▶│</button></div><div class="record-timeline"><span id="record-current">0:00</span><input id="record-seek" type="range" min="0" max="1" step="0.1" value="0" aria-label="唱片播放进度" disabled><span id="record-duration">—:—</span></div><p id="record-status" class="record-status" role="status" aria-live="polite"></p></div>
 </dialog>
@@ -306,6 +376,8 @@ main>section{margin-block-start:calc(var(--gap-section)*.6)}
 <!-- 固定 CDN 版本：无需框架、打包或构建。p5.sound 必须在 p5.js 之后加载。 -->
 <script defer src="https://cdn.jsdelivr.net/npm/p5@1.11.3/lib/p5.min.js"></script>
 <script defer src="https://cdn.jsdelivr.net/npm/p5@1.11.3/lib/addons/p5.sound.min.js"></script>
+<script defer src="assets/gsap/gsap.min.js"></script>
+<script defer src="assets/gsap/ScrollTrigger.min.js"></script>
 <script>
 'use strict';
 const $ = s => document.querySelector(s);
@@ -410,14 +482,73 @@ function paintScroll(now){
 }
 function queueScroll(){if(!scrollFrame)scrollFrame=requestAnimationFrame(paintScroll);}
 window.addEventListener('scroll',queueScroll,{passive:true});window.addEventListener('resize',()=>{measureOpening();queueScroll();});reducedScroll.addEventListener('change',queueScroll);queueScroll();
+// 民歌故事馆：六幕长卷。叙事复用 songStories，封面复用唱片摄影，引子为传统公版唱词。
+const hallMeta=[
+ {num:'壹',epigraph:'“跑马溜溜的山上，一朵溜溜的云哟。”',place:'跑马山 · 康定城'},
+ {num:'贰',epigraph:'“太阳出来啰儿，喜洋洋欧啷啰。”',place:'川东石柱 · 土家山寨'},
+ {num:'叁',epigraph:'“高高山上一树槐，手把栏杆望郎来。”',place:'川南宜宾 · 山野槐荫'},
+ {num:'肆',epigraph:'“正月采花无花采，二月采花花正开。”',place:'川西北南坪 · 九寨沟一带'},
+ {num:'伍',epigraph:'“黄杨扁担软溜溜，挑担下酉州。”',place:'重庆秀山 · 白粉墙村'},
+ {num:'陆',epigraph:'“荷包绣给郎佩戴。”',place:'川南宜宾 · 女儿家的针线笸箩'}
+];
+function buildStoryHall(){
+ const stage=$('#hall-stage');if(!stage||stage.children.length)return;
+ songStories.forEach((story,i)=>{
+  const meta=hallMeta[i],act=document.createElement('article');
+  act.className='hall-act';act.id='hall-act-'+i;act.dataset.act=String(i);
+  act.innerHTML='<div class="act-backdrop" style="background-image:url(\'assets/record-'+(i+1)+'.jpg\')" role="img" aria-label="'+story.region+'风景意象"></div><div class="act-veil" aria-hidden="true"></div><div class="act-inner"><div class="act-lead"><span class="act-number"><b>第'+meta.num+'幕</b>0'+(i+1)+' / 06</span><span class="act-kicker">'+story.kind+' · '+story.region+'</span><h2 class="act-title">'+tracks[i].title+'</h2><p class="act-epigraph">'+meta.epigraph+'</p></div><div class="act-body"><h3>起源之地 · '+meta.place+'</h3><p>'+story.intro+'</p><h3>流传之路</h3><p>'+story.history+'</p><h3>歌里乾坤</h3><p>'+story.culture+'</p></div></div>';
+  stage.appendChild(act);
+ });
+}
+// 滚动叙事仅在允许动态效果时启用；GSAP 加载失败或用户偏好减少动态时，长卷保持完整静态可读。
+let hallInited=false;
+function initStoryHall(){
+ if(hallInited)return;
+ if(!window.gsap||!window.ScrollTrigger){
+  // GSAP 为 defer 加载；直达 #stories 时可能尚未就绪，等 load 后重试一次，仍失败则保持静态长卷。
+  if(document.readyState!=='complete')window.addEventListener('load',()=>{hallInited=false;initStoryHall();},{once:true});
+  else hallInited=true;
+  return;
+ }
+ if(reducedScroll.matches){hallInited=true;return;}
+ hallInited=true;
+ gsap.registerPlugin(ScrollTrigger);
+ const mm=gsap.matchMedia();
+ mm.add('(min-width:801px)',()=>{
+  gsap.timeline({scrollTrigger:{trigger:'.hall-prologue',start:'top top',end:'+=60%',scrub:1,pin:true,anticipatePin:1}})
+   .to('.hall-prologue .pro-scroll',{opacity:0,duration:.18,ease:'none'},0)
+   .to('.hall-prologue .pro-inner',{y:-44,opacity:0,duration:.5,ease:'none'},.3);
+  document.querySelectorAll('.hall-act').forEach(act=>{
+   const tl=gsap.timeline({scrollTrigger:{trigger:act,start:'top top',end:'+=115%',scrub:1,pin:true,anticipatePin:1}});
+   tl.fromTo(act.querySelector('.act-backdrop'),{scale:1.14},{scale:1,ease:'none',duration:1},0)
+     .fromTo(act.querySelectorAll('.act-lead > *'),{y:46,opacity:0},{y:0,opacity:1,duration:.34,stagger:.07,ease:'power1.out'},.04)
+     .fromTo(act.querySelectorAll('.act-body h3, .act-body p'),{y:30,opacity:0},{y:0,opacity:1,duration:.28,stagger:.05,ease:'power1.out'},.3);
+  });
+  gsap.fromTo('.hall-epilogue .pro-inner',{y:44,opacity:0},{y:0,opacity:1,ease:'power1.out',scrollTrigger:{trigger:'.hall-epilogue',start:'top 80%',end:'top 42%',scrub:1}});
+ });
+ mm.add('(max-width:800px)',()=>{
+  document.querySelectorAll('.hall-act').forEach(act=>{
+   gsap.fromTo(act.querySelectorAll('.act-lead > *, .act-body h3, .act-body p'),{y:28,opacity:0},{y:0,opacity:1,duration:.8,stagger:.06,ease:'power1.out',scrollTrigger:{trigger:act,start:'top 74%',toggleActions:'play none none none'}});
+  });
+ });
+ ScrollTrigger.refresh();
+}
+$('#hall-jump').addEventListener('click',()=>{
+ const index=Math.max(0,previewSelected);
+ $('#record-player').close();
+ showBranch('#stories');history.replaceState(null,'','#stories');
+ document.getElementById('hall-act-'+index)?.scrollIntoView({behavior:'instant',block:'start'});
+});
 // 双入口只展示当前分支；切换沿用音源取消与释放逻辑。
 function showBranch(id){
- const branch=id==='#songs'?'songs':id==='#listening'?'listening':null;
- for(const name of ['crossroads','songs','listening']){
+ const branch=id==='#songs'?'songs':id==='#listening'?'listening':id==='#stories'?'stories':null;
+ for(const name of ['crossroads','songs','listening','stories']){
   const panel=document.getElementById(name),visible=name===(branch||'crossroads');
   panel.hidden=!visible;panel.classList.remove('branch-enter');
   if(visible&&id!=='#overture')requestAnimationFrame(()=>panel.classList.add('branch-enter'));
  }
+ if(branch==='stories')initStoryHall();
+ if(window.ScrollTrigger)ScrollTrigger.refresh();
 }
 showBranch(location.hash);
 document.querySelectorAll('[data-flow]').forEach(link=>link.addEventListener('click',event=>{
@@ -426,7 +557,7 @@ document.querySelectorAll('[data-flow]').forEach(link=>link.addEventListener('cl
  destination.setAttribute('tabindex','-1');destination.focus({preventScroll:true});destination.scrollIntoView({behavior:reducedScroll.matches?'instant':'smooth',block:'start'});
  measureOpening();queueScroll();history.replaceState(null,'',id);
 }));
-window.addEventListener('hashchange',()=>{leavePlayback();showBranch(location.hash);document.querySelector(['#songs','#listening','#crossroads','#overture'].includes(location.hash)?location.hash:'#overture')?.scrollIntoView({behavior:'instant'});});
+window.addEventListener('hashchange',()=>{leavePlayback();showBranch(location.hash);document.querySelector(['#songs','#listening','#crossroads','#overture','#stories'].includes(location.hash)?location.hash:'#overture')?.scrollIntoView({behavior:'instant'});});
 // 入口轻微倾斜，触屏与减少动态效果时保持稳定。
 document.querySelectorAll('.portal').forEach(portal=>{
  portal.addEventListener('pointermove',event=>{if(reducedScroll.matches||event.pointerType!=='mouse')return;const r=portal.getBoundingClientRect();portal.style.setProperty('--portal-x',((event.clientX-r.left)/r.width-.5)*7+'deg');portal.style.setProperty('--portal-y',(.5-(event.clientY-r.top)/r.height)*5+'deg');});
@@ -546,6 +677,7 @@ const songStories=[
  {kind:'秀山民歌 · 花灯调',region:'四川 · 川东（秀山）',intro:'“黄杨扁担软溜溜”以一根扁担起兴，唱出挑担下酉州的轻快脚步，是流传极广的花灯调。',history:'歌曲起源于重庆市秀山县白粉墙村一带，以秀山民歌为代表的歌唱传统已列入国家级非物质文化遗产名录，并经几代歌唱家的演绎传遍全国。',culture:'扁担本是山乡挑运的重负，歌里却把它唱得柔软有弹性。劳动工具变成节拍，脚步变成旋律，正是山地生活里举重若轻的乐观。'},
  {kind:'四川民歌 · 时调',region:'四川 · 川南（宜宾）',intro:'“荷包绣给郎佩戴”，一针一线绣进少女心事，以赠物传情、欲说还休，是各地都有传唱的经典时调。',history:'四川宜宾一带传唱的《绣荷包》于二十世纪五十年代由詹亚琴演唱录音留存，代表了川南民间时调的婉转韵味。',culture:'绣荷包是旧时女儿家的私房情感：花样选得用心，针脚藏得住话。以物寄情的含蓄表达，正是民间情歌最动人的分寸。'}
 ];
+buildStoryHall();
 const cards=[...document.querySelectorAll('.instrument')],songRows=[...document.querySelectorAll('.song-row')];
 const chosenInstruments=new Set();
 const combinationTracks={3:0,5:2,6:1,7:2,9:4,10:5,11:0,12:3,13:5,14:3,15:4};
