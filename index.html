@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <!--
 MIT License
 
@@ -227,18 +227,119 @@ main>section{margin-block-start:calc(var(--gap-section)*.6)}
 .hall-act{position:relative;overflow:hidden;display:flex;align-items:center;min-height:100svh;min-height:100dvh}
 .act-backdrop{position:absolute;inset:-7%;background-size:cover;background-position:center;filter:saturate(.5) brightness(.46)}
 .act-veil{position:absolute;inset:0;background:linear-gradient(90deg,#0b201b 6%,#0b201bd9 44%,#0b201b59 82%),linear-gradient(#0b201b45,#0b201bd6)}
-.act-inner{position:relative;z-index:2;width:min(1160px,100% - clamp(2.5rem,9vw,7rem));margin-inline:auto;display:grid;grid-template-columns:minmax(0,1.08fr) minmax(0,1fr);gap:clamp(2.5rem,6vw,5.5rem);align-items:center;padding:120px 0 96px}
+.act-inner{position:relative;z-index:2;width:min(1160px,100% - clamp(2.5rem,9vw,7rem));margin-inline:auto;min-height:100svh;min-height:100dvh;display:flex;flex-direction:column;justify-content:center;align-items:flex-start;gap:34px;padding:110px 0 90px}
 .act-lead{min-width:0}
+.act-lead--center{align-self:center;text-align:center}
+.act-title--chars span{display:inline-block;min-width:.34em}
 .act-number{font:12px Georgia,serif;letter-spacing:5px;color:#d9c58f9e}
 .act-number b{font-weight:400;font-family:'Noto Serif SC',serif;font-size:15px;color:#d9c58f;margin-right:10px}
 .act-kicker{display:block;font-size:11px;letter-spacing:3px;color:#b8c3a9;margin-top:14px}
 .act-title{font:500 clamp(34px,4.2vw,56px) 'Noto Serif SC',serif;letter-spacing:5px;line-height:1.35;margin:14px 0 20px;color:#f0e5c6}
 .act-epigraph{font:14px/2.1 'Noto Serif SC',serif;color:#d6c18e;letter-spacing:2px;margin:0;max-width:34ch}
-.act-body{min-width:0;border-left:1px solid #d9c58f2e;padding-left:clamp(1.5rem,3vw,2.5rem)}
-.act-body h3{font-size:12.5px;font-weight:400;letter-spacing:3.5px;color:#d9c58f;margin:1.5rem 0 .8rem}
-.act-body h3:first-child{margin-top:0}
-.act-body p{font-size:14.5px;line-height:2.05;color:#c9d2bd;margin:0;max-width:52ch}
+/* 第一幕 · 云笺字浮 */
+.cloud-field{position:absolute;inset:0;pointer-events:none}
+.cloud{position:absolute;width:34vw;height:10vw;border-radius:50vw;filter:blur(2px);background:radial-gradient(ellipse at center,#b8c3a92e,#b8c3a905 70%)}
+.cloud.c1{top:15%;left:5%}
+.cloud.c2{top:66%;left:58%}
+.cloud.c3{top:38%;left:30%;width:22vw;height:7vw}
+.cloud-notes{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:22px;margin-top:36px;align-self:stretch}
+.cloud-note{background:#0e2a22b0;border:1px solid #d9c58f2b;border-radius:4px;padding:22px 20px;text-align:left}
+.cloud-note b{display:block;font-size:11px;letter-spacing:3px;color:#d9c58f;font-weight:400;margin-bottom:10px}
+.cloud-note p{font-size:13.5px;line-height:1.95;color:#c9d2bd;margin:0}
+/* 第二幕 · 日升换天 */
+.sunrise{position:absolute;inset:0;overflow:hidden;pointer-events:none}
+.sun{position:absolute;right:16%;top:60%;width:110px;height:110px;border-radius:50%;background:radial-gradient(circle,#efe0ae,#d9c58f 55%,#d9c58f00 74%);box-shadow:0 0 90px 34px #d9c58f2e}
+.sunrise-glow{position:absolute;inset:0;background:linear-gradient(18deg,#d9c58f33,#d9c58f00 58%)}
+.hill{position:absolute;bottom:-2px;left:0;width:104%;height:24vh}
+.hill path{fill:#0a1b15}
+.hill-near path{fill:#081510}
+.act--2 .act-inner{justify-content:flex-end;padding-bottom:14vh}
+.sun-notes{max-width:62ch}
+.sun-notes p{font-size:14.5px;line-height:2.05;color:#c9d2bd;margin:0 0 20px}
+.sun-notes b{display:block;font-size:11px;letter-spacing:3px;color:#d9c58f;font-weight:400;margin-bottom:6px}
+/* 第三幕 · 槐枝自绘 + 三问三叹 */
+.act--3 .act-inner{flex-direction:row;align-items:center;gap:clamp(2.5rem,6vw,5.5rem)}
+.act--3 .act-lead{flex:0 0 42%}
+.huai-branch{width:min(320px,86%);margin-top:26px;overflow:visible}
+.huai-branch .draw{fill:none;stroke:#b8c3a9;stroke-width:2;stroke-linecap:round}
+.huai-branch .bloom{fill:#d9c58f}
+.qa-notes{flex:1;min-width:0;border-left:1px solid #d9c58f2e;padding-left:clamp(1.5rem,3vw,2.5rem);display:flex;flex-direction:column;gap:26px}
+.qa-item{margin:0;font-size:14.5px;line-height:2.05;color:#c9d2bd;position:relative;padding-left:22px}
+.qa-item:before{content:'';position:absolute;left:0;top:12px;width:7px;height:7px;border-radius:50%;background:#d9c58f}
+.qa-item b{display:block;font-size:12px;letter-spacing:3px;color:#d9c58f;font-weight:400;margin-bottom:8px}
+.petal{position:absolute;top:-24px;width:10px;height:14px;border-radius:60% 60% 60% 60%/70% 70% 50% 50%;background:#d9c58f59;pointer-events:none;animation:petal-fall linear infinite}
+.petal.p1{left:12%;animation-duration:9s}
+.petal.p2{left:30%;animation-duration:12s;animation-delay:2s}
+.petal.p3{left:52%;animation-duration:10s;animation-delay:4s}
+.petal.p4{left:70%;animation-duration:13s;animation-delay:1s}
+.petal.p5{left:84%;animation-duration:11s;animation-delay:5s}
+.petal.p6{left:42%;animation-duration:14s;animation-delay:7s}
+@keyframes petal-fall{0%{transform:translateY(-4vh) rotate(0deg)}100%{transform:translateY(104vh) rotate(300deg)}}
+/* 第四幕 · 花令横向卷轴 */
+.act--4 .act-inner{justify-content:center;gap:44px}
+.act4-lead{max-width:640px}
+.act-intro{font-size:14.5px;line-height:2.05;color:#c9d2bd;margin:18px 0 0}
+.h-track-wrap{position:relative;align-self:stretch}
+.h-hint{position:absolute;right:0;top:-32px;font-size:10px;letter-spacing:2px;color:#b8c3a9}
+.h-track{display:flex;gap:24px;align-items:stretch;will-change:transform}
+.month-card{flex:0 0 240px;background:#0e2a22b0;border:1px solid #d9c58f2b;border-radius:4px;padding:26px 22px}
+.month-card svg{width:60px;height:60px;margin-bottom:14px}
+.month-card svg ellipse{fill:none;stroke:#d9c58f;stroke-width:1.6;opacity:.9}
+.month-card svg circle{fill:#d9c58f}
+.month-card b{display:block;font:500 22px 'Noto Serif SC',serif;letter-spacing:4px;color:#f0e5c6;margin-bottom:8px}
+.month-card span{font-size:12.5px;line-height:1.9;color:#b8c3a9}
+.month-card--note{flex-basis:400px;display:flex;flex-direction:column;gap:18px}
+.month-card--note b{font-size:11px;letter-spacing:3px;color:#d9c58f;font-weight:400}
+.month-card--note p{font-size:13.5px;line-height:1.95;color:#c9d2bd;margin:8px 0 0}
+/* 第五幕 · 挑担驿路 */
+.act--5 .act-inner{flex-direction:row;align-items:center;gap:clamp(2.5rem,6vw,5.5rem)}
+.act--5 .act-lead{flex:0 0 38%}
+.road-notes{flex:1;min-width:0}
+.road{position:relative;height:66px;margin-bottom:30px}
+.road:before{content:'';position:absolute;left:0;right:0;top:32px;height:1px;background:#d9c58f3d}
+.way{position:absolute;top:26px;width:13px;height:13px;border-radius:50%;border:1px solid #d9c58f;background:#0b201b;opacity:var(--way-o,1)}
+.way.w1{left:1%}
+.way.w2{left:48%}
+.way.w3{right:1%}
+.way b{position:absolute;top:-28px;left:50%;transform:translateX(-50%);white-space:nowrap;font-size:10.5px;letter-spacing:2px;color:#b8c3a9;font-weight:400}
+.porter-wrap{position:absolute;top:8px;left:0;width:54px;height:42px;animation:porter-bob 1.7s ease-in-out infinite}
+.porter-wrap circle{fill:#d9c58f26;stroke:#d9c58f;stroke-width:2}
+.porter-wrap line{stroke:#d9c58f;stroke-width:2;stroke-linecap:round}
+@keyframes porter-bob{0%,100%{transform:translateY(0)}50%{transform:translateY(-6px)}}
+.road-note{margin:0 0 22px;font-size:14.5px;line-height:2.05;color:#c9d2bd;padding-left:20px;border-left:2px solid #d9c58f4d}
+.road-note:last-child{margin-bottom:0}
+.road-note b{display:block;font-size:11px;letter-spacing:3px;color:#d9c58f;font-weight:400;margin-bottom:6px}
+/* 第六幕 · 针线自绣 */
+.act--6 .act-inner{flex-direction:row;align-items:center;gap:clamp(2rem,4vw,3.5rem)}
+.pouch-scene{flex:0 0 280px;display:flex;flex-direction:column;align-items:center;gap:16px}
+.pouch{width:min(230px,58vw);overflow:visible}
+.pouch .draw{fill:none;stroke-linecap:round}
+.pouch-outline{stroke:#b8c3a9;stroke-width:1.6}
+.pouch-stitch{stroke:#d9c58f;stroke-width:2}
+.pouch-cord{stroke:#d6c18e;stroke-width:1.4}
+.pouch-tassel{stroke:#d9c58f;stroke-width:1.4}
+.pouch .bloom{fill:none;stroke:#d9c58f;stroke-width:1.6}
+.stitch-count{font:12px Georgia,serif;letter-spacing:2px;color:#b8c3a9}
+.stitch-count b{font-size:20px;color:#d9c58f;font-weight:400;margin-right:6px}
+.stitch-notes{flex:1;min-width:0;display:flex;flex-direction:column;gap:24px}
+.stitch-item{margin:0;font-size:14.5px;line-height:2.05;color:#c9d2bd;position:relative;padding-left:26px}
+.stitch-item:before{content:'';position:absolute;left:0;top:12px;width:16px;height:1px;background:#d9c58f}
+.stitch-item b{display:block;font-size:11px;letter-spacing:3px;color:#d9c58f;font-weight:400;margin-bottom:6px}
 .hall-epilogue{min-height:82svh;display:grid;place-content:center;text-align:center;padding:70px clamp(1.5rem,6vw,4rem);border-top:1px solid #d9c58f1c}
+.hall-film{min-height:100svh;display:grid;place-content:center;padding:90px clamp(1.5rem,6vw,4rem);text-align:center;border-top:1px solid #d9c58f1c}
+.film-inner{max-width:960px;margin-inline:auto;width:100%}
+.hall-film h2{font:500 clamp(24px,3.2vw,40px) 'Noto Serif SC',serif;letter-spacing:4px;margin:18px 0 16px;color:#f0e5c6}
+.hall-film p{font-size:14px;line-height:2.1;color:#b8c3a9;max-width:56ch;margin:0 auto 44px}
+.film-frame{margin:0;border:1px solid #d9c58f38;border-radius:6px;padding:10px;background:#081e17cc}
+.film-frame video{display:block;width:100%;aspect-ratio:16/9;object-fit:cover;border-radius:3px;background:#000}
+.film-frame figcaption{font-size:11px;letter-spacing:3px;color:#d9c58f99;padding:14px 4px 2px}
+@media(max-width:800px){.hall-film{min-height:0;padding:70px clamp(1.2rem,5vw,2rem)}.hall-film p{margin-bottom:30px}.film-frame{padding:7px}}
+.hall-rail{position:fixed;right:26px;top:50%;transform:translateY(-50%);display:flex;flex-direction:column;gap:12px;opacity:0;pointer-events:none;transition:opacity .6s var(--ease);z-index:26}
+.story-hall.branch-enter .hall-rail{opacity:1;pointer-events:auto}
+.hall-rail button{width:34px;height:34px;border-radius:50%;border:1px solid #d9c58f33;background:#0e2a2266;color:#b8c3a9;font:500 13px/1 'Noto Serif SC',serif;cursor:pointer;transition:color .3s,border-color .3s,background .3s,transform .3s;padding:0}
+.hall-rail button:hover{color:#f0e5c6;border-color:#d9c58f80}
+.hall-rail button.on{color:#081e17;background:#d9c58f;border-color:#d9c58f;transform:scale(1.12)}
+@media(max-width:1024px){.hall-rail{display:none}}
 .hall-epilogue h2{font:500 clamp(26px,3.4vw,42px) 'Noto Serif SC',serif;letter-spacing:5px;margin:18px 0 20px;color:#f0e5c6}
 .hall-epilogue p{font-size:14px;line-height:2.1;color:#b8c3a9;max-width:52ch;margin:0 auto}
 .epilogue-links{display:flex;gap:16px;justify-content:center;flex-wrap:wrap;margin-top:38px}
@@ -248,14 +349,23 @@ main>section{margin-block-start:calc(var(--gap-section)*.6)}
 .hall-jump{display:inline-block;margin-top:22px;cursor:pointer;font-family:inherit}
 @media(max-width:800px){
 .hall-head{padding:16px 18px}.hall-head .brand{font-size:16px}.hall-head nav{gap:14px;font-size:10px}
-.act-inner{grid-template-columns:1fr;gap:26px;padding:88px 0 70px}
+.act-inner{gap:26px;padding:88px 0 70px}
 .act-veil{background:linear-gradient(#0b201bd9,#0b201bf2 78%),linear-gradient(#0b201b59,#0b201b59)}
-.act-body{border-left:0;border-top:1px solid #d9c58f2e;padding-left:0;padding-top:22px}
-.act-body p{font-size:14px}
+.act--3 .act-inner,.act--5 .act-inner,.act--6 .act-inner{flex-direction:column;align-items:stretch}
+.act--2 .act-inner{padding-bottom:12vh}
+.qa-notes{border-left:0;border-top:1px solid #d9c58f2e;padding-left:0;padding-top:22px}
+.act--3 .act-lead,.act--5 .act-lead{flex:none}
+.h-track-wrap{overflow-x:auto;scroll-snap-type:x mandatory;padding-bottom:8px}
+.h-track{width:max-content}
+.month-card{scroll-snap-align:start}
+.act--6 .pouch-scene{flex:none;align-self:center}
 .hall-prologue h1{letter-spacing:4px}
+.cloud-notes{grid-template-columns:1fr}
+.sun{width:76px;height:76px}
 }
+@media(prefers-reduced-motion:reduce){.petal,.porter-wrap,.cloud{animation:none!important}}
 @media(prefers-reduced-motion:reduce){.hall-head{position:static}}
-@media(max-height:820px) and (min-width:801px){.act-inner{padding:92px 0 66px}.act-body p{font-size:13.5px;line-height:1.9}.act-title{margin-bottom:14px}}
+@media(max-height:820px) and (min-width:801px){.act-inner{padding:92px 0 66px}.cloud-note p,.sun-notes p,.qa-item,.road-note,.stitch-item,.act-intro,.month-card span,.month-card--note p{font-size:13px;line-height:1.85}.act-title{margin-bottom:14px}.sun-notes p,.road-note{margin-bottom:14px}}
 </style>
 </head>
 <body>
@@ -352,6 +462,20 @@ main>section{margin-block-start:calc(var(--gap-section)*.6)}
   </div>
  </div>
  <div class="hall-stage" id="hall-stage"></div>
+ <section class="hall-film" aria-labelledby="film-title">
+  <div class="film-inner">
+   <div class="eyebrow">采风影像 · 山河原声</div>
+   <h2 id="film-title">歌在路上，镜头替我们记住了。</h2>
+   <p>三分钟的山河行脚：高原的云、寺墙的彩绘、落雪的屋檐与林间的熊猫——山歌就长在这一路风景里。建议戴上耳机，听听这片土地自己的声音。</p>
+   <figure class="film-frame">
+    <video id="field-film" controls preload="none" playsinline poster="assets/field-recording-poster.jpg">
+     <source src="assets/field-recording.mp4" type="video/mp4">
+     您的浏览器不支持视频播放。
+    </video>
+    <figcaption>行旅实录 · 约 3 分 48 秒 · 含原声</figcaption>
+   </figure>
+  </div>
+ </section>
  <div class="hall-epilogue">
   <div class="pro-inner">
    <div class="eyebrow">故事馆 · 卷尾</div>
@@ -360,6 +484,14 @@ main>section{margin-block-start:calc(var(--gap-section)*.6)}
    <div class="epilogue-links"><a href="#songs" data-flow>返回曲库 ↖</a><a href="#listening" data-flow>体验乐器组合 ↗</a></div>
   </div>
  </div>
+ <nav class="hall-rail" aria-label="六幕进度导航">
+  <button type="button" data-jump="0" aria-label="跳到第一幕">壹</button>
+  <button type="button" data-jump="1" aria-label="跳到第二幕">贰</button>
+  <button type="button" data-jump="2" aria-label="跳到第三幕">叁</button>
+  <button type="button" data-jump="3" aria-label="跳到第四幕">肆</button>
+  <button type="button" data-jump="4" aria-label="跳到第五幕">伍</button>
+  <button type="button" data-jump="5" aria-label="跳到第六幕">陆</button>
+ </nav>
 </section>
 <dialog id="record-player" class="record-dialog" aria-labelledby="record-title" data-playing="false">
  <div class="record-top"><span>山河留声 / SOUNDS ON VINYL</span><button id="record-close" aria-label="收起唱片，返回曲目列表">收起唱片 ×</button></div>
@@ -374,10 +506,10 @@ main>section{margin-block-start:calc(var(--gap-section)*.6)}
 </dialog>
 <dialog id="about"><h2>让山歌，在指尖回响。</h2><p>「山歌传情」是一件以中国传统乐器与山歌为线索的音画交互课程作品。选择多件乐器，再点击聆听以揭晓组合匹配的曲目。组合匹配是作品的互动规则，并不代表录音的真实配器。声音化为云雾，鼠标成为照见山河的光。</p><p>由 p5.js 与 p5.sound 驱动，FFT 频谱与音量共同影响粒子。曲库收录六首四川山歌与民歌的历史人声演唱录音选段（旋律为传统民歌公版），录音来源与致谢见 README.txt，仅用于非商业教学展示。</p><p>代码使用 MIT 许可。</p><button id="close-about">回到山间</button></dialog>
 <!-- 固定 CDN 版本：无需框架、打包或构建。p5.sound 必须在 p5.js 之后加载。 -->
-<script defer src="https://cdn.jsdelivr.net/npm/p5@1.11.3/lib/p5.min.js"></script>
-<script defer src="https://cdn.jsdelivr.net/npm/p5@1.11.3/lib/addons/p5.sound.min.js"></script>
 <script defer src="assets/gsap/gsap.min.js"></script>
 <script defer src="assets/gsap/ScrollTrigger.min.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/p5@1.11.3/lib/p5.min.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/p5@1.11.3/lib/addons/p5.sound.min.js"></script>
 <script>
 'use strict';
 const $ = s => document.querySelector(s);
@@ -491,46 +623,203 @@ const hallMeta=[
  {num:'伍',epigraph:'“黄杨扁担软溜溜，挑担下酉州。”',place:'重庆秀山 · 白粉墙村'},
  {num:'陆',epigraph:'“荷包绣给郎佩戴。”',place:'川南宜宾 · 女儿家的针线笸箩'}
 ];
+// 六幕各持一种交互形式（参考 GitHub 优秀 scrollytelling 案例）：云笺字浮 / 日升换天 / 槐枝自绘问答 / 花令横向卷轴 / 挑担驿路 / 针线自绣。
+function actLead(i,story,meta){
+ return '<span class="act-number"><b>第'+meta.num+'幕</b>0'+(i+1)+' / 06</span><span class="act-kicker">'+story.kind+' · '+story.region+'</span><h2 class="act-title">'+tracks[i].title+'</h2><p class="act-epigraph">'+meta.epigraph+'</p>';
+}
+const actShell=(i,story,inner)=>'<article class="hall-act act--'+(i+1)+'" id="hall-act-'+i+'" data-act="'+i+'"><div class="act-backdrop" style="background-image:url(\'assets/record-'+(i+1)+'.jpg\')" role="img" aria-label="'+story.region+'风景意象"></div><div class="act-veil" aria-hidden="true"></div>'+inner+'</article>';
 function buildStoryHall(){
  const stage=$('#hall-stage');if(!stage||stage.children.length)return;
  songStories.forEach((story,i)=>{
-  const meta=hallMeta[i],act=document.createElement('article');
-  act.className='hall-act';act.id='hall-act-'+i;act.dataset.act=String(i);
-  act.innerHTML='<div class="act-backdrop" style="background-image:url(\'assets/record-'+(i+1)+'.jpg\')" role="img" aria-label="'+story.region+'风景意象"></div><div class="act-veil" aria-hidden="true"></div><div class="act-inner"><div class="act-lead"><span class="act-number"><b>第'+meta.num+'幕</b>0'+(i+1)+' / 06</span><span class="act-kicker">'+story.kind+' · '+story.region+'</span><h2 class="act-title">'+tracks[i].title+'</h2><p class="act-epigraph">'+meta.epigraph+'</p></div><div class="act-body"><h3>起源之地 · '+meta.place+'</h3><p>'+story.intro+'</p><h3>流传之路</h3><p>'+story.history+'</p><h3>歌里乾坤</h3><p>'+story.culture+'</p></div></div>';
-  stage.appendChild(act);
+  const meta=hallMeta[i];let html='';
+  if(i===0){
+   // 第一幕 · 云笺字浮：歌名逐字浮起，三段叙事作云笺错落漂来
+   const chars=tracks[i].title.split('').map(c=>'<span>'+c+'</span>').join('');
+   html=actShell(i,story,'<div class="cloud-field" aria-hidden="true"><i class="cloud c1"></i><i class="cloud c2"></i><i class="cloud c3"></i></div><div class="act-inner act-inner--stage"><div class="act-lead act-lead--center"><span class="act-number"><b>第'+meta.num+'幕</b>0'+(i+1)+' / 06</span><span class="act-kicker">'+story.kind+' · '+story.region+'</span><h2 class="act-title act-title--chars">'+chars+'</h2><p class="act-epigraph">'+meta.epigraph+'</p></div><div class="cloud-notes"><aside class="cloud-note cn1"><b>云笺 · 起</b><p>'+story.intro+'</p></aside><aside class="cloud-note cn2"><b>云笺 · 传</b><p>'+story.history+'</p></aside><aside class="cloud-note cn3"><b>云笺 · 歌</b><p>'+story.culture+'</p></aside></div></div>');
+  }else if(i===1){
+   // 第二幕 · 日升换天：太阳沿弧线升起，天色由夜转明，叙事随光点亮
+   html=actShell(i,story,'<div class="sunrise" aria-hidden="true"><i class="sunrise-glow"></i><i class="sun"></i><svg class="hill hill-far" viewBox="0 0 1440 220" preserveAspectRatio="none"><path d="M0 220 L0 150 C 240 90 420 130 640 100 C 900 66 1140 120 1440 84 L1440 220 Z"/></svg><svg class="hill hill-near" viewBox="0 0 1440 220" preserveAspectRatio="none"><path d="M0 220 L0 178 C 300 128 560 176 820 140 C 1080 106 1280 160 1440 138 L1440 220 Z"/></svg></div><div class="act-inner act-inner--stage"><div class="act-lead">'+actLead(i,story,meta)+'</div><div class="sun-notes"><p><b>啰儿 · 起</b>'+story.intro+'</p><p><b>啰儿 · 传</b>'+story.history+'</p><p><b>啰儿 · 歌</b>'+story.culture+'</p></div></div>');
+  }else if(i===2){
+   // 第三幕 · 槐枝自绘：枝与花随针脚绘出，落瓣纷飞；叙事作三问三叹
+   html=actShell(i,story,'<i class="petal p1" aria-hidden="true"></i><i class="petal p2" aria-hidden="true"></i><i class="petal p3" aria-hidden="true"></i><i class="petal p4" aria-hidden="true"></i><i class="petal p5" aria-hidden="true"></i><i class="petal p6" aria-hidden="true"></i><div class="act-inner act-inner--stage"><div class="act-lead">'+actLead(i,story,meta)+'<svg class="huai-branch" viewBox="0 0 340 220" aria-hidden="true"><path class="draw" d="M14 206 C 90 170 130 130 168 96 C 210 58 262 40 322 34"/><path class="draw" d="M120 146 C 158 150 196 146 232 122"/><path class="draw" d="M168 96 C 176 116 196 130 224 136"/><circle class="bloom" cx="322" cy="34" r="9"/><circle class="bloom" cx="240" cy="118" r="7"/><circle class="bloom" cx="228" cy="138" r="6"/><circle class="bloom" cx="168" cy="92" r="8"/><circle class="bloom" cx="60" cy="178" r="6"/></svg></div><div class="qa-notes"><p class="qa-item"><b>一问 · 何处生</b>'+story.intro+'</p><p class="qa-item"><b>二问 · 谁人传</b>'+story.history+'</p><p class="qa-item"><b>三叹 · 歌中意</b>'+story.culture+'</p></div></div>');
+  }else if(i===3){
+   // 第四幕 · 十二月花令：竖向滚动驱动横向卷轴
+   const flowers=[[34,'正月','无花可采，万物守志'],[52,'二月','花事初醒，一路采到山前'],[270,'三月','山色渐盛，歌声追着花期'],[350,'腊月','一年花事，收进歌里传唱']];
+   html=actShell(i,story,'<div class="act-inner act4-inner"><div class="act-lead act4-lead">'+actLead(i,story,meta)+'<p class="act-intro">'+story.intro+'</p></div><div class="h-track-wrap" aria-hidden="false"><div class="h-track">'+flowers.map(f=>'<aside class="month-card"><svg viewBox="0 0 80 80" aria-hidden="true">'+[0,1,2,3,4,5].map(k=>'<ellipse cx="40" cy="22" rx="9" ry="17" transform="rotate('+f[0]+' 40 40) rotate('+(k*60)+' 40 40)"/>').join('')+'<circle cx="40" cy="40" r="7"/></svg><b>'+f[1]+'</b><span>'+f[2]+'</span></aside>').join('')+'<aside class="month-card month-card--note"><div><b>流传之路</b><p>'+story.history+'</p></div><div><b>歌里乾坤</b><p>'+story.culture+'</p></div></aside></div><span class="h-hint">花令卷轴 · 顺滚动而行 →</span></div></div>');
+  }else if(i===4){
+   // 第五幕 · 挑担驿路：担夫沿路点行进，三段叙事作驿帖随到随展
+   html=actShell(i,story,'<div class="act-inner act-inner--stage"><div class="act-lead">'+actLead(i,story,meta)+'</div><div class="road-notes"><div class="road" aria-hidden="true"><i class="way w1"><b>白粉墙村 · 出门</b></i><i class="way w2"><b>山道十八弯 · 换肩</b></i><i class="way w3"><b>酉州埠头 · 到埠</b></i><svg class="porter-wrap" viewBox="0 0 60 44"><circle cx="30" cy="8" r="5"/><line x1="6" y1="18" x2="54" y2="14"/><circle cx="14" cy="30" r="6"/><circle cx="47" cy="27" r="6"/></svg></div><p class="road-note"><b>驿帖 · 起</b>'+story.intro+'</p><p class="road-note"><b>驿帖 · 传</b>'+story.history+'</p><p class="road-note"><b>驿帖 · 歌</b>'+story.culture+'</p></div></div>');
+  }else{
+   // 第六幕 · 针线自绣：荷包轮廓与针脚随滚动自绣成形，针脚计数同步
+   html=actShell(i,story,'<div class="act-inner act-inner--stage"><div class="pouch-scene" aria-hidden="true"><svg class="pouch" viewBox="0 0 260 320"><path class="draw pouch-outline" d="M62 74 C 40 150 48 236 130 272 C 212 236 220 150 198 74 C 168 52 92 52 62 74 Z"/><path class="draw pouch-stitch" d="M72 84 C 54 152 62 226 130 258 C 198 226 206 152 188 84"/><path class="draw pouch-cord" d="M62 74 C 104 30 156 30 198 74"/><line class="draw pouch-tassel" x1="130" y1="272" x2="130" y2="306"/><circle class="bloom" cx="130" cy="168" r="10"/></svg><span class="stitch-count"><b>000</b>% 针脚</span></div><div class="act-lead">'+actLead(i,story,meta)+'</div><div class="stitch-notes"><p class="stitch-item"><b>起针 · 曲目</b>'+story.intro+'</p><p class="stitch-item"><b>走线 · 来路</b>'+story.history+'</p><p class="stitch-item"><b>收口 · 歌中</b>'+story.culture+'</p></div></div>');
+  }
+  stage.insertAdjacentHTML('beforeend',html);
  });
 }
 // 滚动叙事仅在允许动态效果时启用；GSAP 加载失败或用户偏好减少动态时，长卷保持完整静态可读。
-let hallInited=false;
+let hallInited=false,hallWait=false;
 function initStoryHall(){
  if(hallInited)return;
  if(!window.gsap||!window.ScrollTrigger){
-  // GSAP 为 defer 加载；直达 #stories 时可能尚未就绪，等 load 后重试一次，仍失败则保持静态长卷。
-  if(document.readyState!=='complete')window.addEventListener('load',()=>{hallInited=false;initStoryHall();},{once:true});
-  else hallInited=true;
+  // GSAP 为 defer 加载；不挂靠 load 事件（任一 CDN 资源挂起都会永久推迟它），改为轮询 gsap 就绪，最多等 30 秒后放弃。
+  if(!hallWait){
+   hallWait=true;let tries=0;
+   const t=setInterval(()=>{
+    tries++;
+    if(window.gsap&&window.ScrollTrigger){clearInterval(t);hallWait=false;initStoryHall();}
+    else if(tries>150){clearInterval(t);hallWait=false;hallInited=true;}
+   },200);
+  }
   return;
  }
  if(reducedScroll.matches){hallInited=true;return;}
  hallInited=true;
  gsap.registerPlugin(ScrollTrigger);
  const mm=gsap.matchMedia();
+ // 序章与尾声
  mm.add('(min-width:801px)',()=>{
   gsap.timeline({scrollTrigger:{trigger:'.hall-prologue',start:'top top',end:'+=60%',scrub:1,pin:true,anticipatePin:1}})
    .to('.hall-prologue .pro-scroll',{opacity:0,duration:.18,ease:'none'},0)
    .to('.hall-prologue .pro-inner',{y:-44,opacity:0,duration:.5,ease:'none'},.3);
-  document.querySelectorAll('.hall-act').forEach(act=>{
-   const tl=gsap.timeline({scrollTrigger:{trigger:act,start:'top top',end:'+=115%',scrub:1,pin:true,anticipatePin:1}});
-   tl.fromTo(act.querySelector('.act-backdrop'),{scale:1.14},{scale:1,ease:'none',duration:1},0)
-     .fromTo(act.querySelectorAll('.act-lead > *'),{y:46,opacity:0},{y:0,opacity:1,duration:.34,stagger:.07,ease:'power1.out'},.04)
-     .fromTo(act.querySelectorAll('.act-body h3, .act-body p'),{y:30,opacity:0},{y:0,opacity:1,duration:.28,stagger:.05,ease:'power1.out'},.3);
-  });
   gsap.fromTo('.hall-epilogue .pro-inner',{y:44,opacity:0},{y:0,opacity:1,ease:'power1.out',scrollTrigger:{trigger:'.hall-epilogue',start:'top 80%',end:'top 42%',scrub:1}});
+  gsap.fromTo('.hall-film .eyebrow,.hall-film h2,.hall-film p,.film-frame',{y:34,opacity:0},{y:0,opacity:1,stagger:.1,duration:.8,ease:'power2.out',scrollTrigger:{trigger:'.hall-film',start:'top 72%',toggleActions:'play none none none'}});
  });
- mm.add('(max-width:800px)',()=>{
-  document.querySelectorAll('.hall-act').forEach(act=>{
-   gsap.fromTo(act.querySelectorAll('.act-lead > *, .act-body h3, .act-body p'),{y:28,opacity:0},{y:0,opacity:1,duration:.8,stagger:.06,ease:'power1.out',scrollTrigger:{trigger:act,start:'top 74%',toggleActions:'play none none none'}});
+ // 第一幕 · 云笺字浮
+ const act1=$('.hall-act.act--1');
+ if(act1){
+  mm.add('(min-width:801px)',()=>{
+   // 文字在幕滑入视口时一次性亮起并保持（滚动回看不消失），pin 时间线只负责视觉 scrub
+   gsap.fromTo(act1.querySelectorAll('.act-number,.act-kicker,.act-title--chars span,.act-epigraph,.cloud-note'),{y:34,opacity:0},{y:0,opacity:1,stagger:.07,duration:.7,ease:'power2.out',scrollTrigger:{trigger:act1,start:'top 68%',toggleActions:'play none none none'}});
+   const tl=gsap.timeline({scrollTrigger:{trigger:act1,start:'top top',end:'+=115%',scrub:1,pin:true,anticipatePin:1}});
+   tl.fromTo(act1.querySelector('.act-backdrop'),{scale:1.14},{scale:1,ease:'none',duration:1},0)
+     .fromTo(act1.querySelectorAll('.cloud.c1'),{x:90},{x:-70,ease:'none',duration:1},0)
+     .fromTo(act1.querySelectorAll('.cloud.c2'),{x:-110},{x:80,ease:'none',duration:1},0)
+     .fromTo(act1.querySelectorAll('.cloud.c3'),{x:60},{x:-50,ease:'none',duration:1},0);
   });
+  mm.add('(max-width:800px)',()=>{
+   gsap.fromTo(act1.querySelectorAll('.act-lead > *, .cloud-note'),{y:26,opacity:0},{y:0,opacity:1,stagger:.06,duration:.8,ease:'power1.out',scrollTrigger:{trigger:act1,start:'top 74%',toggleActions:'play none none none'}});
+  });
+ }
+ // 第二幕 · 日升换天
+ const act2=$('.hall-act.act--2');
+ if(act2){
+  mm.add('(min-width:801px)',()=>{
+   gsap.fromTo(act2.querySelectorAll('.act-lead > *, .sun-notes p'),{y:34,opacity:0},{y:0,opacity:1,stagger:.09,duration:.7,ease:'power2.out',scrollTrigger:{trigger:act2,start:'top 68%',toggleActions:'play none none none'}});
+   const tl=gsap.timeline({scrollTrigger:{trigger:act2,start:'top top',end:'+=115%',scrub:1,pin:true,anticipatePin:1}});
+   tl.fromTo(act2.querySelector('.act-backdrop'),{scale:1.14},{scale:1,ease:'none',duration:1},0)
+     .fromTo(act2.querySelector('.sun'),{y:180,x:40},{y:-120,x:-60,ease:'none',duration:.9},0)
+     .fromTo(act2.querySelector('.sunrise-glow'),{opacity:0},{opacity:.85,ease:'none',duration:.7},.08)
+     .fromTo(act2.querySelector('.hill-far'),{x:-46},{x:0,ease:'none',duration:1},0)
+     .fromTo(act2.querySelector('.hill-near'),{x:60},{x:0,ease:'none',duration:1},0);
+  });
+  mm.add('(max-width:800px)',()=>{
+   gsap.fromTo(act2.querySelectorAll('.act-lead > *, .sun-notes p'),{y:26,opacity:0},{y:0,opacity:1,stagger:.06,duration:.8,ease:'power1.out',scrollTrigger:{trigger:act2,start:'top 74%',toggleActions:'play none none none'}});
+  });
+ }
+ // 第三幕 · 槐枝自绘 + 三问三叹
+ const act3=$('.hall-act.act--3');
+ if(act3){
+  mm.add('(min-width:801px)',()=>{
+   gsap.fromTo(act3.querySelectorAll('.act-lead > *, .qa-item'),{y:34,opacity:0},{y:0,opacity:1,stagger:.09,duration:.7,ease:'power2.out',scrollTrigger:{trigger:act3,start:'top 68%',toggleActions:'play none none none'}});
+   const tl=gsap.timeline({scrollTrigger:{trigger:act3,start:'top top',end:'+=115%',scrub:1,pin:true,anticipatePin:1}});
+   tl.fromTo(act3.querySelector('.act-backdrop'),{scale:1.14},{scale:1,ease:'none',duration:1},0);
+   act3.querySelectorAll('.draw').forEach((p,k)=>{
+    const len=p.getTotalLength();
+    tl.fromTo(p,{strokeDasharray:len,strokeDashoffset:len},{strokeDashoffset:0,ease:'none',duration:.42},.05+k*.09);
+   });
+   tl.fromTo(act3.querySelectorAll('.bloom'),{scale:0,transformOrigin:'center'},{scale:1,stagger:.05,duration:.16,ease:'power1.out'},.44);
+  });
+  mm.add('(max-width:800px)',()=>{
+   gsap.fromTo(act3.querySelectorAll('.act-lead > *, .qa-item'),{y:26,opacity:0},{y:0,opacity:1,stagger:.06,duration:.8,ease:'power1.out',scrollTrigger:{trigger:act3,start:'top 74%',toggleActions:'play none none none'}});
+  });
+ }
+ // 第四幕 · 花令横向卷轴（containerAnimation：竖滚驱动横移）
+ const act4=$('.hall-act.act--4');
+ if(act4){
+  mm.add('(min-width:801px)',()=>{
+   const track=act4.querySelector('.h-track');
+   const dist=()=>Math.max(0,track.scrollWidth-window.innerWidth+120);
+   const scrollTween=gsap.to(track,{x:()=>-dist(),ease:'none',scrollTrigger:{trigger:act4,start:'top top',end:()=>'+='+Math.round(window.innerHeight*1.8),scrub:1,pin:true,anticipatePin:1,invalidateOnRefresh:true}});
+   gsap.fromTo(act4.querySelector('.act-lead').children,{y:40,opacity:0},{y:0,opacity:1,stagger:.06,duration:.5,ease:'power1.out',scrollTrigger:{trigger:act4,start:'top 62%',toggleActions:'play none none none'}});
+   gsap.fromTo(act4.querySelectorAll('.month-card'),{opacity:0,y:30},{opacity:1,y:0,stagger:.1,duration:.5,ease:'power1.out',scrollTrigger:{trigger:act4,start:'top 55%',toggleActions:'play none none none'}});
+  });
+  mm.add('(max-width:800px)',()=>{
+   gsap.fromTo(act4.querySelector('.act-lead').children,{y:26,opacity:0},{y:0,opacity:1,stagger:.06,duration:.8,ease:'power1.out',scrollTrigger:{trigger:act4,start:'top 74%',toggleActions:'play none none none'}});
+  });
+ }
+ // 第五幕 · 挑担驿路
+ const act5=$('.hall-act.act--5');
+ if(act5){
+  mm.add('(min-width:801px)',()=>{
+   gsap.fromTo(act5.querySelectorAll('.act-lead > *, .road-note'),{y:34,opacity:0},{y:0,opacity:1,stagger:.1,duration:.7,ease:'power2.out',scrollTrigger:{trigger:act5,start:'top 68%',toggleActions:'play none none none'}});
+   const tl=gsap.timeline({scrollTrigger:{trigger:act5,start:'top top',end:'+=115%',scrub:1,pin:true,anticipatePin:1}});
+   tl.fromTo(act5.querySelector('.act-backdrop'),{scale:1.14},{scale:1,ease:'none',duration:1},0)
+     .fromTo(act5.querySelector('.porter-wrap'),{x:'-8%'},{x:'92%',ease:'none',duration:.95},.05)
+     .fromTo(act5.querySelectorAll('.way'),{'--way-o':0},{stagger:.3,duration:.2,'--way-o':1},.1);
+  });
+  mm.add('(max-width:800px)',()=>{
+   gsap.fromTo(act5.querySelectorAll('.act-lead > *, .road-note'),{y:26,opacity:0},{y:0,opacity:1,stagger:.06,duration:.8,ease:'power1.out',scrollTrigger:{trigger:act5,start:'top 74%',toggleActions:'play none none none'}});
+  });
+ }
+ // 第六幕 · 针线自绣（针脚计数随进度）
+ const act6=$('.hall-act.act--6');
+ if(act6){
+  mm.add('(min-width:801px)',()=>{
+   gsap.fromTo(act6.querySelectorAll('.act-lead > *, .stitch-item'),{y:34,opacity:0},{y:0,opacity:1,stagger:.1,duration:.7,ease:'power2.out',scrollTrigger:{trigger:act6,start:'top 68%',toggleActions:'play none none none'}});
+   const counter={v:0},countEl=act6.querySelector('.stitch-count b');
+   const tl=gsap.timeline({scrollTrigger:{trigger:act6,start:'top top',end:'+=115%',scrub:1,pin:true,anticipatePin:1}});
+   tl.fromTo(act6.querySelector('.act-backdrop'),{scale:1.14},{scale:1,ease:'none',duration:1},0);
+   act6.querySelectorAll('.draw').forEach((p,k)=>{
+    const len=p.getTotalLength();
+    tl.fromTo(p,{strokeDasharray:len,strokeDashoffset:len},{strokeDashoffset:0,ease:'none',duration:.5},.06+k*.12);
+   });
+   tl.to(counter,{v:100,ease:'none',duration:.86,onUpdate:()=>{countEl.textContent=String(Math.round(counter.v)).padStart(3,'0');}},.06)
+     .fromTo(act6.querySelector('.bloom'),{scale:0,transformOrigin:'center'},{scale:1,duration:.14,ease:'power1.out'},.8);
+  });
+  mm.add('(max-width:800px)',()=>{
+   gsap.fromTo(act6.querySelectorAll('.act-lead > *, .stitch-item'),{y:26,opacity:0},{y:0,opacity:1,stagger:.06,duration:.8,ease:'power1.out',scrollTrigger:{trigger:act6,start:'top 74%',toggleActions:'play none none none'}});
+  });
+ }
+ // 六幕路标轨：当前幕高亮，点击跳转（借鉴滚动叙事的 waypoint 思路）
+ const rail=$('#stories .hall-rail');
+ if(rail){
+  const dots=[...rail.querySelectorAll('button')];
+  dots.forEach((b,i)=>{
+   b.addEventListener('click',()=>{
+    document.getElementById('hall-act-'+i)?.scrollIntoView({behavior:reducedScroll.matches?'instant':'smooth',block:'start'});
+   });
+  });
+  mm.add('(min-width:1025px)',()=>{
+   const sts=[...document.querySelectorAll('.hall-act')].map((a,i)=>ScrollTrigger.create({trigger:a,start:'top center',end:'bottom center',onToggle:s=>{
+    if(s.isActive)dots.forEach((x,k)=>x.classList.toggle('on',k===i));
+   }}));
+   return()=>sts.forEach(s=>s.kill());
+  });
+ }
+ // 背景随幕次微漂（借鉴 data-sc-drift：日升微暖、花令偏青、夜绣更深，尾声归位）
+ mm.add('(min-width:801px)',()=>{
+  gsap.timeline({scrollTrigger:{trigger:'#stories',start:'top top',end:'bottom bottom',scrub:1}})
+   .to('.story-hall',{backgroundColor:'#0d2219',ease:'none',duration:1.1},.9)
+   .to('.story-hall',{backgroundColor:'#0a1e20',ease:'none',duration:1.1},2.6)
+   .to('.story-hall',{backgroundColor:'#071a14',ease:'none',duration:1.1},4.3)
+   .to('.story-hall',{backgroundColor:'#0b201b',ease:'none',duration:.9},5.6);
  });
+ // 指针微交互：云笺与花令月卡轻微 3D 倾侧（仅精确指针，尊重 reduced-motion）
+ if(!reducedScroll.matches&&matchMedia('(hover: hover) and (pointer: fine)').matches){
+  document.querySelectorAll('.cloud-note,.month-card').forEach(el=>{
+   el.addEventListener('mousemove',e=>{
+    const r=el.getBoundingClientRect();
+    const dx=(e.clientX-r.left)/r.width-.5,dy=(e.clientY-r.top)/r.height-.5;
+    gsap.to(el,{rotateY:dx*7,rotateX:-dy*6,transformPerspective:700,duration:.45,ease:'power2.out'});
+   });
+   el.addEventListener('mouseleave',()=>gsap.to(el,{rotateX:0,rotateY:0,duration:.6,ease:'power2.out'}));
+  });
+ }
+ // 采风影像滚出视口即暂停，避免声音在页面别处继续
+ const film=$('#field-film');
+ if(film){
+  ScrollTrigger.create({trigger:'.hall-film',start:'top bottom',end:'bottom top',onLeave:()=>film.pause(),onLeaveBack:()=>film.pause()});
+ }
  ScrollTrigger.refresh();
 }
 $('#hall-jump').addEventListener('click',()=>{
