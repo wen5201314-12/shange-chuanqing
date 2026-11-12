@@ -178,7 +178,7 @@ body{position:relative;isolation:isolate;background:#101f1b}body:after{display:n
 .portal-vinyl{position:absolute;width:65%;aspect-ratio:1;left:9%;top:7%;border-radius:50%;background:repeating-radial-gradient(circle,#10231c 0 3px,#617059 4px,#172c21 5px);box-shadow:10px 18px 30px #07130c80;transform:rotate(-20deg);transition:transform 1.3s var(--ease)}.portal-vinyl:before{content:'';position:absolute;inset:12%;background:url('assets/record-4.jpg') center/cover;border-radius:50%;filter:saturate(.6) brightness(.85)}.portal-vinyl:after{content:'';position:absolute;inset:45%;border-radius:50%;background:#c9bb8a;box-shadow:0 0 0 9px #183021a0}.portal:hover .portal-vinyl{transform:rotate(8deg)}
 .portal-instruments{position:absolute;inset:0 5% 8%;display:flex;align-items:center;justify-content:center;transform:rotate(-8deg);opacity:.85}.portal-instruments svg{width:58%;height:90%;filter:drop-shadow(10px 16px 10px #07130c80)}.portal-instruments svg+svg{margin-left:-24%;transform:translate(20px,8px) rotate(16deg)}
 .portal-label{position:absolute;z-index:2;left:8%;right:8%;bottom:9%;display:grid;grid-template-columns:1fr auto;align-items:end;gap:12px}.portal-label small{font:10px Georgia,serif;letter-spacing:3px;color:#c7be9e}.portal-label strong{display:block;font:500 clamp(26px,3.5vw,46px) 'Noto Serif SC',serif;letter-spacing:5px;margin:12px 0}.portal-label p{font-size:11px;color:#c5cbb8;line-height:1.9;margin:0}.portal-arrow{font-size:24px;color:#d8c58d;padding-bottom:5px;transition:transform .5s}.portal:hover .portal-arrow{transform:translate(4px,-4px)}.portal-number{position:absolute;z-index:2;right:8%;top:8%;font:12px Georgia,serif;letter-spacing:2px;color:#d6cbab}
-.crossroads-foot{font-size:10px;letter-spacing:2px;color:#a9b49e;border-top:1px solid var(--line);padding-top:22px}.branch-enter{animation:branch-arrive .7s var(--ease) both}@keyframes branch-arrive{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
+.crossroads-foot{font-size:10px;letter-spacing:2px;color:#a9b49e;border-top:1px solid var(--line);padding-top:22px}.branch-enter{animation:branch-arrive .7s var(--ease) both;animation-fill-mode:none}@keyframes branch-arrive{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
 @media(max-width:650px){.crossroads{padding:38px 24px}.crossroads-head{align-items:flex-start}.crossroads-head h2{font-size:29px;letter-spacing:4px}.crossroads-head p{font-size:11px}.crossroads-back{font-size:10px;letter-spacing:1px}.portal-pair{grid-template-columns:1fr;margin:36px auto;padding:0 12px;gap:32px;max-width:430px}.portal,.portal:nth-child(2){aspect-ratio:1.35;transform:none}.portal:hover,.portal:focus-visible,.portal:nth-child(2):hover,.portal:nth-child(2):focus-visible{transform:translateY(-5px)}.portal-label strong{font-size:30px}.crossroads-foot{line-height:2;align-items:flex-start;gap:14px}.crossroads-foot span:last-child{max-width:130px;text-align:right}}
 @media(prefers-reduced-motion:reduce){.portal,.portal:nth-child(2),.portal:hover,.portal:nth-child(2):hover,.portal:focus-visible,.portal:nth-child(2):focus-visible,.portal-vinyl,.portal:hover .portal-vinyl,.portal:hover .portal-land{transform:none;transition:none}.branch-enter{animation:none}}
 
@@ -675,6 +675,8 @@ function initStoryHall(){
  if(reducedScroll.matches){hallInited=true;return;}
  hallInited=true;
  gsap.registerPlugin(ScrollTrigger);
+ // 移动端地址栏伸缩不触发重排，避免滚动中反复 refresh 造成跳动
+ ScrollTrigger.config({ignoreMobileResize:true});
  const mm=gsap.matchMedia();
  // 序章与尾声
  mm.add('(min-width:801px)',()=>{
@@ -821,7 +823,11 @@ function initStoryHall(){
   ScrollTrigger.create({trigger:'.hall-film',start:'top bottom',end:'bottom top',onLeave:()=>film.pause(),onLeaveBack:()=>film.pause()});
  }
  ScrollTrigger.refresh();
-}
+ // 字体/图片/视频尺寸就绪后重新测量：pin 间距若按未加载高度计算，下滑时幕与幕会错位、跳段
+ const refreshHall=()=>{if(window.ScrollTrigger)ScrollTrigger.refresh();};
+ if(document.readyState!=='complete')window.addEventListener('load',refreshHall,{once:true});
+ if(document.fonts&&document.fonts.ready)document.fonts.ready.then(refreshHall).catch(()=>{});
+ setTimeout(refreshHall,700);}
 $('#hall-jump').addEventListener('click',()=>{
  const index=Math.max(0,previewSelected);
  $('#record-player').close();
@@ -830,11 +836,15 @@ $('#hall-jump').addEventListener('click',()=>{
 });
 // 双入口只展示当前分支；切换沿用音源取消与释放逻辑。
 function showBranch(id){
+ // 切分支前先收掉序章的滚轮惯性，避免 glide 与 scrollIntoView 互相拉扯（表现为卡死/回弹）
+ window.__cancelGlide?.();
  const branch=id==='#songs'?'songs':id==='#listening'?'listening':id==='#stories'?'stories':null;
  for(const name of ['crossroads','songs','listening','stories']){
   const panel=document.getElementById(name),visible=name===(branch||'crossroads');
   panel.hidden=!visible;panel.classList.remove('branch-enter');
   if(visible&&id!=='#overture')requestAnimationFrame(()=>panel.classList.add('branch-enter'));
+  // 入场动画结束后 transform 刚被移除，此时重算 pin，否则 fixed 定位仍按旧包含块计算（整幕跑到视口外=黑屏）
+  if(visible&&window.ScrollTrigger)panel.addEventListener('animationend',event=>{if(event.target===panel)ScrollTrigger.refresh();},{once:true});
  }
  if(branch==='stories')initStoryHall();
  if(window.ScrollTrigger)ScrollTrigger.refresh();
@@ -880,8 +890,11 @@ function glideStep(now){
  if(window.scrollY===before)glideVel=0; // 已到顶/底，即刻收势
  else{glideVel*=Math.exp(-delta/GLIDE_TAU);glideRaf=requestAnimationFrame(glideStep);}
 }
+window.__cancelGlide=()=>{glideVel=0;if(glideRaf){cancelAnimationFrame(glideRaf);glideRaf=0;}};
 opening.addEventListener('wheel',event=>{
  if(reducedScroll.matches)return;
+ // 序章已滚到底且继续向下时交还原生滚动，否则会被 preventDefault 拦住、表现为"卡在序章末尾滚不动"
+ if(glideVel>=0&&window.scrollY>=openingStart+openingDistance-2&&event.deltaY>0){window.__cancelGlide();return;}
  event.preventDefault();
  const raw=event.deltaY,delta=event.deltaMode===1?raw*33:event.deltaMode===2?raw*scene.offsetHeight:raw;
  glideVel=Math.max(-GLIDE_CAP,Math.min(GLIDE_CAP,glideVel+delta*GLIDE_GAIN));
